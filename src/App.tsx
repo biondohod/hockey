@@ -1,9 +1,11 @@
-import { useState } from "react";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
     <>
-      <h1>Hockey</h1>
+      <Header/>
+      <main>Main content</main>
+      <footer>Footer</footer>
     </>
   );
 }
