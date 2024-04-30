@@ -13,7 +13,7 @@
     font-size: 20px;
     font-weight: 400;
     line-height: 44px;
-    color: #fff;
+    color: white;
   }
 
   &__info {
@@ -42,7 +42,10 @@
     max-width: 580px;
   }
 
-  &__tournaments, &__ratings, &__notifications, &__language {
+  &__tournaments,
+  &__ratings,
+  &__notifications,
+  &__language {
     position: relative;
     &:hover {
       .header__popup {
@@ -54,7 +57,7 @@
   &__notifications {
     &:hover {
       .header__popup {
-        top: 120%
+        top: 120%;
       }
     }
   }
@@ -66,7 +69,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #fff;
+    color: white;
 
     &--popup {
       position: relative;
@@ -113,18 +116,16 @@
     li {
       padding: 0 7px;
       border-bottom: 1px solid rgb(159, 159, 159);
-      color: #000;
+      color: black;
 
       &:last-child {
         border: none;
       }
 
       a {
-        color: #000;
+        color: black;
       }
     }
-
-
   }
 
   &__users {
@@ -161,11 +162,139 @@
     &__content {
       display: none;
     }
+
+    &__item {
+      padding-left: 43px;
+      text-align: left;
+
+      &--payment {
+        background: url("../../../public/assets/icons/payment.svg") no-repeat left
+          center;
+        background-size: 32px 32px;
+      }
+
+      &--docs {
+        background: url("../../../public/assets/icons/docs-black.svg") no-repeat left
+          center;
+        background-size: 32px 32px;
+      }
+
+      &--tournaments {
+        background: url("../../../public/assets/icons/tournaments.svg") no-repeat left
+          center;
+        background-size: 32px 32px;
+      }
+    }
+
+  }
+
+  &__profile {
+    position: relative;
+    &:hover {
+      .header-profile__content {
+        display: flex;
+      }
+    }
   }
 
   &-profile {
+    &__button {
+      padding: 11px 15px;
+      padding-right: 45px;
+      border-radius: 20px;
+      background: rgb(217, 217, 217);
+      background-image: url("../../../public/assets/icons/User.svg");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 22px;
+      color: black;
+      cursor: pointer;
+    }
     &__content {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 310px;
       display: none;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 5px;
+      background: rgb(241, 241, 241);
+      color: black;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: -9px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 9px solid rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    &__main {
+      position: relative;
+      display: flex;
+      gap: 6px;
+      padding: 7px;
+      padding-right: 35px;
+      border-radius: 5px;
+      background: rgb(210, 210, 210);
+      &::after {
+        position: absolute;
+        top: 50%;
+        right: 6px;
+        transform: translateY(-50%);
+        content: ">";
+      }
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__name {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 23px;
+    }
+
+    &__subname {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 19px;
+    }
+
+    &__personal-info {
+      padding-left: 29px;
+      color: rgb(54, 147, 255);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22px;
+      background: url("../../../public/assets/icons/docs.svg") no-repeat left
+        center;
+      background-size: 20px 23px;
+    }
+
+    &__signout {
+      color: rgb(255, 100, 100);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22px;
+      padding-left: 34px;
+      background: url("../../../public/assets/icons/signout.svg") no-repeat left
+      center;
+      background-size: 23px 26px;
     }
   }
 

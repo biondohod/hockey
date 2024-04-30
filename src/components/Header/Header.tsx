@@ -91,17 +91,17 @@ const Header = () => {
               <span className="visually-hidden">Уведомления</span>
               <ul className="header__popup">
                 <li>
-                  <div className="header-notifications--payment">
+                  <div className="header-notifications__item header-notifications__item--payment">
                     Оплата прошла успешно
                   </div>
                 </li>
                 <li>
-                  <div className="header-notifications--documents">
+                  <div className="header-notifications__item header-notifications__item--docs">
                     Документы приняты
                   </div>
                 </li>
                 <li>
-                  <div className="header-notifications--tournaments">
+                  <div className="header-notifications__item header-notifications__item--tournaments">
                     Турнирное уведомление
                   </div>
                 </li>
@@ -109,10 +109,10 @@ const Header = () => {
             </div>
 
             <div className="header__profile">
-              <span>Профиль</span>
+              <div className="header-profile__button">Профиль</div>
               <div className="header-profile__content">
                 <div className="header-profile__main">
-                  <img src="" alt="Аватар пользователя." />
+                  <img src="../../../public/assets/img/avatar.png" alt="Аватар пользователя." width={42} height={42}/>
                   <div className="header-profile__info">
                     <span className="header-profile__name">Иван иванов</span>
                     <span className="header-profile__subname">Ivan Ivanov</span>
