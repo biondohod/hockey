@@ -1,0 +1,102 @@
+.footer {
+  margin-top: 60px;
+  padding: 75px 130px;
+  background-color: black;
+  color: white;
+
+  &__container {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 130px;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+
+    &--first {
+      gap: 35px;
+    }
+
+    &--second,
+    &--third {
+      gap: 16px;
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 42px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  &__description {
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  &__socials {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  &-socials {
+    &__link {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+
+      &--vk {
+        background: url("/assets/icons/vk.svg") no-repeat center;
+      }
+      &--youtube {
+        background: url("/assets/icons/youtube.svg") no-repeat center;
+      }
+      &--telegram {
+        background: url("/assets/icons/tg.svg") no-repeat center;
+      }
+    }
+  }
+
+  &__email,
+  &__tel {
+    padding-left: 30px;
+    font-size: 20px;
+    line-height: 22px;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  &__email {
+    background: url("/assets/icons/email.svg") no-repeat left center;
+  }
+  &__tel {
+    margin-top: 8px;
+    background: url("/assets/icons/phone.svg") no-repeat left center;
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    color: #969696;
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__link {
+    font-size: 20px;
+    line-height: 22px;
+    color: #fff;
+    text-decoration: none;
+  }
+}

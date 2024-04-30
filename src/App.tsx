@@ -1,11 +1,15 @@
+import Main from "./_root/pages/Main/Main";
+import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 
 function App() {
   return (
     <>
-      <Header/>
-      <main>Main content</main>
-      <footer>Footer</footer>
+      <Header />
+      <main>
+        <Main />
+      </main>
+      <Footer />
     </>
   );
 }

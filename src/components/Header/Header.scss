@@ -155,7 +155,7 @@
       display: block;
       width: 27px;
       height: 35px;
-      background: url(../../../public/assets/icons/notifications.svg) no-repeat
+      background: url(/assets/icons/notifications.svg) no-repeat
         center;
     }
 
@@ -168,19 +168,19 @@
       text-align: left;
 
       &--payment {
-        background: url("../../../public/assets/icons/payment.svg") no-repeat left
+        background: url("/assets/icons/payment.svg") no-repeat left
           center;
         background-size: 32px 32px;
       }
 
       &--docs {
-        background: url("../../../public/assets/icons/docs-black.svg") no-repeat left
+        background: url("/assets/icons/docs-black.svg") no-repeat left
           center;
         background-size: 32px 32px;
       }
 
       &--tournaments {
-        background: url("../../../public/assets/icons/tournaments.svg") no-repeat left
+        background: url("/assets/icons/tournaments.svg") no-repeat left
           center;
         background-size: 32px 32px;
       }
@@ -203,7 +203,7 @@
       padding-right: 45px;
       border-radius: 20px;
       background: rgb(217, 217, 217);
-      background-image: url("../../../public/assets/icons/User.svg");
+      background-image: url("/assets/icons/User.svg");
       background-repeat: no-repeat;
       background-position: right 16px center;
       font-size: 20px;
@@ -281,7 +281,7 @@
       font-size: 16px;
       font-weight: 400;
       line-height: 22px;
-      background: url("../../../public/assets/icons/docs.svg") no-repeat left
+      background: url("/assets/icons/docs.svg") no-repeat left
         center;
       background-size: 20px 23px;
     }
@@ -292,7 +292,7 @@
       font-weight: 400;
       line-height: 22px;
       padding-left: 34px;
-      background: url("../../../public/assets/icons/signout.svg") no-repeat left
+      background: url("/assets/icons/signout.svg") no-repeat left
       center;
       background-size: 23px 26px;
     }
