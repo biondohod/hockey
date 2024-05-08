@@ -112,7 +112,7 @@ const Header = () => {
               <div className="header-profile__button">Профиль</div>
               <div className="header-profile__content">
                 <div className="header-profile__main">
-                  <img src="../../../public/assets/img/avatar.png" alt="Аватар пользователя." width={42} height={42}/>
+                  <img src="/assets/img/avatar.png" alt="Аватар пользователя." width={42} height={42}/>
                   <div className="header-profile__info">
                     <span className="header-profile__name">Иван иванов</span>
                     <span className="header-profile__subname">Ivan Ivanov</span>

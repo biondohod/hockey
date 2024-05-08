@@ -38,8 +38,9 @@
     background-color: white;
     cursor: pointer;
 
-    &:disabled {
-      background-color: rgba(255, 0, 0, 0.45);
+    &--active {
+        background-color: rgba(255, 0, 0, 0.45);
+        pointer-events: none;
     }
 
     &:first-child {

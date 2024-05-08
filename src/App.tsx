@@ -11,7 +11,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="authorization" element={<Authorization />} />
+          <Route path={`auth/:type`} element={<Authorization />} />
         </Routes>
       </main>
       <Footer />
