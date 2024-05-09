@@ -3,6 +3,8 @@ import Main from "./_root/pages/Main/Main";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Authorization from "./_root/pages/Autorization/Authorization";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <ToastContainer position="bottom-right"/>
     </>
   );
 }
