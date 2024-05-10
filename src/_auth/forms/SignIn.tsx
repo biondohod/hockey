@@ -4,6 +4,8 @@ import { SignInValidation } from "../../lib/validation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import { useUserContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const { isPending, mutateAsync } = UseLoginUser();
@@ -21,7 +23,6 @@ const SignIn = () => {
     toast.promise(mutateAsync(data), {
       pending: "Вход в аккаунт...",
     });
-    console.log(localStorage.getItem("cookieFallback"))
   };
 
   return (

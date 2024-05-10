@@ -10,6 +10,32 @@ interface INewUser {
   password: string,
 }
 
+interface IUser {
+  email: string,
+  first_name: string,
+  id: number | string,
+  last_name: string,
+  middle_name: string,
+  player: {
+    birth_date: string,
+    is_male: boolean,
+    phone: string,
+    position: string,
+    preparation: string,
+    telegram: string
+  },
+  role_id: number | string
+}
+
+interface IContextType {
+  user: IUser | null;
+  isLoading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  checkAuthUser: () => Promise<boolean>;
+};
+
 type SignUpForm = {
   first_name: string,
   last_name: string,

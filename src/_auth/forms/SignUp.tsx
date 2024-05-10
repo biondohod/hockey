@@ -138,6 +138,7 @@ const SignUp = () => {
             className="auth__input"
             required={true}
             autoComplete="off"
+            maxLength={16}
             {...register("last_name")}
             {...(errors.last_name && {
               style: { borderColor: "red", outline: "none" },
@@ -156,6 +157,7 @@ const SignUp = () => {
             className="auth__input"
             required={true}
             autoComplete="off"
+            maxLength={16}
             {...register("first_name")}
             {...(errors.first_name && {
               style: { borderColor: "red", outline: "none" },
@@ -174,6 +176,7 @@ const SignUp = () => {
             className="auth__input"
             required={true}
             autoComplete="off"
+            maxLength={16}
             {...register("middle_name")}
             {...(errors.middle_name && {
               style: { borderColor: "red", outline: "none" },

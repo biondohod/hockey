@@ -1,13 +1,18 @@
+import { Link } from "react-router-dom";
 import "./Header.scss";
+import { useUserContext } from "../../context/AuthContext";
+import { UseLogoutUser } from "../../lib/utils";
 const Header = () => {
+  const { isAuthenticated, user } = useUserContext();
+  const logOut = UseLogoutUser();
   return (
     <>
       <header className="header">
         <div className="header__content">
-          <div className="header__info">
+          <Link to={"/"} className="header__info">
             <h2 className="header__title">AutoMonitoring</h2>
             <span className="header__text">Мониторинг уровня игры</span>
-          </div>
+          </Link>
 
           <nav className="header__navigation">
             <div className="header__tournaments">
@@ -77,9 +82,11 @@ const Header = () => {
               </ul>
             </div>
 
-            <a href="" className="header__link">
-              Мои матчи
-            </a>
+            {isAuthenticated && (
+              <a href="" className="header__link">
+                Мои матчи
+              </a>
+            )}
             <a href="" className="header__link">
               Стоп-лист
             </a>
@@ -109,22 +116,45 @@ const Header = () => {
             </div>
 
             <div className="header__profile">
-              <div className="header-profile__button">Профиль</div>
-              <div className="header-profile__content">
-                <div className="header-profile__main">
-                  <img src="/assets/img/avatar.png" alt="Аватар пользователя." width={42} height={42}/>
-                  <div className="header-profile__info">
-                    <span className="header-profile__name">Иван иванов</span>
-                    <span className="header-profile__subname">Ivan Ivanov</span>
+              {isAuthenticated ? (
+                <div className="header-profile__button header-profile__button--profile">
+                  Профиль
+                </div>
+              ) : (
+                <Link
+                  to={"auth/sign-in"}
+                  className="header-profile__button header-profile__button--auth"
+                >
+                  Войти
+                </Link>
+              )}
+
+              {isAuthenticated && (
+                <div className="header-profile__content">
+                  <div className="header-profile__main">
+                    <img
+                      src="/assets/img/avatar.png"
+                      alt="Аватар пользователя."
+                      width={42}
+                      height={42}
+                    />
+                    <div className="header-profile__info">
+                      <span className="header-profile__name">
+                        {user?.first_name} {user?.last_name}
+                      </span>
+                      {/* <span className="header-profile__subname">
+                        {user?.first_name} {user?.last_name}
+                      </span> */}
+                    </div>
                   </div>
-                </div>
 
-                <div className="header-profile__personal-info">
-                  Личные данные
-                </div>
+                  <div className="header-profile__personal-info">
+                    Личные данные
+                  </div>
 
-                <div className="header-profile__signout">Выйти</div>
-              </div>
+                  <div className="header-profile__signout" onClick={logOut}>Выйти</div>
+                </div>
+              )}
             </div>
 
             <div className="header__language">
