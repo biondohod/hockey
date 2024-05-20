@@ -16,6 +16,7 @@ interface IUser {
   id: number | string,
   last_name: string,
   middle_name: string,
+  isVerificated: boolean,
   player: {
     birth_date: string,
     is_male: boolean,

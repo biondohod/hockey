@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const id = localStorage.getItem("id") || null;
   const token = localStorage.getItem("token") || null;
   const [user, setUser] = useState<IUser | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
@@ -43,6 +43,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoading(false);
       }
     }
+    setIsLoading(false);
     return isAuthenticated;
   };
 

@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
+import Profile from "./_root/pages/Profile/Profile";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
 
           {/* Private Routes */}
           <Route element={<RootLayout />}>
-            <Route path="/private" element={<div>Private route</div>} />
+            <Route path={`/profile/:id`} element={<Profile/>} />
           </Route>
         </Routes>
       </main>

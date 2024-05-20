@@ -131,7 +131,7 @@ const Header = () => {
 
               {isAuthenticated && (
                 <div className="header-profile__content">
-                  <div className="header-profile__main">
+                  <Link to={`/profile/${user?.id}`} className="header-profile__main">
                     <img
                       src="/assets/img/avatar.png"
                       alt="Аватар пользователя."
@@ -146,7 +146,7 @@ const Header = () => {
                         {user?.first_name} {user?.last_name}
                       </span> */}
                     </div>
-                  </div>
+                  </Link>
 
                   <div className="header-profile__personal-info">
                     Личные данные
