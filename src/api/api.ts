@@ -39,7 +39,7 @@ export const getUser = async (
 };
 
 export const createCompetition = async (
-  competition: ICompetition,
+  competition: IFormattedCompetition,
   token: string | null
 ) => {
   if (!token) return null;
