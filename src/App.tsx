@@ -8,6 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
 import Profile from "./_root/pages/Profile/Profile";
+import CreateCompetition from "./_root/pages/Competitions/CreateCompetition";
+import AllCompetitions from "./_root/pages/Competitions/AllCompetitions";
+import Competition from "./_root/pages/Competitions/Competition";
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
           {/* Private Routes */}
           <Route element={<RootLayout />}>
             <Route path={`/profile/:id`} element={<Profile/>} />
+            <Route path={`/createCompetition`} element={<CreateCompetition/>} />
+            <Route path={`/AllCompetitions/:type`} element={<AllCompetitions/>} />
+            <Route path={`/competition/:id`} element={<Competition/>} />
           </Route>
         </Routes>
       </main>

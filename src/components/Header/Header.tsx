@@ -19,19 +19,19 @@ const Header = () => {
               <h2 className="header__link header__link--popup">Турниры</h2>
               <ul className="header__popup">
                 <li>
-                  <a href="">4x4</a>
+                  <Link to={"/AllCompetitions/4x4"}>4x4</Link>
                 </li>
                 <li>
-                  <a href="">6x6</a>
+                  <Link to={"/AllCompetitions/6x6"}>6x6</Link>
                 </li>
                 <li>
-                  <a href="">Платные</a>
+                  <Link to={"/AllCompetitions/paid"}>Платные</Link>
                 </li>
                 <li>
-                  <a href="">Архив</a>
+                  <Link to={"/AllCompetitions/archive"}>Архив</Link>
                 </li>
                 <li>
-                  <a href="">Создание</a>
+                  <Link to="/createCompetition">Создание</Link>
                 </li>
                 <li>
                   <a href="">Мои турниры</a>
@@ -131,7 +131,10 @@ const Header = () => {
 
               {isAuthenticated && (
                 <div className="header-profile__content">
-                  <Link to={`/profile/${user?.id}`} className="header-profile__main">
+                  <Link
+                    to={`/profile/${user?.id}`}
+                    className="header-profile__main"
+                  >
                     <img
                       src="/assets/img/avatar.png"
                       alt="Аватар пользователя."
@@ -152,7 +155,9 @@ const Header = () => {
                     Личные данные
                   </div>
 
-                  <div className="header-profile__signout" onClick={logOut}>Выйти</div>
+                  <div className="header-profile__signout" onClick={logOut}>
+                    Выйти
+                  </div>
                 </div>
               )}
             </div>

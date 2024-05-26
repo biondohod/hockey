@@ -5,7 +5,12 @@ export enum QUERY_KEYS {
   // USER KEYS
   GET_CURRENT_USER = "getCurrentUser",
   // GET_USERS = "getUsers",
-  // GET_USER_BY_ID = "getUserById",
+  GET_USER_BY_ID = "getUserById",
+
+  //COMPETITION KEYS
+  GET_COMPETITIONS = "getCompetitions",
+  GET_COMPETITION_BY_ID = "getCompetitionById",
+  
 
   // POST KEYS
   // GET_POSTS = "getPosts",

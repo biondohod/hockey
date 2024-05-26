@@ -16,11 +16,11 @@ export const SignUpValidation = z
       .regex(/^[A-Za-zА-Яа-я- ]+$/, "Отчество может содержать только буквы"),
     gender: z.string().nonempty("Пол не может быть пустым"),
     phone: z
-    .string()
-    .refine(
-      (phone) => phone.trim().length === 18,
-      "Номер телефона должен содержать 11 цифр"
-    ),
+      .string()
+      .refine(
+        (phone) => phone.trim().length === 18,
+        "Номер телефона должен содержать 11 цифр"
+      ),
     email: z.string().email("Неверный формат электронной почты"),
     birth_date: z
       .string()
@@ -31,18 +31,15 @@ export const SignUpValidation = z
         const age = today.getFullYear() - birthDate.getFullYear();
         return age >= 14;
       }, "Вам должно быть не менее 14 лет"),
-      telegram: z
+    telegram: z
       .string()
       .optional()
-      .refine(
-        (telegram) => {
-          if (telegram) {
-            return telegram.length >= 6;
-          }
-          return true;
-        },
-        "Логин в Telegram должен содержать минимум 5 символов"
-      ),
+      .refine((telegram) => {
+        if (telegram) {
+          return telegram.length >= 6;
+        }
+        return true;
+      }, "Логин в Telegram должен содержать минимум 5 символов"),
     password: z
       .string()
       .min(8, { message: "Пароль должен содержать минимум 8 символов" })
@@ -50,7 +47,7 @@ export const SignUpValidation = z
         (password) => /[A-Za-z]/.test(password) && /\d/.test(password),
         "Пароль должен содержать и буквы, и цифры"
       ),
-    confirmPassword: z.string()
+    confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Пароли не совпадают",
@@ -60,4 +57,26 @@ export const SignUpValidation = z
 export const SignInValidation = z.object({
   email: z.string().email("Неверный формат электронной почты"),
   password: z.string(),
+});
+
+export const CreateCompetitionValidation = z.object({
+  age: z.number().int(),
+  closes_at: z
+    .string()
+    .nonempty("Дата окончания регистрации не может быть пустой"),
+  days: z.array(
+    z.object({
+      date: z.string().nonempty("Дата турнира не может быть пустой"),
+      start_time: z
+        .string()
+        .nonempty("Время начала турнира не может быть пустой"),
+      end_time: z
+        .string()
+        .nonempty("Время окончания турнира не может быть пустой"),
+    })
+  ),
+  name: z.string().nonempty("Название турнира не может быть пустым"),
+  description: z.string().nonempty("Описание турнира не может быть пустым"),
+  tours: z.number().int(),
+  size: z.number().int(),
 });

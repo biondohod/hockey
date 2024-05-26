@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetUser } from "../lib/react-query/queries";
+import { useGetCurrentUser } from "../lib/react-query/queries";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 
@@ -23,7 +23,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  const { data, error, isError } = useGetUser(id, token);
+  const { data, error, isError } = useGetCurrentUser(id, token);
 
   const checkAuthUser = async () => {
     if (id && token) {

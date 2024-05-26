@@ -3,22 +3,53 @@ import { useUserContext } from "../../../context/AuthContext";
 import "./Profile.scss";
 import { useEffect, useState } from "react";
 import { calculateAge, formatDate } from "../../../lib/utils";
+import { useGetUser } from "../../../lib/react-query/queries";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
+  const [userData, setUserData] = useState<IUser | null>(null);
   const { id } = useParams<{ id: string }>();
   const { user } = useUserContext();
+  const { data, isFetching } = useGetUser(id, localStorage.getItem("token"));
 
   useEffect(() => {
     if (!id) return;
     if (parseInt(id) === user?.id) {
+      console.log(id, user?.id);
       setIsUserProfile(true);
+      setUserData(user);
     } else {
       setIsUserProfile(false);
+      setUserData(data);
     }
-  }, [id, user]);
+  }, [id, user, data]);
 
-  if (!user) return null;
+  if (isFetching || !userData) return <div>Загрузка...</div>;
+
+  if (userData.role_id === 1) {
+    return (
+      <section className="profile">
+        <h1 className="profile__title">Профиль</h1>
+
+        <div className="profile__content">
+          <div className="profile__info">
+            <div className="profile-info__wrapper">
+              <img
+                src="/assets/img/avatar.png"
+                className="profile-info__img"
+                alt="Аватар пользователя."
+              />
+              <div className="profile-info__name-container">
+                <span className="profile-info__name">
+                  {userData.first_name} {userData.last_name}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="profile">
@@ -34,13 +65,15 @@ const Profile = () => {
             />
             <div className="profile-info__name-container">
               <span className="profile-info__name">
-                {user?.first_name} {user?.last_name}
+                {userData.first_name} {userData.last_name}
               </span>
               <span
                 className="profile-info__verification"
-                style={{ color: user?.isVerificated ? "green" : "red" }}
+                style={{ color: userData.isVerificated ? "green" : "red" }}
               >
-                {user?.isVerificated ? "Подтверждженный" : "Неподтвержденный"}
+                {userData.isVerificated
+                  ? "Подтверждженный"
+                  : "Неподтвержденный" || ""}
               </span>
               {isUserProfile ? (
                 <button className="profile-info__edit">
@@ -56,12 +89,14 @@ const Profile = () => {
               <li className="profile-info__about">
                 <span className="profile-info__about-title">Дата рождения</span>
                 <span className="profile-info__about-value">
-                  {formatDate(user?.player.birth_date)}
+                  {formatDate(userData.player.birth_date) || ""}
                 </span>
               </li>
               <li className="profile-info__about">
                 <span className="profile-info__about-title">Возраст</span>
-                <span className="profile-info__about-value">{calculateAge(user.player.birth_date)}</span>
+                <span className="profile-info__about-value">
+                  {calculateAge(userData.player.birth_date) || ""}
+                </span>
               </li>
               <li className="profile-info__about">
                 <span className="profile-info__about-title">Тренер</span>
@@ -78,7 +113,7 @@ const Profile = () => {
               <li className="profile-info__about">
                 <span className="profile-info__about-title">Пол</span>
                 <span className="profile-info__about-value">
-                  {user?.player.is_male ? "Мужской" : "Женский"}
+                  {userData.player.is_male ? "Мужской" : "Женский" || ""}
                 </span>
               </li>
               <li className="profile-info__about">

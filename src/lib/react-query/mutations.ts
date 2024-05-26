@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUserAccount, loginUser } from "../../api/api";
+import { createCompetition, createUserAccount, loginUser } from "../../api/api";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useUserContext } from "../../context/AuthContext";
@@ -50,3 +50,30 @@ export const UseLoginUser = () => {
     },
   });
 };
+
+export const useCreateCompetition = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (competition: ICompetition) => createCompetition(competition, localStorage.getItem("token")),
+    onSuccess: (data: {id: number}) => {
+      toast.success("Соревнование успешно создано", {autoClose: 1500});
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITIONS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_BY_ID, data.id],
+      });
+    
+      navigate(`/competitions/${data.id}`);
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при создании соревнования: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при создании соревнования");
+      }
+    },
+  });
+}
