@@ -12,5 +12,5 @@ const AllCompetitions = () => {
   
   return <div>AllCompetitions</div>;
 };
-
+ 
 export default AllCompetitions;

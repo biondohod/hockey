@@ -36,7 +36,7 @@ const CreateCompetition = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
+    <form onSubmit={handleSubmit(onSubmit)} className="auth__form"> 
       {/* <label htmlFor="phone" className="auth__label">
         Почта
         <input

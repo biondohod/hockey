@@ -14,7 +14,7 @@ const Competition = () => {
     console.log(data);
   }, [id, data]);
 
-  return <div>Competition</div>;
+  return <div>Competition</div>; 
 };
 
 export default Competition;
