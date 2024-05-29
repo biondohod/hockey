@@ -27,7 +27,7 @@ const CreateCompetition = () => {
         },
     });
 
-    const onSubmit = (data: ICompetition) => {
+    const onSubmit = (data: ICompetitionForm) => {
         const {age, description, end_time, start_time, name, size, tours, date, closes_at} = data
         const formattedData: IFormattedCompetition = {
             age,

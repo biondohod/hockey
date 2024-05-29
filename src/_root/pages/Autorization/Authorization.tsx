@@ -17,6 +17,8 @@ const Authorization = () => {
     }
   }, [authType]);
 
+
+
   return (
     <section className="auth">
       <h1 className="auth__title">{isSignIn ? "Вход" : "Регистрация"}</h1>

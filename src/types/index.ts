@@ -32,7 +32,7 @@ interface IContextType {
     checkAuthUser: () => Promise<boolean>;
 }
 
-interface ICompetition {
+interface ICompetitionForm {
     age: number;
     closes_at: string;
     date: string;
@@ -56,6 +56,27 @@ interface IFormattedCompetition {
     name: string;
     size: number;
     tours: number;
+}
+
+interface ICompetition {
+    id: number;
+    age: number;
+    closes_at: string;
+    // date: string;
+    // end_time: string;
+    // start_time: string;
+    description?: string;
+    name: string;
+    size: number;
+    tours: number;
+    trainer: {
+        id: number;
+        email: string;
+        first_name: string;
+        last_name: string;
+        middle_name: string;
+        role_id: number;
+    }
 }
 
 type SignUpForm = {
