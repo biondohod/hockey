@@ -79,6 +79,28 @@ interface ICompetition {
     }
 }
 
+interface ISingleCompetition {
+    age: number;
+    closes_at: string;
+    days: {
+        date: string;
+        end_time: string;
+        start_time: string;
+    }[];
+    description: string;
+    name: string;
+    size: number;
+    tours: number;
+    trainer: {
+        id: number;
+        email: string;
+        first_name: string;
+        last_name: string;
+        middle_name: string;
+        role_id: number;
+    }
+}
+
 type SignUpForm = {
     first_name: string;
     last_name: string;

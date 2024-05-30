@@ -7,7 +7,7 @@ type CompetitionItemProps = {
     competition: ICompetition;
 }
 const CompetitionItem: FC<CompetitionItemProps> = ({competition}) => {
-    const getCompetitionStatus = (closes_at: string): string => {
+    const getCompetitionStatus = (closes_at: string) => {
         const closesAtDate = new Date(closes_at);
         const today = new Date();
 
@@ -16,29 +16,29 @@ const CompetitionItem: FC<CompetitionItemProps> = ({competition}) => {
         today.setHours(0, 0, 0, 0);
 
         if (closesAtDate > today) {
-            return "Запланирован";
+            return <span style={{color: "#0085FF"}}>Запланирован</span>;
         } else if (closesAtDate.getTime() === today.getTime()) {
-            return "Идет";
+            return <span style={{color: "#FF9417"}}>Идет</span>;
         } else {
-            return "Закончился";
+            return <span style={{color: "#1AD638"}}>Завершен</span>;
         }
     }
 
 
     return (
-        <li key={competition.id} className="competitions__item">
-            <div>
+        <li className="competitions__item">
+            <div className={"competitions__wrapper"}>
                 <h2 className="competitions__name">{competition.name},
                     Тренер {competition.trainer.last_name} {competition.trainer.first_name} {competition.trainer.middle_name}</h2>
                 <div className="competitions__state">
                     <p className="competitions__date">Дата: {formatDate(competition.closes_at)}</p>
                     <div
-                        className="competitions__status">Статус: <span>{getCompetitionStatus(competition.closes_at)}</span>
+                        className="competitions__status">Статус: {getCompetitionStatus(competition.closes_at)}
                     </div>
                 </div>
                 <p className="competitions__description">{competition.description}</p>
             </div>
-            <Link to={`/competition/${competition.id}`} className="competitions__btn">Подробнее</Link>
+            <Link to={`/competition/${competition.id}/info`} className="competitions__btn">Подробнее</Link>
         </li>
     );
 }

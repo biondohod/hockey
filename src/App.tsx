@@ -31,7 +31,7 @@ function App() {
             <Route path={`/profile/:id`} element={<Profile/>} />
             <Route path={`/createCompetition`} element={<CreateCompetition/>} />
             <Route path={`/AllCompetitions/:type`} element={<AllCompetitions/>} />
-            <Route path={`/competition/:id`} element={<Competition/>} />
+            <Route path={`/competition/:id/:type`} element={<Competition/>} />
           </Route>
         </Routes>
       </main>

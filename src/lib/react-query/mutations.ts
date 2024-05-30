@@ -65,7 +65,7 @@ export const useCreateCompetition = () => {
                 queryKey: [QUERY_KEYS.GET_COMPETITION_BY_ID, data.id],
             });
 
-            navigate(`/competition/${data.id}`);
+            navigate(`/competition/${data.id}/info`);
         },
         onError: (error: AxiosError) => {
             const {message} = error.response?.data as { message?: string };

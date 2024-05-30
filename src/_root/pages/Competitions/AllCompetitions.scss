@@ -21,6 +21,10 @@
     grid-template-columns: repeat(2, 1fr);
     justify-items: center;
     align-items: center;
+
+    &--competition {
+      width: 800px;
+    }
   }
 
   &__tab {
@@ -43,6 +47,10 @@
 
     &--active {
       background-color: #fe8181;
+
+      &:hover {
+        color: #000;
+      }
     }
 
     &:nth-child(1) {
