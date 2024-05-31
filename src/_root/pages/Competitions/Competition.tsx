@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useGetCompetition} from "../../../lib/react-query/queries";
 import CompetitionInfo from "../../../components/CompetitionInfo/CompetitionInfo.tsx";
+import './Competition.scss'
 
 enum COMPETITION_TABS {
     "info" = "Информация о турнире",
@@ -32,7 +33,7 @@ const Competition = () => {
     const renderTabContent = () => {
         switch (selectedType) {
             case COMPETITION_TABS["info"]:
-                return <CompetitionInfo data={data} />;
+                return <CompetitionInfo data={data}/>;
             case COMPETITION_TABS["players"]:
                 return <div>Эта вкладка временно не работает :(</div>;
             case COMPETITION_TABS["games"]:
@@ -86,7 +87,12 @@ const Competition = () => {
         </div>
 
         {!data ? <div>Пока нет информации</div> : (
-             <div className={"competition__content"}>{renderTabContent()}</div>)}
+            <div className={"competition__content"}>{renderTabContent()}</div>)}
+
+        <div className="competition__registation">
+            <button className="competition__registrate">Учавствовать</button>
+            <button className="competition__cancel-registrate">Отменить участие</button>
+        </div>
 
     </section>);
 };

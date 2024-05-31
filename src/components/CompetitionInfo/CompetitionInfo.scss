@@ -1,0 +1,67 @@
+.competition-info {
+  width: 100%;
+  padding: 58px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.25);
+
+  &__title {
+    font-size: 46px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 20px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 26px 0;
+    border-bottom: 1px solid #c44343;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__text {
+    font-size: 30px;
+    color: #000;
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: flex-end;
+    justify-items: center;
+  }
+
+  &__edit {
+    padding: 6px 28px;
+    font-size: 30px;
+    line-height: 44px;
+    text-align: center;
+    color: #000;
+    border: 2px solid #c44343;
+    background-color: transparent;
+    border-radius: 40px;
+    grid-column: 2 / 3;
+  }
+
+  &__closes-at {
+    justify-self: end;
+    font-size: 22px;
+    line-height: 22px;
+    color: #000;
+    grid-column: 3 / -1;
+  }
+}
