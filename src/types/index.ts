@@ -101,6 +101,10 @@ interface ISingleCompetition {
     }
 }
 
+interface ErrorResponse {
+    message?: string;
+  }
+
 type SignUpForm = {
     first_name: string;
     last_name: string;

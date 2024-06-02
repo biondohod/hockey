@@ -1,0 +1,22 @@
+.empty-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 80%;
+  min-height: 220px;
+  border: 1px solid #E4E4E4;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f3f1f1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+
+  &__message {
+    text-align: center;
+    font-size: 24px; // You can adjust this to change the font size of the message
+  }
+}
