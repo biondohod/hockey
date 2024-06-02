@@ -49,6 +49,10 @@
   &__language {
     position: relative;
 
+    li {
+      cursor: pointer;
+    }
+
     &:hover {
       .header__popup {
         display: flex;
