@@ -8,7 +8,7 @@ export const UseLogoutUser = () => {
     const {setIsAuthenticated} = useUserContext();
     const queryClient = useQueryClient();
 
-    const logout = () => {
+    return () => {
         localStorage.removeItem("id");
         localStorage.removeItem("token");
         setIsAuthenticated(false);
@@ -18,8 +18,6 @@ export const UseLogoutUser = () => {
             queryKey: [QUERY_KEYS.GET_CURRENT_USER],
         });
     };
-
-    return logout;
 };
 
 export function formatDate(dateString: string): string {
@@ -43,7 +41,7 @@ export function calculateAge(birthDateString: string): string {
         age--;
     }
 
-    let ageString = '';
+    let ageString: string;
     if (age % 10 === 1 && age % 100 !== 11) {
         ageString = `${age} год`;
     } else if (age % 10 >= 2 && age % 10 <= 4 && (age % 100 < 10 || age % 100 >= 20)) {

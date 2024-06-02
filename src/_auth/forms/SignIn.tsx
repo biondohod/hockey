@@ -16,7 +16,7 @@ const SignIn = () => {
         },
     });
 
-    const onSubmit = async (data: SignInForm) => {
+    const onSubmit = (data: SignInForm) => {
         // console.log(data);
         toast.promise(mutateAsync(data), {
             pending: "Вход в аккаунт...",

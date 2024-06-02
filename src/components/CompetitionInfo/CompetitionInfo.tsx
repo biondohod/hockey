@@ -1,7 +1,7 @@
 import {FC} from "react";
 import './CompetitionInfo.scss';
 import {useUserContext} from "../../context/AuthContext.tsx";
-import {formatDate, calculateDays} from "../../lib/utils.ts";
+import {calculateDays, formatDate} from "../../lib/utils.ts";
 
 type CompetitionInfoProps = {
     data: ISingleCompetition;

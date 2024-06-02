@@ -56,9 +56,11 @@
       &--vk {
         background: url("/assets/icons/vk.svg") no-repeat center;
       }
+
       &--youtube {
         background: url("/assets/icons/youtube.svg") no-repeat center;
       }
+
       &--telegram {
         background: url("/assets/icons/tg.svg") no-repeat center;
       }
@@ -77,6 +79,7 @@
   &__email {
     background: url("/assets/icons/email.svg") no-repeat left center;
   }
+
   &__tel {
     margin-top: 8px;
     background: url("/assets/icons/phone.svg") no-repeat left center;

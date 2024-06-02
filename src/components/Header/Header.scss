@@ -2,14 +2,13 @@
 
 .header {
   background-color: $main-color;
-  padding: 15px;
-  padding-right: 30px;
+  padding: 15px 30px 15px 15px;
 
   &__content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: Roboto;
+    font-family: Roboto, serif;
     font-size: 20px;
     font-weight: 400;
     line-height: 44px;
@@ -49,6 +48,7 @@
   &__notifications,
   &__language {
     position: relative;
+
     &:hover {
       .header__popup {
         display: flex;
@@ -75,6 +75,7 @@
 
     &--popup {
       position: relative;
+
       &::after {
         content: "";
         position: absolute;
@@ -187,6 +188,7 @@
 
   &__profile {
     position: relative;
+
     &:hover {
       .header-profile__content {
         display: flex;
@@ -217,6 +219,7 @@
         background-image: url("/assets/icons/signin.svg");
       }
     }
+
     &__content {
       position: absolute;
       top: 100%;
@@ -255,6 +258,7 @@
       padding-right: 35px;
       border-radius: 5px;
       background: rgb(210, 210, 210);
+
       &::after {
         position: absolute;
         top: 50%;

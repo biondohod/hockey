@@ -1,6 +1,5 @@
 .profile {
-  padding: 50px 32px;
-  padding-bottom: 0;
+  padding: 50px 32px 0;
 
   &__content {
     display: flex;
@@ -150,6 +149,7 @@
       &--yes {
         border: 2px solid #00ff1a;
       }
+
       &--no {
         border: 2px solid #f00;
       }
