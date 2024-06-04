@@ -5,9 +5,11 @@ import {SignUpValidation} from "../../lib/validation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useCreateUserAccount} from "../../lib/react-query/mutations";
 import {toast} from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const SignUp = () => {
     const {mutateAsync, isPending} = useCreateUserAccount();
+    const {t} = useTranslation();
 
     const {
         register,
@@ -131,7 +133,7 @@ const SignUp = () => {
         <div className="auth__sign-up">
             <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
                 <label htmlFor="last_name" className="auth__label">
-                    Фамилия*
+                    {t("auth.signUp.lastName")}*
                     <input
                         type="text"
                         id="last_name"
@@ -150,7 +152,7 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="first_name" className="auth__label">
-                    Имя*
+                {t("auth.signUp.firstName")}*
                     <input
                         type="text"
                         id="first_name"
@@ -169,7 +171,7 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="middle_name" className="auth__label">
-                    Отчество*
+                {t("auth.signUp.middleName")}*
                     <input
                         type="text"
                         id="middle_name"
@@ -190,7 +192,7 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="gender" className="auth__label">
-                    Пол*
+                {t("auth.signUp.sex.sex")}*
                     <select
                         id="gender"
                         className="auth__input"
@@ -202,10 +204,10 @@ const SignUp = () => {
                         })}
                     >
                         <option hidden disabled value="">
-                            Не указан
+                        {t("auth.signUp.sex.unspecified")}
                         </option>
-                        <option value="male">Мужской</option>
-                        <option value="female">Женский</option>
+                        <option value="male">{t("auth.signUp.sex.male")}</option>
+                        <option value="female">{t("auth.signUp.sex.female")}</option>
                     </select>
                     {errors.gender && (
                         <span className="auth__error-msg">{errors.gender.message}</span>
@@ -231,7 +233,7 @@ const SignUp = () => {
       </select> */}
 
                 <label htmlFor="phone" className="auth__label">
-                    Номер телефона*
+                {t("auth.signUp.phone")}*
                     <input
                         id="phone"
                         className="auth__input"
@@ -253,7 +255,7 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="email" className="auth__label">
-                    Почта*
+                {t("auth.email")}*
                     <input
                         id="email"
                         className="auth__input"
@@ -270,7 +272,7 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="birth_date" className="auth__label">
-                    Дата рождения*
+                {t("auth.signUp.birthDate")}*
                     <input
                         type="date"
                         id="birth_date"
@@ -287,7 +289,7 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="telegram" className="auth__label">
-                    Логин telegram
+                {t("auth.signUp.telegramUsername")}
                     <input
                         type="text"
                         id="telegram"
@@ -308,12 +310,12 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="password" className="auth__label">
-                    Пароль
+                {t("auth.password")}
                     <input
                         type="password"
                         id="password"
                         className="auth__input"
-                        placeholder="Введите ваш пароль"
+                        placeholder={t("auth.passwordPlaceholder")}
                         required={true}
                         {...register("password")}
                         {...(errors.password && {
@@ -326,12 +328,12 @@ const SignUp = () => {
                 </label>
 
                 <label htmlFor="confirmPassword" className="auth__label">
-                    Подтвердите пароль
+                {t("auth.signUp.confirmPassword")}
                     <input
                         type="password"
                         id="confirmPassword"
                         className="auth__input"
-                        placeholder="Введите ваш пароль"
+                        placeholder={t("auth.passwordPlaceholder")}
                         required={true}
                         {...register("confirmPassword")}
                         {...(errors.confirmPassword && {
@@ -348,11 +350,11 @@ const SignUp = () => {
                 <div className="auth__checkbox">
                     <input type="checkbox" name="agreed" id="checkbox" required/>
                     <label htmlFor="checkbox">
-                        Согласие на обработку персональных данных
+                    {t("auth.signUp.policy")}
                     </label>
                 </div>
 
-                <button type="submit" className="auth__submit" disabled={isPending}>Зарегистрироваться</button>
+                <button type="submit" className="auth__submit" disabled={isPending}>{t("auth.signUp.signUp")}</button>
             </form>
         </div>
     );

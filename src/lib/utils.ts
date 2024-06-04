@@ -2,6 +2,8 @@ import {useNavigate} from 'react-router-dom';
 import {useUserContext} from '../context/AuthContext';
 import {useQueryClient} from '@tanstack/react-query';
 import {QUERY_KEYS} from './react-query/queryKeys';
+import i18next from 'i18next';
+import { transliterate } from 'transliteration';
 
 export const UseLogoutUser = () => {
     const navigate = useNavigate();
@@ -76,3 +78,7 @@ function pluralize(n: number, form1: string, form2: string, form3: string): stri
         return form3;
     }
 }
+
+export const transliterateText = (text: string = "") => {
+    return i18next.language.split("-")[0] === 'en' ? transliterate(text) : text;
+  }

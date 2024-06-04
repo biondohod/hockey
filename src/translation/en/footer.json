@@ -1,0 +1,16 @@
+{
+  "description": "Game level monitoring",
+  "contacts": "Contacts",
+  "competitions": "Competitions",
+  "tournaments": {
+    "paid": "Paid",
+    "archive": "Archive",
+    "creation": "Creation"
+  },
+  "ratings": "Rating",
+  "rating": {
+    "players": "Players",
+    "coaches": "Coaches",
+    "methods": "Methods"
+  }
+}

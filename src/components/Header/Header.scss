@@ -1,8 +1,10 @@
 @import "../../styles/variables.scss";
 
 .header {
+  width: 100%;
   background-color: $main-color;
   padding: 15px 30px 15px 15px;
+  position: fixed;
 
   &__content {
     display: flex;
@@ -43,7 +45,7 @@
     max-width: 580px;
   }
 
-  &__tournaments,
+  &__competitions,
   &__ratings,
   &__notifications,
   &__language {

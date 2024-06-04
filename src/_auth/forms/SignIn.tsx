@@ -32,7 +32,7 @@ const SignIn = () => {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
         <label htmlFor="phone" className="auth__label">
-          {t("auth.signIn.email")}
+          {t("auth.email")}
           <input
             type="email"
             id="phone"
@@ -44,13 +44,13 @@ const SignIn = () => {
         </label>
 
         <label htmlFor="password" className="auth__label">
-          {t("auth.signIn.password")}
+          {t("auth.password")}
           <input
             type="password"
             id="password"
             className="auth__input"
             {...register("password")}
-            placeholder={t("auth.signIn.passwordPlaceholder")}
+            placeholder={t("auth.passwordPlaceholder")}
           />
         </label>
         {/* <div className="auth__checkbox">

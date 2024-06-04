@@ -4,10 +4,12 @@ import "./Authorization.scss";
 import React, {useEffect} from "react";
 import SignIn from "../../../_auth/forms/SignIn";
 import SignUp from "../../../_auth/forms/SignUp";
+import { useTranslation } from "react-i18next";
 
 const Authorization = () => {
     const [isSignIn, setIsSignIn] = React.useState(true);
     const authType = useParams();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (authType.type === "sign-in") {
@@ -20,7 +22,7 @@ const Authorization = () => {
 
     return (
         <section className="auth">
-            <h1 className="auth__title">{isSignIn ? "Вход" : "Регистрация"}</h1>
+            <h1 className="auth__title">{isSignIn ? t("auth.authSignIn") : t("auth.authSignUp")}</h1>
 
             <div className="auth__wrapper">
                 <div className="auth__tabs">
@@ -29,14 +31,14 @@ const Authorization = () => {
                         // скорее всего эти классы излишни нужно будет удалить
                           className={`auth__btn ${isSignIn ? "auth__btn--active" : ""}`}
                     >
-                        Вход
+                        {t("auth.authSignIn")}
                     </Link>
                     <Link to={"/auth/sign-up"}
                         // onClick={handleTabClick}
                           className={`auth__btn ${isSignIn ? "" : "auth__btn--active"}`}
                         // disabled={!isSignIn}
                     >
-                        Регистрация
+                        {t("auth.authSignUp")}
                     </Link>
                 </div>
 

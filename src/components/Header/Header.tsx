@@ -1,24 +1,27 @@
 import { Link } from "react-router-dom";
 import "./Header.scss";
 import { useUserContext } from "../../context/AuthContext";
-import { UseLogoutUser } from "../../lib/utils";
+import { transliterateText, UseLogoutUser } from "../../lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { isAuthenticated, user } = useUserContext();
+  const { t } = useTranslation();
   const logOut = UseLogoutUser();
+  
   return (
     <>
       <header className="header">
         <div className="header__content">
           <Link to={"/"} className="header__info">
             <h2 className="header__title">AutoMonitoring</h2>
-            <span className="header__text">Мониторинг уровня игры</span>
+            <span className="header__text">{t("header.text")}</span>
           </Link>
 
           <nav className="header__navigation">
-            <div className="header__tournaments">
-              <h2 className="header__link header__link--popup">Турниры</h2>
+            <div className="header__competitions">
+              <h2 className="header__link header__link--popup">{t("header.competitions")}</h2>
               <ul className="header__popup">
                 <li>
                   <Link to={"/AllCompetitions/4x4"}>4x4</Link>
@@ -27,58 +30,58 @@ const Header = () => {
                   <Link to={"/AllCompetitions/6x6"}>6x6</Link>
                 </li>
                 <li>
-                  <Link to={"/AllCompetitions/paid"}>Платные</Link>
+                  <Link to={"/AllCompetitions/paid"}>{t("header.paid")}</Link>
                 </li>
                 <li>
-                  <Link to={"/AllCompetitions/archive"}>Архив</Link>
+                  <Link to={"/AllCompetitions/archive"}>{t("header.archive")}</Link>
                 </li>
                 <li>
-                  <Link to="/createCompetition">Создание</Link>
+                  <Link to="/createCompetition">{t("header.creation")}</Link>
                 </li>
                 <li>
-                  <a href="">Мои турниры</a>
+                  <a href="">{t("header.my-competitions")}</a>
                 </li>
               </ul>
             </div>
 
             <div className="header__ratings">
-              <h2 className="header__link header__link--popup">Рейтинги</h2>
+              <h2 className="header__link header__link--popup">{t("header.ratings")}</h2>
               <ul className="header__popup">
                 <li>
-                  <a href="">Общий(м)</a>
+                  <a href="">{t("header.general-m")}</a>
                 </li>
                 <li>
-                  <a href="">Вратари(м)</a>
+                  <a href="">{t("header.goalkeepers-m")}</a>
                 </li>
                 <li>
-                  <a href="">Защитники(м)</a>
+                  <a href="">{t("header.defenders-m")}</a>
                 </li>
                 <li>
-                  <a href="">Нападающие(м)</a>
+                  <a href="">{t("header.forwards-m")}</a>
                 </li>
                 <li>
-                  <a href="">Центр(м)</a>
+                  <a href="">{t("header.center-m")}</a>
                 </li>
                 <li>
-                  <a href="">Общий(ж)</a>
+                  <a href="">{t("header.general-f")}</a>
                 </li>
                 <li>
-                  <a href="">Вратари(ж)</a>
+                  <a href="">{t("header.goalkeepers-f")}</a>
                 </li>
                 <li>
-                  <a href="">Защитники(ж)</a>
+                  <a href="">{t("header.defenders-f")}</a>
                 </li>
                 <li>
-                  <a href="">Нападающие(ж)</a>
+                  <a href="">{t("header.forwards-f")}</a>
                 </li>
                 <li>
-                  <a href="">Центр(ж)</a>
+                  <a href="">{t("header.center-f")}</a>
                 </li>
                 <li>
-                  <a href="">Тренеры</a>
+                  <a href="">{t("header.coaches")}</a>
                 </li>
                 <li>
-                  <a href="">Методики</a>
+                  <a href="">{t("header.methods")}</a>
                 </li>
                 <li></li>
               </ul>
@@ -86,32 +89,32 @@ const Header = () => {
 
             {isAuthenticated && (
               <a href="" className="header__link">
-                Мои матчи
+                {t("header.my-matches")}
               </a>
             )}
             <a href="" className="header__link">
-              Стоп-лист
+              {t("header.stop-list")}
             </a>
           </nav>
 
           <div className="header__users">
             <div className="header__notifications">
               <span className="header-notifications__icon"></span>
-              <span className="visually-hidden">Уведомления</span>
+              <span className="visually-hidden">{t("header.notifications")}</span>
               <ul className="header__popup">
                 <li>
                   <div className="header-notifications__item header-notifications__item--payment">
-                    Оплата прошла успешно
+                    {t("header.payment-success")}
                   </div>
                 </li>
                 <li>
                   <div className="header-notifications__item header-notifications__item--docs">
-                    Документы приняты
+                    {t("header.documents-accepted")}
                   </div>
                 </li>
                 <li>
                   <div className="header-notifications__item header-notifications__item--tournaments">
-                    Турнирное уведомление
+                    {t("header.tournament-notification")}
                   </div>
                 </li>
               </ul>
@@ -120,14 +123,14 @@ const Header = () => {
             <div className="header__profile">
               {isAuthenticated ? (
                 <div className="header-profile__button header-profile__button--profile">
-                  Профиль
+                  {t("header.profile")}
                 </div>
               ) : (
                 <Link
                   to={"auth/sign-in"}
                   className="header-profile__button header-profile__button--auth"
                 >
-                  Войти
+                  {t("header.sign-in")}
                 </Link>
               )}
 
@@ -139,34 +142,31 @@ const Header = () => {
                   >
                     <img
                       src="/assets/img/avatar.png"
-                      alt="Аватар пользователя."
+                      alt={t("header.avatar-alt")}
                       width={42}
                       height={42}
                     />
                     <div className="header-profile__info">
                       <span className="header-profile__name">
-                        {user?.first_name} {user?.last_name}
+                        {transliterateText(user?.first_name)} {transliterateText(user?.last_name)}
                       </span>
-                      {/* <span className="header-profile__subname">
-                        {user?.first_name} {user?.last_name}
-                      </span> */}
                     </div>
                   </Link>
 
                   <div className="header-profile__personal-info">
-                    Личные данные
+                    {t("header.personal-info")}
                   </div>
 
                   <div className="header-profile__signout" onClick={logOut}>
-                    Выйти
+                    {t("header.logout")}
                   </div>
                 </div>
               )}
             </div>
 
-            <LanguageSwitcher/>
+            <LanguageSwitcher />
           </div>
-        </div>
+        </div> 
       </header>
     </>
   );

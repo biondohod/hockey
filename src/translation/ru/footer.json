@@ -1,0 +1,16 @@
+{
+  "description": "Мониторинг уровня игры",
+  "contacts": "Контакты",
+  "competitions": "Турниры",
+  "tournaments": {
+    "paid": "Платные",
+    "archive": "Архив",
+    "creation": "Создание"
+  },
+  "ratings": "Рейтинг",
+  "rating": {
+    "players": "Игроки",
+    "coaches": "Тренеры",
+    "methods": "Методики"
+  }
+}

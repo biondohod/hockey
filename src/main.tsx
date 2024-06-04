@@ -24,6 +24,7 @@ i18next.use(LanguageDetector).use(initReactI18next).init({
     lookupLocalStorage: 'i18nextLng',
     caches: ['localStorage'],
   },
+  load: 'languageOnly',
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
