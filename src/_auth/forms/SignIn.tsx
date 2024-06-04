@@ -10,7 +10,7 @@ const SignIn = () => {
   const { isPending, mutateAsync } = UseLoginUser();
   const { t } = useTranslation();
 
-  const { register, handleSubmit } = useForm<z.infer<typeof SignInValidation>>({
+  const { register, handleSubmit, formState: {errors} } = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),
     defaultValues: {
       email: "",
@@ -41,6 +41,9 @@ const SignIn = () => {
             required={true}
             autoComplete="off"
           />
+          {errors.email && errors.email.message && (
+            <span className="auth__error-msg">{t(errors.email.message)}</span>
+          )}
         </label>
 
         <label htmlFor="password" className="auth__label">
