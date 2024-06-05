@@ -5,13 +5,14 @@ import {AxiosError} from "axios";
 import {useUserContext} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import {QUERY_KEYS} from "./queryKeys";
+import i18next from "i18next";
 
 export const useCreateUserAccount = () => {
     const {setIsAuthenticated} = useUserContext();
     return useMutation({
         mutationFn: (user: INewUser) => createUserAccount(user),
         onSuccess: (data: AuthFormResponse) => {
-            toast.success("Аккаунт успешно создан", {autoClose: 1500});
+            toast.success(i18next.t("auth.signUp.success"), {autoClose: 1500});
             localStorage.setItem("token", data.token);
             localStorage.setItem("id", data.id);
             setIsAuthenticated(true);
@@ -20,9 +21,9 @@ export const useCreateUserAccount = () => {
         onError: (error: AxiosError) => {
             const {message} = error.response?.data as { message?: string };
             if (message) {
-                toast.error(`Ошибка при создании аккаунта: ${message}`);
+                toast.error(i18next.t("auth.signUp.error", {message}));
             } else {
-                toast.error("Неизвестная ошибка при созданни аккаунта");
+                toast.error(i18next.t("auth.signUp.unknownError"));
             }
         },
     });
@@ -33,7 +34,7 @@ export const UseLoginUser = () => {
     return useMutation({
         mutationFn: (user: SignInForm) => loginUser(user.email, user.password),
         onSuccess: async (data: AuthFormResponse) => {
-            toast.success("Вы успешно вошли в аккаунт", {autoClose: 1500});
+            toast.success(i18next.t("auth.signIn.success"), {autoClose: 1500});
             // console.log(data)
             localStorage.setItem("token", data.token);
             localStorage.setItem("id", data.id);
@@ -43,9 +44,9 @@ export const UseLoginUser = () => {
         onError: (error: AxiosError) => {
             const {message} = error.response?.data as { message?: string };
             if (message) {
-                toast.error(`Ошибка при входе в аккаунт: ${message}`);
+                toast.error(i18next.t("auth.signIn.error", {message}));
             } else {
-                toast.error("Неизвестная ошибка при входе в аккаунт");
+                toast.error(i18next.t("auth.signIn.unknownError"));
             }
         },
     });

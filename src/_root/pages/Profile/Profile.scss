@@ -87,12 +87,13 @@
       }
 
       &-btn {
+        display: block;
         border: 1px solid #3693ff;
         border-radius: 40px;
         background: transparent;
         font-size: 25px;
         text-align: center;
-        padding: 8px;
+        padding: 8px 12px;
       }
     }
   }

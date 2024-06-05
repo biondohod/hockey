@@ -29,6 +29,10 @@ export function formatDate(dateString: string): string {
         day: 'numeric'
     };
     const date = new Date(dateString);
+    if (i18next.language.split("-")[0] === 'en') {
+        return date.toLocaleDateString('en-US', options);
+    }
+
     return date.toLocaleDateString('ru-RU', options);
 }
 
@@ -43,6 +47,9 @@ export function calculateAge(birthDateString: string): string {
         age--;
     }
 
+    if (i18next.language.split("-")[0] === 'en') {
+        return `${age} y.o.`;
+    }
     let ageString: string;
     if (age % 10 === 1 && age % 100 !== 11) {
         ageString = `${age} год`;

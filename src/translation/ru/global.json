@@ -1,0 +1,6 @@
+{
+  "axios": {
+    "error": "Прозошла ошибка: {{message}}",
+    "unknownErrorMessage": "Неизвестная ошибка"
+  }
+}

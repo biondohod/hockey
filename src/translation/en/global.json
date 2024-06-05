@@ -1,0 +1,6 @@
+{
+  "axios": {
+    "error": "An error occured: {{message}}",
+    "unknownErrorMessage": "Unknown error"
+  }
+}

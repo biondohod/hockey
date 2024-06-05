@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import { useUserContext } from "../../../context/AuthContext";
 import "./Profile.scss";
 import { useEffect, useState } from "react";
-import { calculateAge, formatDate } from "../../../lib/utils";
+import { calculateAge, formatDate, transliterateText } from "../../../lib/utils";
 import { useGetUser } from "../../../lib/react-query/queries";
 import Loader from "../../../components/Loader/Loader";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
@@ -18,6 +19,11 @@ const Profile = () => {
     id,
     localStorage.getItem("token")
   );
+  const { t } = useTranslation();
+
+  axios.get("https://proj.raitonobe.ru/api/roles", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
+    console.log(response.data);
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -30,29 +36,24 @@ const Profile = () => {
       setUserData(data);
     }
     if (isError) {
-        const axiosError: AxiosError<ErrorResponse> = error as AxiosError<ErrorResponse>;
-        const errorMessage = `Произошла ошибка: ${axiosError.response?.data?.message || "Неизвестная ошибка загрузки данных"}`
-        toast.error(errorMessage);
-      }
+      const axiosError: AxiosError<ErrorResponse> =
+        error as AxiosError<ErrorResponse>;
+      const errorMessage = t("global.axios.error", {
+        message:
+          axiosError.response?.data?.message ||
+          t("global.axios.unknownErrorMessage"),
+      });
+      toast.error(errorMessage);
+    }
   }, [id, user, data, isError, error]);
 
   if (isFetching && !userData) return <Loader marginTop={48} />;
 
   if ((isError || !userData) && !isFetching)
-    return (
-      <EmptyContent
-        marginTop={32}
-        message="Упс! Мы не смогли загрузить информацию о пользователе. Пожалуйста, обновите страницу или убедитесь, что ссылка корректна."
-      />
-    );
+    return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
   if (!userData)
-    return (
-      <EmptyContent
-        marginTop={32}
-        message="Упс! Мы не смогли загрузить информацию о пользователе. Пожалуйста, обновите страницу или убедитесь, что ссылка корректна."
-      />
-    );
+    return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
   if (userData.role_id === 1) {
     return (
@@ -81,7 +82,7 @@ const Profile = () => {
 
   return (
     <section className="profile">
-      <h1 className="profile__title">Профиль</h1>
+      <h1 className="profile__title">{t("profile.title")}</h1>
 
       <div className="profile__content">
         <div className="profile__info">
@@ -89,23 +90,23 @@ const Profile = () => {
             <img
               src="/assets/img/avatar.png"
               className="profile-info__img"
-              alt="Аватар пользователя."
+              alt={t("profile.avatarAlt")}
             />
             <div className="profile-info__name-container">
               <span className="profile-info__name">
-                {userData.first_name} {userData.last_name}
+                {transliterateText(userData.first_name)} {transliterateText(userData.last_name)}
               </span>
               <span
                 className="profile-info__verification"
                 style={{ color: userData.isVerificated ? "green" : "red" }}
               >
                 {userData.isVerificated
-                  ? "Подтверждженный"
-                  : "Неподтвержденный" || ""}
+                  ? t("profile.verified")
+                  : t("profile.unverified")}
               </span>
               {isUserProfile ? (
                 <button className="profile-info__edit">
-                  Загрузить документы
+                  {t("profile.uploadDocs")}
                 </button>
               ) : (
                 <div></div>
@@ -115,59 +116,75 @@ const Profile = () => {
           <div className="profile-info__wrapper">
             <ul className="profile-info__about-list">
               <li className="profile-info__about">
-                <span className="profile-info__about-title">Дата рождения</span>
+                <span className="profile-info__about-title">
+                  {t("profile.birthDate")}
+                </span>
                 <span className="profile-info__about-value">
                   {formatDate(userData.player.birth_date) || ""}
                 </span>
               </li>
               <li className="profile-info__about">
-                <span className="profile-info__about-title">Возраст</span>
+                <span className="profile-info__about-title">
+                  {t("profile.age")}
+                </span>
                 <span className="profile-info__about-value">
                   {calculateAge(userData.player.birth_date) || ""}
                 </span>
               </li>
               <li className="profile-info__about">
-                <span className="profile-info__about-title">Тренер</span>
+                <span className="profile-info__about-title">
+                  {t("profile.trainer")}
+                </span>
                 <span className="profile-info__about-value">
-                  {"Иванов И.И."}
+                  {transliterateText("Иванов И.И.")}
                 </span>
               </li>
               <li className="profile-info__about">
                 <span className="profile-info__about-title">
-                  Состояние здоровья
+                  {t("profile.healthStatus.title")}
                 </span>
-                <span className="profile-info__about-value">{"Здоров"}</span>
-              </li>
-              <li className="profile-info__about">
-                <span className="profile-info__about-title">Пол</span>
                 <span className="profile-info__about-value">
-                  {userData.player.is_male ? "Мужской" : "Женский" || ""}
+                  {t("profile.healthStatus.healthy")}
                 </span>
               </li>
               <li className="profile-info__about">
                 <span className="profile-info__about-title">
-                  Уровень подготовки
+                  {t("profile.sex.sex")}
                 </span>
                 <span className="profile-info__about-value">
-                  {"II спортивный разряд"}
+                  {userData.player.is_male
+                    ? t("profile.sex.male")
+                    : t("profile.sex.female") || ""}
+                </span>
+              </li>
+              <li className="profile-info__about">
+                <span className="profile-info__about-title">
+                  {t("profile.trainingLevel.title")}
+                </span>
+                <span className="profile-info__about-value">
+                  {t("profile.trainingLevel.2level")}
                 </span>
               </li>
             </ul>
             {isUserProfile ? (
-              <button className="profile-info__about-btn">Изменить</button>
+              <button className="profile-info__about-btn">
+                {t("profile.edit")}
+              </button>
             ) : (
               <div></div>
             )}
           </div>
         </div>
         <div className="profile__tournaments">
-          <h2 className="profile__subtitle">Турниры</h2>
+          <h2 className="profile__subtitle">
+            {t("profile.competitions.title")}
+          </h2>
 
           <ul className="profile-tournaments__list">
             <li className="profile-tournaments__item">
               <div className="profile-tournaments__wrapper">
                 <span className="profile-tournaments__name">
-                  Ранее вы зарегестровались на участие в турнире (Название
+                  Ранее вы зарегистровались на участие в турнире (Название
                   турнира)
                 </span>
                 <div className="profile-tournaments__verification">
@@ -188,7 +205,7 @@ const Profile = () => {
           </ul>
         </div>
         <div className="profile__rating">
-          <h2 className="profile__subtitle">Рейтинг</h2>
+          <h2 className="profile__subtitle">{t("profile.rating.rating")}</h2>
         </div>
       </div>
     </section>

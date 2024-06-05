@@ -1,0 +1,30 @@
+{
+  "emptyContent": "Oops! We couldn't load the user information. Please refresh the page or make sure the link is correct.",
+  "title": "Profile",
+  "verified": "Verified",
+  "unverified": "Unverified",
+  "uploadDocs": "Upload documents",
+  "birthDate": "Birth date",
+  "age": "Age",
+  "trainer": "Trainer",
+  "healthStatus": {
+    "title": "Health status",
+    "healthy": "Healthy"
+  },
+  "sex": {
+    "sex": "Sex",
+    "male": "Male",
+    "female": "Female"
+  },
+  "trainingLevel": {
+    "title": "Training level",
+    "2level": "II sports category"
+  },
+  "edit": "Edit",
+  "competitions": {
+    "title": "Tournaments"
+  },
+  "rating": {
+    "rating": "Rating"
+  }
+}
