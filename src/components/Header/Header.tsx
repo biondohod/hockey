@@ -9,7 +9,7 @@ const Header = () => {
   const { isAuthenticated, user } = useUserContext();
   const { t } = useTranslation();
   const logOut = UseLogoutUser();
-  
+
   return (
     <>
       <header className="header">
@@ -21,7 +21,9 @@ const Header = () => {
 
           <nav className="header__navigation">
             <div className="header__competitions">
-              <h2 className="header__link header__link--popup">{t("header.competitions")}</h2>
+              <h2 className="header__link header__link--popup">
+                {t("header.competitions")}
+              </h2>
               <ul className="header__popup">
                 <li>
                   <Link to={"/AllCompetitions/4x4"}>4x4</Link>
@@ -33,11 +35,15 @@ const Header = () => {
                   <Link to={"/AllCompetitions/paid"}>{t("header.paid")}</Link>
                 </li>
                 <li>
-                  <Link to={"/AllCompetitions/archive"}>{t("header.archive")}</Link>
+                  <Link to={"/AllCompetitions/archive"}>
+                    {t("header.archive")}
+                  </Link>
                 </li>
-                <li>
-                  <Link to="/createCompetition">{t("header.creation")}</Link>
-                </li>
+                {user?.role_id === 1 || user?.role_id === 2 && (
+                  <li>
+                    <Link to="/createCompetition">{t("header.creation")}</Link>
+                  </li>
+                )}
                 <li>
                   <a href="">{t("header.my-competitions")}</a>
                 </li>
@@ -45,7 +51,9 @@ const Header = () => {
             </div>
 
             <div className="header__ratings">
-              <h2 className="header__link header__link--popup">{t("header.ratings")}</h2>
+              <h2 className="header__link header__link--popup">
+                {t("header.ratings")}
+              </h2>
               <ul className="header__popup">
                 <li>
                   <a href="">{t("header.general-m")}</a>
@@ -100,7 +108,9 @@ const Header = () => {
           <div className="header__users">
             <div className="header__notifications">
               <span className="header-notifications__icon"></span>
-              <span className="visually-hidden">{t("header.notifications")}</span>
+              <span className="visually-hidden">
+                {t("header.notifications")}
+              </span>
               <ul className="header__popup">
                 <li>
                   <div className="header-notifications__item header-notifications__item--payment">
@@ -148,7 +158,8 @@ const Header = () => {
                     />
                     <div className="header-profile__info">
                       <span className="header-profile__name">
-                        {transliterateText(user?.first_name)} {transliterateText(user?.last_name)}
+                        {transliterateText(user?.first_name)}{" "}
+                        {transliterateText(user?.last_name)}
                       </span>
                     </div>
                   </Link>
@@ -166,7 +177,7 @@ const Header = () => {
 
             <LanguageSwitcher />
           </div>
-        </div> 
+        </div>
       </header>
     </>
   );
