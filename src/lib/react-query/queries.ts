@@ -15,7 +15,6 @@ export const useGetUser = (id: string | number | null | undefined, token: string
         queryKey: [QUERY_KEYS.GET_USER_BY_ID, id],
         queryFn: () => getUser(id!, token!),
         enabled: !!id && !!token,
-        
     });
 }
 

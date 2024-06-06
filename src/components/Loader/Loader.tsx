@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Loader2 from './Loader.svg';
 import "./Loader.scss";
+import { useTranslation } from "react-i18next";
 
 export type LoaderProps = {
   message?: string;
@@ -20,13 +21,14 @@ export type LoaderProps = {
  * @param {number} [props.fontSize] - Tailwind css class for font-size. Default value: "text-5xl".
  */
 const Loader: FC<LoaderProps> = ({
-  message = "Загрузка... пожалуйста подождите",
+  message,
   loaderHeight = 80,
   loaderWidth = 80,
   fontSize = 24,
   marginTop = 0,
 
 }: LoaderProps) => {
+  const {t} = useTranslation();
   return (
     <div className={"loader"} style={{ fontSize, marginTop }}>
       <img
@@ -34,7 +36,7 @@ const Loader: FC<LoaderProps> = ({
         className="loader__spinner"
         style={{ height: loaderHeight, width: loaderWidth }}
       />
-      {message}
+      {message || t("global.loader")}
     </div>
   );
 };

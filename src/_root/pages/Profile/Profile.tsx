@@ -15,7 +15,7 @@ const Profile = () => {
   const [userData, setUserData] = useState<IUser | null>(null);
   const { id } = useParams<{ id: string }>();
   const { user } = useUserContext();
-  const { data, isFetching, isError, error } = useGetUser(
+  const { data, isLoading, isError, error } = useGetUser(
     id,
     localStorage.getItem("token")
   );
@@ -47,9 +47,9 @@ const Profile = () => {
     }
   }, [id, user, data, isError, error]);
 
-  if (isFetching && !userData) return <Loader marginTop={48} />;
+  if (isLoading && !userData) return <Loader marginTop={48} />;
 
-  if ((isError || !userData) && !isFetching)
+  if ((isError || !userData) && !isLoading)
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
   if (!userData)

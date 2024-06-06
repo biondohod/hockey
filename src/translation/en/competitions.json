@@ -1,0 +1,20 @@
+{
+  "4x4": "4x4 Сompetitions",
+  "6x6": "6x6 Сompetitions",
+  "paid": "Paid competitions",
+  "archive": "Competitions archive",
+  "emptyContent": "There are no competitions yet",
+  "emptyCategory": "There are no competitions in this category yet",
+  "error": "Oops! We couldn't load competitions. Please try again later.",
+  "competitionItem": {
+    "status": {
+      "title": "Status",
+      "planned": "Planned",
+      "going": "Ongoing",
+      "finished": "Finished"
+    },
+    "trainer": "Trainer",
+    "date": "Date",
+    "about": "More details"
+  }
+}
