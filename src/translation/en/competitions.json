@@ -16,5 +16,69 @@
     "trainer": "Trainer",
     "date": "Date",
     "about": "More details"
+  },
+  "competition": {
+    "info": "Competition information",
+    "players": "Player list",
+    "games": "Match schedule",
+    "table": "Summary table",
+    "emptyContent": "No competition information available yet",
+    "emptyCategory": "No competition information in this category yet",
+    "error": "Oops! We couldn't load the competition information. Please check the link for accuracy or try again later.",
+    "registrate": "Participate",
+    "cancelRegistrate": "Cancel participation",
+    "infoTab": {
+      "creator": "Competition creator",
+      "description": "Brief competition description",
+      "date": "Date of the event",
+      "time": "Time of the event",
+      "tours": "Number of rounds",
+      "age": "Eligible player age",
+      "format": "Format",
+      "edit": "Edit"
+    }
+  },
+  "createCompetition": {
+    "pending": "Creating competition...",
+    "error": "Error creating competition: {{message}}",
+    "unknownError": "Unknown error while creating competition",
+    "title": "Create Competition",
+    "name": "Name",
+    "description": "Brief competition description",
+    "date": "Date of the competition",
+    "timeStart": "Competition Start Time",
+    "timeEnd": "Competition End Time",
+    "age": "Eligible player age",
+    "tours": "Number of rounds",
+    "format": "Format",
+    "create": "Create",
+    "validation": {
+      "age": {
+        "number": "Enter the participant's age as a number",
+        "min": "The minimum age of the participant cannot be less than 14 years"
+      },
+      "name": {
+        "min": "The competition name must contain at least 4 characters",
+        "max": "The competition name cannot exceed 64 characters"
+      },
+      "description": {
+        "min": "The competition description must contain at least 4 characters",
+        "max": "The competition description cannot exceed 256 characters"
+      },
+      "tours": {
+        "number": "Enter the number of rounds as a number",
+        "positive": "The number of rounds must be more than zero"
+      },
+      "closes_at": {
+        "afterToday": "The registration end date must be later than the current date",
+        "beforeCompetition": "The registration end date must be earlier than the competition date"
+      },
+      "date": {
+        "afterToday": "The competition date must be later than the current date"
+      },
+      "end_time": {
+        "afterStartTime": "The competition end time cannot be earlier than its start time"
+      }
+    }
   }
 }

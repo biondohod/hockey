@@ -56,88 +56,30 @@ export const SignInValidation = z.object({
   password: z.string(),
 });
 
-// export const SignUpValidation = z
-//     .object({
-//         first_name: z
-//             .string()
-//             .min(2, {message: "Имя должно содержать минимум 2 символа"})
-//             .regex(/^[A-Za-zА-Яа-я- ]+$/, "Имя может содержать только буквы"),
-//         last_name: z
-//             .string()
-//             .min(2, {message: "Фамилия должна содержать минимум 2 символа"})
-//             .regex(/^[A-Za-zА-Яа-я- ]+$/, "Фамилия может содержать только буквы"),
-//         middle_name: z
-//             .string()
-//             .min(2, {message: "Отчество должно содержать минимум 2 символа"})
-//             .regex(/^[A-Za-zА-Яа-я- ]+$/, "Отчество может содержать только буквы"),
-//         gender: z.string().nonempty("Пол не может быть пустым"),
-//         phone: z
-//             .string()
-//             .refine(
-//                 (phone) => phone.trim().length === 18,
-//                 "Номер телефона должен содержать 11 цифр"
-//             ),
-//         email: z.string().email("Неверный формат электронной почты"),
-//         birth_date: z
-//             .string()
-//             .nonempty("Дата рождения не может быть пустой")
-//             .refine((date) => {
-//                 const birthDate = new Date(date);
-//                 const today = new Date();
-//                 const age = today.getFullYear() - birthDate.getFullYear();
-//                 return age >= 14;
-//             }, "Вам должно быть не менее 14 лет"),
-//         telegram: z
-//             .string()
-//             .optional()
-//             .refine((telegram) => {
-//                 if (telegram) {
-//                     return telegram.length >= 6;
-//                 }
-//                 return true;
-//             }, "Логин в Telegram должен содержать минимум 5 символов"),
-//         password: z
-//             .string()
-//             .min(8, {message: "Пароль должен содержать минимум 8 символов"})
-//             .refine(
-//                 (password) => /[A-Za-z]/.test(password) && /\d/.test(password),
-//                 "Пароль должен содержать и буквы, и цифры"
-//             ),
-//         confirmPassword: z.string(),
-//     })
-//     .refine((data) => data.password === data.confirmPassword, {
-//         message: "Пароли не совпадают",
-//         path: ["confirmPassword"],
-//     });
-
-// export const SignInValidation = z.object({
-//     email: z.string().email("Неверный формат электронной почты"),
-//     password: z.string(),
-// });
 
 export const CreateCompetitionValidation = z
   .object({
     age: z
-      .number({ message: "Введите возраст участника в виде числа" })
+      .number({ message: "competitions.createCompetition.validation.age.number" })
       .int()
-      .min(14, "Возраст участника не может быть меньше 14 лет"),
+      .min(14, "competitions.createCompetition.validation.age.min"),
     closes_at: z.string(),
     date: z.string(),
     start_time: z.string().nonempty("Укажите время начала турнира"),
     end_time: z.string().nonempty("Укажите время окончания турнира"),
     name: z
       .string()
-      .min(4, "Название турнира должно содержать не менее 4 символов")
-      .max(64, "Название турнира не может превышать 64 символа"),
+      .min(4, "competitions.createCompetition.validation.name.min")
+      .max(64, "competitions.createCompetition.validation.name.max"),
     description: z
       .string()
-      .min(4, "Описание должно содержать не менее 4 символов")
-      .max(256, "Описание не может превышать 256 символов")
+      .min(4, "competitions.createCompetition.validation.description.min")
+      .max(256, "competitions.createCompetition.validation.description.max")
       .or(z.literal("")),
     tours: z
-      .number({ message: "Введите количество туров в виде числа" })
+      .number({ message: "competitions.createCompetition.validation.tours.number" })
       .int()
-      .positive("Количество туров должно быть больше нуля"),
+      .positive("competitions.createCompetition.validation.tours.positive"),
     size: z.enum(["4", "6"]).transform((val) => parseInt(val, 10)),
   })
   .refine(
@@ -147,7 +89,7 @@ export const CreateCompetitionValidation = z
       return closes_at > today;
     },
     {
-      message: "Дата окончания регистрации должна быть позже текущей даты",
+      message: "competitions.createCompetition.validation.closes_at.afterToday",
       path: ["closes_at"],
     }
   )
@@ -158,7 +100,7 @@ export const CreateCompetitionValidation = z
       return tournamentDate > today;
     },
     {
-      message: "Дата турнира должна быть позже текущей даты",
+      message: "competitions.createCompetition.validation.date.afterToday",
       path: ["date"],
     }
   )
@@ -170,11 +112,11 @@ export const CreateCompetitionValidation = z
     },
     {
       message:
-        "Дата окончания регистрации должна быть раньше даты проведения турнира",
+        "competitions.createCompetition.validation.closes_at.beforeCompetition",
       path: ["closes_at"],
     }
   )
   .refine((data) => data.start_time < data.end_time, {
-    message: "Время окончания турнира не может быть раньше времени его начала",
+    message: "competitions.createCompetition.validation.end_time.afterStartTime",
     path: ["end_time"],
   });

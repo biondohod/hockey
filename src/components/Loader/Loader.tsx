@@ -24,7 +24,7 @@ const Loader: FC<LoaderProps> = ({
   message,
   loaderHeight = 80,
   loaderWidth = 80,
-  fontSize = 24,
+  fontSize = 32,
   marginTop = 0,
 
 }: LoaderProps) => {
