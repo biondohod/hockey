@@ -56,17 +56,15 @@ export const SignInValidation = z.object({
   password: z.string(),
 });
 
-
 export const CreateCompetitionValidation = z
   .object({
     age: z
-      .number({ message: "competitions.createCompetition.validation.age.number" })
+      .number({
+        message: "competitions.createCompetition.validation.age.number",
+      })
       .int()
       .min(14, "competitions.createCompetition.validation.age.min"),
     closes_at: z.string(),
-    date: z.string(),
-    start_time: z.string().nonempty("Укажите время начала турнира"),
-    end_time: z.string().nonempty("Укажите время окончания турнира"),
     name: z
       .string()
       .min(4, "competitions.createCompetition.validation.name.min")
@@ -77,10 +75,33 @@ export const CreateCompetitionValidation = z
       .max(256, "competitions.createCompetition.validation.description.max")
       .or(z.literal("")),
     tours: z
-      .number({ message: "competitions.createCompetition.validation.tours.number" })
+      .number({
+        message: "competitions.createCompetition.validation.tours.number",
+      })
       .int()
       .positive("competitions.createCompetition.validation.tours.positive"),
     size: z.enum(["4", "6"]).transform((val) => parseInt(val, 10)),
+    matches: z
+      .number({
+        message: "competitions.createCompetition.validation.matches.number",
+      })
+      .int()
+      .positive("competitions.createCompetition.validation.matches.positive"),
+    days: z.array(
+      z.object({
+          date: z.string().refine((date) => {
+            const today = new Date();
+            const tournamentDate = new Date(date);
+            return tournamentDate > today;
+          }, "competitions.createCompetition.validation.days.date"),
+          start_time: z.string().min(1),
+          end_time: z.string().min(1),
+        })
+        .refine((data) => data.start_time < data.end_time, {
+          message: "competitions.createCompetition.validation.days.end_time",
+          path: ["end_time"],
+        })
+    ),
   })
   .refine(
     (data) => {
@@ -92,31 +113,16 @@ export const CreateCompetitionValidation = z
       message: "competitions.createCompetition.validation.closes_at.afterToday",
       path: ["closes_at"],
     }
-  )
-  .refine(
-    (data) => {
-      const tournamentDate = new Date(data.date);
-      const today = new Date();
-      return tournamentDate > today;
-    },
-    {
-      message: "competitions.createCompetition.validation.date.afterToday",
-      path: ["date"],
-    }
-  )
-  .refine(
-    (data) => {
-      const closes_at = new Date(data.closes_at);
-      const tournamentDate = new Date(data.date);
-      return closes_at < tournamentDate;
-    },
-    {
-      message:
-        "competitions.createCompetition.validation.closes_at.beforeCompetition",
-      path: ["closes_at"],
-    }
-  )
-  .refine((data) => data.start_time < data.end_time, {
-    message: "competitions.createCompetition.validation.end_time.afterStartTime",
-    path: ["end_time"],
-  });
+  );
+// .refine(
+//   (data) => {
+//     const closes_at = new Date(data.closes_at);
+//     const tournamentDate = new Date(data.date);
+//     return closes_at < tournamentDate;
+//   },
+//   {
+//     message:
+//       "competitions.createCompetition.validation.closes_at.beforeCompetition",
+//     path: ["closes_at"],
+//   }
+// )
