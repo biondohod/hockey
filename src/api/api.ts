@@ -105,3 +105,25 @@ export const cancelRegistration = async (competitionId: number) => {
     });
     return response.data;
 }
+
+export const updateProfile = async (user: INewUser | IEditUser) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.patch(`${URL_BASE}users`, user, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}
+
+export const updateProfileAsAdmin = async (id: number | string, user: IEditUser) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.patch(`${URL_BASE}admin/users/${id}`, user, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response;
+}

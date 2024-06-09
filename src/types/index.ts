@@ -10,6 +10,19 @@ interface INewUser {
   password: string;
 }
 
+interface IEditUser {
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  is_male: boolean;
+  phone: string;
+  email: string;
+  birth_date: string;
+  telegram?: string;
+  password?: string;
+  role_id?:  number;
+}
+
 interface IUser {
   email: string;
   first_name: string;
@@ -25,16 +38,17 @@ interface IUser {
     preparation: string;
     telegram: string;
   };
-  role_id: number | string;
+  role_id: number;
 }
 
 interface IContextType {
   user: IUser | null;
-  isLoading: boolean;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   checkAuthUser: () => Promise<boolean>;
+  isAdmin: boolean;
+  isLoading: boolean;
 }
 
 interface ICompetitionForm {
@@ -132,6 +146,21 @@ type SignUpForm = {
   password: string;
   confirmPassword: string;
 };
+
+type EditProfileForm = {
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  gender: string;
+  phone: string;
+  email: string;
+  birth_date: string;
+  telegram?: string;
+  changePassword: boolean;
+  password?: string;
+  confirmPassword?: string;
+  role_id?: string;
+}
 
 type SignInForm = {
   email: string;

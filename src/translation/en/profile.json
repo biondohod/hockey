@@ -26,5 +26,11 @@
   },
   "rating": {
     "rating": "Rating"
+  },
+  "editProfile": {
+    "title": "Edit profile",
+    "editPassword": "Change password",
+    "save": "Save changes",
+    "role": "Choose user's role"
   }
 }

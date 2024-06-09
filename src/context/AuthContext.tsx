@@ -5,13 +5,14 @@ import {toast} from "react-toastify";
 
 const INITIAL_STATE = {
     user: null,
-    isLoading: false,
     isAuthenticated: false,
     setUser: () => {
     },
     setIsAuthenticated: () => {
     },
     checkAuthUser: async () => false,
+    isAdmin: false,
+    isLoading: false,
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
@@ -20,15 +21,14 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const id = localStorage.getItem("id") || null;
     const token = localStorage.getItem("token") || null;
     const [user, setUser] = useState<IUser | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
-    const {data, error, isError} = useGetCurrentUser(id, token);
+    const {data, error, isError, isLoading} = useGetCurrentUser(id, token);
 
     const checkAuthUser = async () => {
         if (id && token) {
-            setIsLoading(true);
             if (isError) {
                 toast.error(
                     `Ошибка при получении данных пользователя: ${error?.message}`
@@ -36,15 +36,17 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 localStorage.removeItem("id");
                 localStorage.removeItem("token");
                 setIsAuthenticated(false);
-                setIsLoading(false);
                 navigate("/auth/sign-in");
             } else {
                 setUser(data);
                 setIsAuthenticated(true);
-                setIsLoading(false);
+                if (data?.role_id === 1) {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
             }
         }
-        setIsLoading(false);
         return isAuthenticated;
     };
 
@@ -56,10 +58,10 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
         user,
         setUser,
         isLoading,
-        setIsLoading,
         isAuthenticated,
         setIsAuthenticated,
         checkAuthUser,
+        isAdmin,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

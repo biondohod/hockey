@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useUserContext } from "../../../context/AuthContext";
 import "./Profile.scss";
 import { useEffect, useState } from "react";
@@ -21,14 +21,13 @@ const Profile = () => {
   );
   const { t } = useTranslation();
 
-  axios.get("https://proj.raitonobe.ru/api/roles", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
-    console.log(response.data);
-  });
+  // axios.get("https://proj.raitonobe.ru/api/roles", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
+  //   console.log(response.data);
+  // });
 
   useEffect(() => {
     if (!id) return;
     if (parseInt(id) === user?.id) {
-      console.log(id, user?.id);
       setIsUserProfile(true);
       setUserData(user);
     } else {
@@ -98,9 +97,9 @@ const Profile = () => {
               </span>
               <span
                 className="profile-info__verification"
-                style={{ color: userData.isVerificated ? "green" : "red" }}
+                style={{ color: userData.role_id !== 3 ? "green" : "red" }}
               >
-                {userData.isVerificated
+                {userData.role_id !== 3
                   ? t("profile.verified")
                   : t("profile.unverified")}
               </span>
@@ -166,10 +165,10 @@ const Profile = () => {
                 </span>
               </li>
             </ul>
-            {isUserProfile ? (
-              <button className="profile-info__about-btn">
+            {isUserProfile || user?.role_id === 1 ? (
+              <Link to={`/editProfile/${userData.id}`} className="profile-info__about-btn">
                 {t("profile.edit")}
-              </button>
+              </Link>
             ) : (
               <div></div>
             )}

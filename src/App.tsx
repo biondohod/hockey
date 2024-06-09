@@ -13,6 +13,7 @@ import AllCompetitions from "./_root/pages/Competitions/AllCompetitions";
 import Competition from "./_root/pages/Competitions/Competition";
 import AdminLayout from "./_root/AdminLayout";
 import EditCompetition from "./_root/pages/Competitions/EditCompetition";
+import EditProfile from "./_root/pages/Profile/EditProfile";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           {/* Private Routes */}
           <Route element={<RootLayout />}>
             <Route path={`/profile/:id`} element={<Profile />} />
+            <Route path={`/editProfile/:id`} element={<EditProfile/>} />
             <Route
               path={`/createCompetition`}
               element={<CreateCompetition />}
@@ -40,6 +42,7 @@ function App() {
               element={<AllCompetitions />}
             />
             <Route path={`/competition/:id/:type`} element={<Competition />} />
+
           </Route>
 
           {/* Admin Routes */}

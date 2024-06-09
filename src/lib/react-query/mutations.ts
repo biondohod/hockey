@@ -6,6 +6,8 @@ import {
   loginUser,
   registerForCompetition,
   updateCompetition,
+  updateProfile,
+  updateProfileAsAdmin,
 } from "../../api/api";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
@@ -97,7 +99,7 @@ export const useUpdateCompetition = () => {
     }: {
       id: number;
       competition: IEditCompetition;
-    }) => updateCompetition(id, competition),
+    }) => updateCompetition(id, competition).then(() => ({ id })),
     onSuccess: (data: { id: number }) => {
       toast.success("Соревнование успешно обновлено", { autoClose: 1500 });
       queryClient.invalidateQueries({
@@ -164,4 +166,52 @@ export const useCancelRegistration = () => {
       }
     },
   });
+}
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { user } = useUserContext();
+  return useMutation({
+    mutationFn: (user: INewUser | IEditUser) => updateProfile(user),
+    onSuccess: () => {
+      toast.success("Профиль успешно обновлен", { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      });
+      navigate(`/profile/${user?.id}`);
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при обновлении профиля: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при обновлении профиля");
+      }
+    },
+  })
+}
+
+export const useUpdateProfileAsAdmin = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: ({id, user}: {id: number | string, user: IEditUser}) => updateProfileAsAdmin(id, user).then(() => ({ id })),
+    onSuccess: (data: {id: number | string}) => {
+      toast.success("Профиль успешно обновлен", { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      });
+      navigate(`/profile/${data.id}`);
+
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при обновлении профиля: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при обновлении профиля");
+      }
+    },
+  })
 }

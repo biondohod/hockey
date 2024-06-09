@@ -45,11 +45,73 @@ export const SignUpValidation = z
         "auth.validation.password.refine"
       ),
     confirmPassword: z.string(),
+    role_id: z.number().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "auth.validation.confirmPassword",
     path: ["confirmPassword"],
   });
+
+export const EditProfileValidation = z
+  .object({
+    first_name: z
+      .string()
+      .min(2, { message: "auth.validation.first_name.min" })
+      .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.first_name.regex"),
+    last_name: z
+      .string()
+      .min(2, { message: "auth.validation.last_name.min" })
+      .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.last_name.regex"),
+    middle_name: z
+      .string()
+      .min(2, { message: "auth.validation.middle_name.min" })
+      .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
+    gender: z.string().nonempty("auth.validation.gender"),
+    phone: z
+      .string()
+      .refine((phone) => phone.trim().length === 18, "auth.validation.phone"),
+    email: z.string().email("auth.validation.email"),
+    birth_date: z
+      .string()
+      .nonempty("auth.validation.birth_date.nonempty")
+      .refine((date) => {
+        const birthDate = new Date(date);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        return age >= 14;
+      }, "auth.validation.birth_date.age"),
+    telegram: z
+      .string()
+      .optional()
+      .refine((telegram) => {
+        if (telegram) {
+          return telegram.length >= 6;
+        }
+        return true;
+      }, "auth.validation.telegram"),
+    changePassword: z.boolean(),
+    password: z.string().optional(),
+    confirmPassword: z.string().optional(),
+    role_id: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.changePassword) {
+        return (
+          data.password &&
+          data.password.length >= 8 &&
+          /[A-Za-z]/.test(data.password) &&
+          /\d/.test(data.password) &&
+          data.password === data.confirmPassword
+        );
+      }
+      return true;
+    },
+    {
+      message: "auth.validation.password",
+      path: ["password"],
+    }
+  );
 
 export const SignInValidation = z.object({
   email: z.string().email("auth.validation.email"),
@@ -88,7 +150,8 @@ export const CreateCompetitionValidation = z
       .int()
       .positive("competitions.createCompetition.validation.matches.positive"),
     days: z.array(
-      z.object({
+      z
+        .object({
           date: z.string().refine((date) => {
             const today = new Date();
             const tournamentDate = new Date(date);
@@ -127,16 +190,15 @@ export const CreateCompetitionValidation = z
 //   }
 // )
 
-export const EditCompetitionValidation = z
-  .object({
-    closes_at: z.string(),
-    name: z
-      .string()
-      .min(4, "competitions.createCompetition.validation.name.min")
-      .max(64, "competitions.createCompetition.validation.name.max"),
-    description: z
-      .string()
-      .min(4, "competitions.createCompetition.validation.description.min")
-      .max(256, "competitions.createCompetition.validation.description.max")
-      .or(z.literal("")),
-  })
+export const EditCompetitionValidation = z.object({
+  closes_at: z.string(),
+  name: z
+    .string()
+    .min(4, "competitions.createCompetition.validation.name.min")
+    .max(64, "competitions.createCompetition.validation.name.max"),
+  description: z
+    .string()
+    .min(4, "competitions.createCompetition.validation.description.min")
+    .max(256, "competitions.createCompetition.validation.description.max")
+    .or(z.literal("")),
+});
