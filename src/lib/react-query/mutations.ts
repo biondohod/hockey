@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  cancelRegistration,
   createCompetition,
   createUserAccount,
   loginUser,
+  registerForCompetition,
   updateCompetition,
 } from "../../api/api";
 import { toast } from "react-toastify";
@@ -116,3 +118,50 @@ export const useUpdateCompetition = () => {
     },
   });
 };
+
+export const useRegisterForCompetition = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) =>
+      registerForCompetition(id),
+    onSuccess: () => {
+      toast.success("Вы успешно зарегистрировались на соревнование", {
+        autoClose: 1500,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при регистрации на соревнование: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при регистрации на соревнование");
+      }
+    },
+  });
+}
+
+export const useCancelRegistration = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => cancelRegistration(id),
+    onSuccess: () => {
+      toast.success("Вы успешно отменили регистрацию на соревнование", {
+        autoClose: 1500,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при отмене регистрации на соревнование: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при отмене регистрации на соревнование");
+      }
+    },
+  });
+}

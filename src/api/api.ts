@@ -83,3 +83,25 @@ export const updateCompetition = async (id: number, competition: IEditCompetitio
     });
     return response.data;
 }
+
+export const registerForCompetition = async (competitionId: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.post(`${URL_BASE}competitions/${competitionId}/registrations`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}
+
+export const cancelRegistration = async (competitionId: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.delete(`${URL_BASE}competitions/${competitionId}/registrations`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}

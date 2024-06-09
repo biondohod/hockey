@@ -8,6 +8,7 @@ import Loader from "../../../components/Loader/Loader.tsx";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement.tsx";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { useCancelRegistration, useRegisterForCompetition } from "../../../lib/react-query/mutations.ts";
 
 const Competition = () => {
   const { id, type } = useParams();
@@ -16,6 +17,8 @@ const Competition = () => {
   const [selectedType, setSelectedType] = useState("info");
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const {mutateAsync: register, isPending: isRegistering} = useRegisterForCompetition();
+  const {mutateAsync: cancelRegistration, isPending: isCancelling} = useCancelRegistration();
 
   // Call the hook at the top level
   const { data, isLoading, isError, error } = useGetCompetition(parsedId);
@@ -122,10 +125,10 @@ const Competition = () => {
       <div className={"competition__content"}>{renderTabContent()}</div>
       {!isLoading && !isError && data && (
         <div className="competition__registation">
-          <button className="competition__registrate">
+          <button className="competition__registrate" onClick={() => register(data.id)} disabled={isRegistering}>
             {t("competitions.competition.registrate")}
           </button>
-          <button className="competition__cancel-registrate">
+          <button className="competition__cancel-registrate" onClick={() => cancelRegistration(data.id)} disabled={isCancelling}>
             {t("competitions.competition.cancelRegistrate")}
           </button>
         </div>
