@@ -19,7 +19,6 @@ const CreateCompetition = () => {
     formState: { errors },
   } = useForm<z.infer<typeof CreateCompetitionValidation>>({
     resolver: zodResolver(CreateCompetitionValidation),
-    mode: "all",
     defaultValues: {
       age: 14,
       closes_at: "",

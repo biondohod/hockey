@@ -126,3 +126,17 @@ export const CreateCompetitionValidation = z
 //     path: ["closes_at"],
 //   }
 // )
+
+export const EditCompetitionValidation = z
+  .object({
+    closes_at: z.string(),
+    name: z
+      .string()
+      .min(4, "competitions.createCompetition.validation.name.min")
+      .max(64, "competitions.createCompetition.validation.name.max"),
+    description: z
+      .string()
+      .min(4, "competitions.createCompetition.validation.description.min")
+      .max(256, "competitions.createCompetition.validation.description.max")
+      .or(z.literal("")),
+  })

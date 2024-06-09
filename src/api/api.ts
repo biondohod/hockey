@@ -72,3 +72,14 @@ export const getCompetition = async (id: number) => {
     });
     return response.data;
 };
+
+export const updateCompetition = async (id: number, competition: IEditCompetition) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.patch(`${URL_BASE}competitions/${id}`, competition, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}

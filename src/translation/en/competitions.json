@@ -14,7 +14,7 @@
       "finished": "Finished"
     },
     "trainer": "Trainer",
-    "date": "Date",
+    "closes_at": "Registration end date",
     "about": "More details"
   },
   "competition": {
@@ -53,6 +53,7 @@
     "tours": "Number of rounds",
     "format": "Format",
     "create": "Create",
+    "edit": "Edit",
     "closesAt": "Registration end date",
     "validation": {
       "age": {
@@ -84,5 +85,8 @@
         }
       }
     }
+  },
+  "editCompetition": {
+    "title": "Edit Competition"
   }
 }

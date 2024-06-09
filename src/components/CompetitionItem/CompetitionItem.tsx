@@ -50,7 +50,7 @@ const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
         </h2>
         <div className="competitions__state">
           <p className="competitions__date">
-            {t("competitions.competitionItem.date")}:{" "}
+            {t("competitions.competitionItem.closes_at")}:{" "}
             {formatDate(competition.closes_at)}
           </p>
           <div className="competitions__status">

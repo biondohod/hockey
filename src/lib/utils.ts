@@ -132,3 +132,32 @@ function pluralizeEnglish(n: number, singular: string, plural: string): string {
 export const transliterateText = (text: string = "") => {
   return i18next.language.split("-")[0] === "en" ? transliterate(text) : text;
 };
+
+export const getDataRange = (startDate: string, endDate: string): string => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const startOptions: { month: "long"; day: "numeric" } = {
+    month: "long",
+    day: "numeric",
+  };
+  const endOptions: { year: "numeric"; month: "long"; day: "numeric" } = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  if (i18next.language.split("-")[0] === "en") {
+    if (startDate === endDate) return end.toLocaleDateString("en-US", endOptions);
+    return `${start.toLocaleDateString(
+      "en-US",
+      startOptions
+    )} - ${end.toLocaleDateString("en-US", endOptions)}`;
+  }
+
+  if (startDate === endDate) return end.toLocaleDateString("ru-RU", endOptions);
+
+  return `${start.toLocaleDateString(
+    "ru-RU",
+    startOptions
+  )} - ${end.toLocaleDateString("ru-RU", endOptions)}`;
+};

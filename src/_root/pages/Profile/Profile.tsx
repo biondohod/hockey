@@ -181,7 +181,7 @@ const Profile = () => {
           </h2>
 
           <ul className="profile-tournaments__list">
-            <li className="profile-tournaments__item">
+            {/* <li className="profile-tournaments__item">
               <div className="profile-tournaments__wrapper">
                 <span className="profile-tournaments__name">
                   Ранее вы зарегистровались на участие в турнире (Название
@@ -201,7 +201,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="profile__rating">

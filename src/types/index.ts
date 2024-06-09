@@ -66,6 +66,12 @@ interface IFormattedCompetition {
   }[];
 }
 
+interface IEditCompetition {
+  description: string;
+  name: string;
+  closes_at: string;
+}
+
 interface ICompetition {
   id: number;
   age: number;
@@ -88,6 +94,7 @@ interface ICompetition {
 }
 
 interface ISingleCompetition {
+  id: number;
   age: number;
   closes_at: string;
   days: {
