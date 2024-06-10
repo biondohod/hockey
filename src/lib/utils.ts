@@ -162,14 +162,14 @@ export const getDataRange = (startDate: string, endDate: string): string => {
   )} - ${end.toLocaleDateString("ru-RU", endOptions)}`;
 };
 
-export function formatPhoneNumber(phoneNumberString: string) {
-  const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-  const match = cleaned.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);
-  if (match) {
-    return '+' + match[1] + ' (' + match[2] + ') ' + match[3] + '-' + match[4] + '-' + match[5];
-  }
-  return "";
-}
+// export function formatPhoneNumber(phoneNumberString: string) {
+//   const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+//   const match = cleaned.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);
+//   if (match) {
+//     return '+' + match[1] + ' (' + match[2] + ') ' + match[3] + '-' + match[4] + '-' + match[5];
+//   }
+//   return "";
+// }
 
 export const getUserRole = (userRoleId: number, rolesList: Irole[]) => {
   const role = rolesList.find((role) => role.id === userRoleId);

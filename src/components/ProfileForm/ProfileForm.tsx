@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { EditProfileValidation, SignUpValidation } from "../../lib/validation";
 import { useUserContext } from "../../context/AuthContext";
+import InputMask from 'react-input-mask';
 
 type ProfileFormProps = {
   onSubmit: (data: SignUpForm | EditProfileForm) => void;
@@ -35,58 +36,6 @@ const ProfileForm: FC<ProfileFormProps> = ({
     resolver: zodResolver(validation),
     defaultValues,
   });
-
-  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value
-      .replace(/.(?=.*\+)/g, "")
-      .replace(/[^+\d]/g, "");
-
-    if (value.startsWith("8")) {
-      value = "+7" + value.substring(1);
-    } else if (!value.startsWith("+") && value.length > 0) {
-      value = "+" + value;
-    }
-
-    if (value.length > 2) {
-      value = value.replace(/^(\+\d)(\d{1,3})/, "$1 ($2");
-    }
-
-    if (value.length > 7) {
-      value = value.replace(/^(\+\d \(\d{1,3})(\d{1,3})/, "$1) $2");
-    }
-
-    if (value.length > 11) {
-      value = value.replace(/^(\+\d \(\d{3}\) \d{3})(\d{1,2})/, "$1-$2");
-    }
-
-    if (value.length > 14) {
-      value = value.replace(/^(\+\d \(\d{3}\) \d{3}-\d{2})(\d{1,2})/, "$1-$2");
-    }
-
-    if (value.length > 18) {
-      value = value.substring(0, 18);
-    }
-
-    setValue("phone", value);
-
-    if (value.length === 18) {
-      trigger("phone");
-    }
-
-  };
-
-  const handlePhoneFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.value === "") {
-      setValue("phone", "+");
-    }
-    console.log(errors);
-  };
-
-  const handlePhoneBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.value.length === 1) {
-      setValue("phone", "");
-    }
-  };
 
   const handleTelegramChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value
@@ -244,7 +193,19 @@ const ProfileForm: FC<ProfileFormProps> = ({
 
         <label htmlFor="phone" className="auth__label">
           {t("auth.signUp.phone")}*
-          <input
+          <InputMask
+            mask="+9 (999) 999-99-99"
+            id="phone"
+            className="auth__input"
+            required={true}
+            autoComplete="off"
+            defaultValue={defaultValues.phone}
+            {...register("phone")}
+            {...(errors.phone && {
+              style: { borderColor: "red", outline: "none" },
+            })}
+          />
+          {/* <input
             id="phone"
             className="auth__input"
             required={true}
@@ -258,7 +219,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
             onFocus={handlePhoneFocus}
             onBlur={handlePhoneBlur}
             // pattern="\+9 \(\d{3}\) \d{3}-\d{2}-\d{2}"
-          />
+          /> */}
           {errors.phone && errors.phone.message && (
             <span className="auth__error-msg">{t(errors.phone.message)}</span>
           )}

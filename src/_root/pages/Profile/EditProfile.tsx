@@ -9,7 +9,6 @@ import {
 import Loader from "../../../components/Loader/Loader";
 import ProfileForm from "../../../components/ProfileForm/ProfileForm";
 import { useTranslation } from "react-i18next";
-import { formatPhoneNumber } from "../../../lib/utils";
 import { EditProfileValidation } from "../../../lib/validation";
 import { useGetUser } from "../../../lib/react-query/queries";
 
@@ -47,7 +46,7 @@ const EditProfile = () => {
         last_name,
         middle_name,
         gender: player.is_male ? "male" : "female",
-        phone: formatPhoneNumber(player.phone),
+        phone: player.phone,
         email,
         birth_date: player.birth_date,
         changePassword: false,

@@ -15,9 +15,11 @@ export const SignUpValidation = z
       .min(2, { message: "auth.validation.middle_name.min" })
       .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
     gender: z.string().nonempty("auth.validation.gender"),
-    phone: z
-      .string()
-      .refine((phone) => phone.trim().length === 18, "auth.validation.phone"),
+    phone: z.string().refine(phone => 
+      /^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(phone), 
+      "auth.validation.phone"
+    ),
+      // .refine((phone) => phone.trim().length === 18, "auth.validation.phone"),
     email: z.string().email("auth.validation.email"),
     birth_date: z
       .string()
@@ -67,9 +69,10 @@ export const EditProfileValidation = z
       .min(2, { message: "auth.validation.middle_name.min" })
       .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
     gender: z.string().nonempty("auth.validation.gender"),
-    phone: z
-      .string()
-      .refine((phone) => phone.trim().length === 18, "auth.validation.phone"),
+    phone: z.string().refine(phone => 
+      /^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(phone), 
+      "auth.validation.phone"
+    ),
     email: z.string().email("auth.validation.email"),
     birth_date: z
       .string()
