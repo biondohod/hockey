@@ -11,6 +11,11 @@
     border-radius: 40px;
     cursor: pointer;
 
+    &--open{
+      display: block;
+      margin: 0 auto;
+    }
+
     &--close,
     &--approve,
     &--exclude {
@@ -84,6 +89,6 @@
   }
 
   &__link {
-    color: #000;
+    color: #2222c9;
   }
 }

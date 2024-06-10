@@ -113,7 +113,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
 
   return (
     <div className="competition-registrations">
-      <button className="competition-registrations__button" onClick={openModal}>
+      <button className="competition-registrations__button competition-registrations__button--open" onClick={openModal}>
         Показать заявки на регистрацию
       </button>
       <Modal

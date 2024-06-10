@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useCancelRegistration, useRegisterForCompetition } from "../../../lib/react-query/mutations.ts";
 import { useUserContext } from "../../../context/AuthContext.tsx";
 import CompetitionRegistrations from "../../../components/CompetitionRegistrations/CompetitionRegistrations.tsx";
+import CompetitionSchedule from "../../../components/CompetitionSchedule/CompetitionSchedule.tsx";
 
 const Competition = () => {
   const { id, type } = useParams();
@@ -65,9 +66,7 @@ const Competition = () => {
           <EmptyContent message={t("competitions.competition.emptyCategory")} />
         );
       case "games":
-        return (
-          <EmptyContent message={t("competitions.competition.emptyCategory")} />
-        );
+        return <CompetitionSchedule competitionId={data.id} />;
       case "table":
         return (
           <EmptyContent message={t("competitions.competition.emptyCategory")} />
@@ -111,7 +110,7 @@ const Competition = () => {
           {t("competitions.competition.players")}
         </Link>
         <Link
-          to={`/competition/${id}/games`}
+          to={`/competition/${id}/games?limit=10&offset=0`}
           className={`competitions__tab ${
             selectedType === "games" ? "competitions__tab--active" : ""
           }`}
@@ -141,7 +140,7 @@ const Competition = () => {
           </button>
         </div>
       )}
-      {isAdmin && data && <CompetitionRegistrations competitionId={data.id}/>}
+      
     </section>
   );
 };
