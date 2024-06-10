@@ -8,6 +8,7 @@ import {
   updateCompetition,
   updateProfile,
   updateProfileAsAdmin,
+  updateRegistration,
 } from "../../api/api";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
@@ -124,14 +125,14 @@ export const useUpdateCompetition = () => {
 export const useRegisterForCompetition = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) =>
-      registerForCompetition(id),
-    onSuccess: () => {
+    mutationFn: (id: number) => registerForCompetition(id).then(() => ({ id })),
+    onSuccess: (data) => {
       toast.success("Вы успешно зарегистрировались на соревнование", {
         autoClose: 1500,
       });
+      console.log(data);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
       });
     },
     onError: (error: AxiosError) => {
@@ -143,30 +144,34 @@ export const useRegisterForCompetition = () => {
       }
     },
   });
-}
+};
 
 export const useCancelRegistration = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => cancelRegistration(id),
-    onSuccess: () => {
+    mutationFn: (id: number) => cancelRegistration(id).then(() => ({ id })),
+    onSuccess: (data) => {
       toast.success("Вы успешно отменили регистрацию на соревнование", {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
       });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при отмене регистрации на соревнование: ${message}`);
+        toast.error(
+          `Ошибка при отмене регистрации на соревнование: ${message}`
+        );
       } else {
-        toast.error("Неизвестная ошибка при отмене регистрации на соревнование");
+        toast.error(
+          "Неизвестная ошибка при отмене регистрации на соревнование"
+        );
       }
     },
   });
-}
+};
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
@@ -189,21 +194,21 @@ export const useUpdateProfile = () => {
         toast.error("Неизвестная ошибка при обновлении профиля");
       }
     },
-  })
-}
+  });
+};
 
 export const useUpdateProfileAsAdmin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: ({id, user}: {id: number | string, user: IEditUser}) => updateProfileAsAdmin(id, user).then(() => ({ id })),
-    onSuccess: (data: {id: number | string}) => {
+    mutationFn: ({ id, user }: { id: number | string; user: IEditUser }) =>
+      updateProfileAsAdmin(id, user).then(() => ({ id })),
+    onSuccess: (data: { id: number | string }) => {
       toast.success("Профиль успешно обновлен", { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
       navigate(`/profile/${data.id}`);
-
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -213,5 +218,34 @@ export const useUpdateProfileAsAdmin = () => {
         toast.error("Неизвестная ошибка при обновлении профиля");
       }
     },
-  })
-}
+  });
+};
+
+export const useUpdateRegistration = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      playerId,
+      competitionId,
+      data,
+    }: {
+      playerId: number;
+      competitionId: number;
+      data: IUpdateRegistration;
+    }) => updateRegistration(playerId, competitionId, data).then(() => ({ competitionId })),
+    onSuccess: (data) => {
+      toast.success("Регистрация успешно обновлена", { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.competitionId],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при обновлении регистрации: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при обновлении регистрации");
+      }
+    },
+  });
+};

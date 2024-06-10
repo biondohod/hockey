@@ -10,7 +10,7 @@
     "status": {
       "title": "Status",
       "planned": "Planned",
-      "going": "Ongoing",
+      "ongoing": "Ongoing",
       "finished": "Finished"
     },
     "trainer": "Trainer",

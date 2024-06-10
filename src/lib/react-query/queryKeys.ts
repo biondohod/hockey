@@ -12,6 +12,9 @@ export enum QUERY_KEYS {
     GET_COMPETITION_BY_ID = "getCompetitionById",
     GET_COMPETITION_REGISTRATIONS = "getCompetitionRegistrations",
 
+    //ROLES KEYS
+    GET_ROLES = "getRoles",
+
 
     // POST KEYS
     // GET_POSTS = "getPosts",

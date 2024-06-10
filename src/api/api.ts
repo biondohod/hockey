@@ -106,6 +106,17 @@ export const cancelRegistration = async (competitionId: number) => {
     return response.data;
 }
 
+export const getCompetitionRegistrations = async (competitionId: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.get(`${URL_BASE}competitions/${competitionId}/registrations`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}
+
 export const updateProfile = async (user: INewUser | IEditUser) => {
     const token = localStorage.getItem("token");
     if (!token) return null;
@@ -126,4 +137,26 @@ export const updateProfileAsAdmin = async (id: number | string, user: IEditUser)
         },
     });
     return response;
+}
+
+export const getRoles = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.get(`${URL_BASE}roles`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}
+
+export const updateRegistration = async (playerId: number, competitionId: number, data: IUpdateRegistration) => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const response = await axios.patch(`${URL_BASE}competitions/${competitionId}/registrations/${playerId}`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
 }

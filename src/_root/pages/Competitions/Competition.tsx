@@ -9,12 +9,15 @@ import EmptyContent from "../../../components/EmptyElement/EmptyElement.tsx";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { useCancelRegistration, useRegisterForCompetition } from "../../../lib/react-query/mutations.ts";
+import { useUserContext } from "../../../context/AuthContext.tsx";
+import CompetitionRegistrations from "../../../components/CompetitionRegistrations/CompetitionRegistrations.tsx";
 
 const Competition = () => {
   const { id, type } = useParams();
   const COMPETITION_TABS = ["info", "players", "games", "table"];
   const parsedId = id ? parseInt(id) : undefined;
   const [selectedType, setSelectedType] = useState("info");
+  const {user, isAdmin} = useUserContext();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const {mutateAsync: register, isPending: isRegistering} = useRegisterForCompetition();
@@ -29,7 +32,6 @@ const Competition = () => {
     } else {
       navigate(`/competition/${id}/info`);
     }
-    console.log(data);
   }, [id, data]);
 
   useEffect(() => {
@@ -55,7 +57,6 @@ const Competition = () => {
       return (
         <EmptyContent message={t("competitions.competition.emptyContent")} />
       );
-
     switch (selectedType) {
       case "info":
         return <CompetitionInfo data={data} />;
@@ -77,6 +78,13 @@ const Competition = () => {
         );
     }
   };
+
+  const checkIsAwailableForRegistration = () => {
+    if (!data || isLoading || isError || user?.role_id !== 4 && user?.role_id !== 5 ) return false;
+    const currentDate = new Date();
+    const closesAt = new Date(data.closes_at);
+    return currentDate < closesAt;
+  }
 
   return (
     <section className="competitions">
@@ -123,16 +131,17 @@ const Competition = () => {
       </div>
 
       <div className={"competition__content"}>{renderTabContent()}</div>
-      {!isLoading && !isError && data && (
+      {checkIsAwailableForRegistration() && (
         <div className="competition__registation">
-          <button className="competition__registrate" onClick={() => register(data.id)} disabled={isRegistering}>
+          <button className="competition__registrate" onClick={() => register(data!.id)} disabled={isRegistering}>
             {t("competitions.competition.registrate")}
           </button>
-          <button className="competition__cancel-registrate" onClick={() => cancelRegistration(data.id)} disabled={isCancelling}>
+          <button className="competition__cancel-registrate" onClick={() => cancelRegistration(data!.id)} disabled={isCancelling}>
             {t("competitions.competition.cancelRegistrate")}
           </button>
         </div>
       )}
+      {isAdmin && data && <CompetitionRegistrations competitionId={data.id}/>}
     </section>
   );
 };

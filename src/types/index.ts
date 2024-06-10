@@ -130,6 +130,36 @@ interface ISingleCompetition {
   };
 }
 
+interface ICompetitionRegistration {
+  is_approved: boolean;
+  is_dropped: boolean;
+  user: {
+  first_name: string;
+    last_name: string;
+    middle_name: string;
+    email: string;
+    id: number
+    role_id: number;
+  };
+}
+
+interface IUpdateRegistration {
+  is_approved?: boolean;
+  is_dropped?: boolean;
+}
+
+interface Irole {
+  can_create: boolean;
+  can_participate: boolean;
+  can_view: boolean;
+  id: number;
+  is_admin: boolean;
+  is_free: boolean;
+  name: string;
+}
+
+
+
 interface ErrorResponse {
   message?: string;
 }

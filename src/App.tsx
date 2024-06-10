@@ -34,10 +34,6 @@ function App() {
             <Route path={`/profile/:id`} element={<Profile />} />
             <Route path={`/editProfile/:id`} element={<EditProfile/>} />
             <Route
-              path={`/createCompetition`}
-              element={<CreateCompetition />}
-            />
-            <Route
               path={`/AllCompetitions/:type`}
               element={<AllCompetitions />}
             />

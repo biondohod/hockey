@@ -3,8 +3,8 @@ import { useUserContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
 const AdminLayout = () => {
-  const { user, isLoading } = useUserContext();
-  if (!(user?.role_id === 1 || user?.role_id === 2) && !isLoading && user) {
+  const { isLoading, isAdmin } = useUserContext();
+  if (!isAdmin && !isLoading) {
     toast.warn("У вас недостаточно прав, чтобы просматривать эту страницу");
     return (
       <>

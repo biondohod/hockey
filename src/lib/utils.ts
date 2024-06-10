@@ -170,3 +170,8 @@ export function formatPhoneNumber(phoneNumberString: string) {
   }
   return "";
 }
+
+export const getUserRole = (userRoleId: number, rolesList: Irole[]) => {
+  const role = rolesList.find((role) => role.id === userRoleId);
+  return role || {name: "Неизвестно"};
+}

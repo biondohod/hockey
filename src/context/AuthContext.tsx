@@ -1,6 +1,6 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useGetCurrentUser} from "../lib/react-query/queries";
+import {useGetCurrentUser, useGetRoles} from "../lib/react-query/queries";
 import {toast} from "react-toastify";
 
 const INITIAL_STATE = {
@@ -24,6 +24,8 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
+    const {data: roles} = useGetRoles();
+    // const [role, setRole] = useState<Irole | null>(null);
 
     const {data, error, isError, isLoading} = useGetCurrentUser(id, token);
 
@@ -52,7 +54,16 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     useEffect(() => {
         checkAuthUser();
-    }, [data, error, isError, isAuthenticated]);
+        // setUserRole();
+    }, [data, error, isError, isAuthenticated, roles]);
+
+    // const setUserRole = () => {
+    //     if (user) {
+    //         const role_id = user.role_id;
+    //         const userRole = roles?.find((role: Irole) => role.id === role_id);
+    //         setRole(userRole);
+    //     }
+    // }
 
     const value = {
         user,
