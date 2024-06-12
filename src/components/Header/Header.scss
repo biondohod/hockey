@@ -5,6 +5,7 @@
   background-color: $main-color;
   padding: 15px 30px 15px 15px;
   position: fixed;
+  z-index: 1000;
 
   &__content {
     display: flex;

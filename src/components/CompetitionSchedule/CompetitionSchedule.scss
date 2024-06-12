@@ -1,0 +1,152 @@
+.schedule {
+  display: flex;
+  flex-direction: column;
+  max-width: 1300px;
+  // align-items: center;
+
+  &__filters {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+
+  &__filter-name {
+    font-size: 30px;
+    color: #000;
+  }
+
+  &__selector {
+    font-size: 30px;
+    font-weight: 300;
+    color: #000;
+    text-align: center;
+    background-color: #f1f1f1;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  &__matches {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__pagination-button {
+    font-size: 24px;
+    font-weight: 300;
+    color: #000;
+    background-color: #f1f1f1;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+}
+
+.matches {
+  &__list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1.3fr;
+    gap: 24px;
+    border: 1px solid #000;
+    border-radius: 50px;
+    padding: 24px;
+  }
+
+  &__team {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+    &::after {
+      position: absolute;
+      top: -24px;
+      bottom: -24px;
+      content: "";
+      width: 1px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &--left {
+      text-align: left;
+      &::after {
+        right: 0;
+      }
+    }
+
+    &--right {
+      text-align: right;
+      &::after {
+        left: 0;
+      }
+    }
+  }
+
+  &__team-name {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #000;
+  }
+
+  &__players {
+    display: grid;
+    margin: auto 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    font-size: 26px;
+    line-height: 22px;
+  }
+
+  &__player {
+    color: #000;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    color: #000;
+  }
+
+  &__date {
+    display: flex;
+    flex-direction: column;
+    // gap: 8px;
+    font-size: 24px;
+  }
+
+  &__name {
+    font-size: 32px;
+    // line-height: 22px;
+    font-weight: 900;
+  }
+
+  &__score {
+    font-size: 32px;
+    font-weight: 900;
+    &--unknown {
+      font-size: 24px;
+      font-weight: 900;
+    }
+  }
+}

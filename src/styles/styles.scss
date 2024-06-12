@@ -40,6 +40,10 @@ footer {
   font-family: "Roboto", sans-serif;
 }
 
+button:hover, a:hover {
+  opacity: 0.7;
+}
+
 button:disabled {
   cursor: default;
   opacity: 0.5;

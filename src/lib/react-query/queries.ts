@@ -67,10 +67,11 @@ export const useGetCompetitionMatches = (
   id: number | undefined,
   offset: number | string = 0,
   limit: number | string = 10
-) => {
+): UseQueryResult<ICompetitionMatches> => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, id],
     queryFn: () => getCompetitionMatches(id!, offset, limit),
     enabled: id !== undefined && !isNaN(id),
+    staleTime: 1000 * 60 * 5,
   });
 };

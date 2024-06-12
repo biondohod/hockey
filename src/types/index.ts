@@ -29,7 +29,6 @@ interface IUser {
   id: number | string;
   last_name: string;
   middle_name: string;
-  isVerificated: boolean;
   player: {
     birth_date: string;
     is_male: boolean;
@@ -159,9 +158,23 @@ interface Irole {
 }
 
 
-
 interface ErrorResponse {
   message?: string;
+}
+
+interface ICompetitionMatches {
+  count: number;
+  total: number;
+  matches: ICompetitionMatch[];
+}
+
+interface ICompetitionMatch {
+  id: number;
+  left_score: number;
+  left_team: IUser[];
+  right_score: number;
+  right_team: IUser[];
+  start_time: string;
 }
 
 type SignUpForm = {
