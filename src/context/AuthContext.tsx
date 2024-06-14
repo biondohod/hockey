@@ -36,7 +36,15 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkAuthUser = async () => {
     if (!isLoading) {
-      if (isError || (!data)) {
+      if (!token && !id && isAuthenticated === false) {
+        navigate("/auth/sign-in");
+      } else if (data) {
+        // localStorage.setItem("isAuthenticated", "true");
+        setUser(data);
+        setIsAuthenticated(true);
+        setRole(roles?.find((role: Irole) => role.id === data.role_id));
+        setIsAdmin(data.role_id === 1);
+      } else if (id && token && isError) {
         toast.error(
           `Ошибка при получении данных пользователя: ${error?.message}`
         );
@@ -45,25 +53,44 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem("token");
         setIsAuthenticated(false);
         navigate("/auth/sign-in");
-      } else if (data) {
-        // localStorage.setItem("isAuthenticated", "true");
-        setUser(data);
-        setIsAuthenticated(true);
-        setRole(roles?.find((role: Irole) => role.id === data.role_id));
-        setIsAdmin(data.role_id === 1);
+      } else if (id && token && !data) {
+        // localStorage.removeItem("isAuthenticated");
+        toast.error(
+          `Ошибка при получении данных пользователя, пожалуйста, авторизуйтесь еще раз`
+        );
+        localStorage.removeItem("id");
+        localStorage.removeItem("token");
+        setIsAuthenticated(false);
+        navigate("/auth/sign-in");
+      } else {
+        // localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("id");
+        localStorage.removeItem("token");
+        setIsAuthenticated(false);
+        // navigate("/auth/sign-in");
       }
     }
     // return isAuthenticated;
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    let isMounted = true;
+    if (isMounted) {
       checkAuthUser();
     }
-    // const isAuthenticatedInStorage = localStorage.getItem("isAuthenticated") === "true";
-    // setIsAuthenticated(isAuthenticatedInStorage);
-    // setUserRole();
+    return () => {
+      isMounted = false;
+    };
   }, [data, error, isError, isAuthenticated, roles, role]);
+
+  //   useEffect(() => {
+  // if (!isLoading) {
+  // checkAuthUser();
+  // }
+  // const isAuthenticatedInStorage = localStorage.getItem("isAuthenticated") === "true";
+  // setIsAuthenticated(isAuthenticatedInStorage);
+  // setUserRole();
+  //   }, [data, error, isError, isAuthenticated, roles, role]);
 
   // const setUserRole = () => {
   //     if (user) {

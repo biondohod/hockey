@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import "./Header.scss";
 import { useUserContext } from "../../context/AuthContext";
-import { transliterateText, UseLogoutUser } from "../../lib/utils";
+import { LogOutUser, transliterateText } from "../../lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { isAuthenticated, user } = useUserContext();
   const { t } = useTranslation();
-  const logOut = UseLogoutUser();
+  const logOut = LogOutUser();
 
   return (
     <>
