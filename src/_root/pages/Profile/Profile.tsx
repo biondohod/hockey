@@ -103,13 +103,13 @@ const Profile = () => {
                   ? t("profile.verified")
                   : t("profile.unverified")}
               </span>
-              {isUserProfile ? (
+              {/* {isUserProfile ? (
                 <button className="profile-info__edit">
                   {t("profile.uploadDocs")}
                 </button>
               ) : (
                 <div></div>
-              )}
+              )} */}
             </div>
           </div>
           <div className="profile-info__wrapper">

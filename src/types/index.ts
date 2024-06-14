@@ -43,11 +43,12 @@ interface IUser {
 interface IContextType {
   user: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-  isAuthenticated: boolean;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-  checkAuthUser: () => Promise<boolean>;
-  isAdmin: boolean;
+  isAuthenticated: boolean | null;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean | null>>;
+  checkAuthUser: () => void;
   isLoading: boolean;
+  isAdmin: boolean | null;
+  role: Irole | null;
 }
 
 interface ICompetitionForm {

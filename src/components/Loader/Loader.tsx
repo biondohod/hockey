@@ -9,7 +9,7 @@ export type LoaderProps = {
   loaderHeight?: number;
   fontSize?: number;
   fontSizeMobile?: number;
-  marginTop?: number;
+  marginTop?: number | string;
 };
 /**
  * Renders a loader component with customizable message, font size, height, and width.

@@ -14,48 +14,55 @@ import Competition from "./_root/pages/Competitions/Competition";
 import AdminLayout from "./_root/AdminLayout";
 import EditCompetition from "./_root/pages/Competitions/EditCompetition";
 import EditProfile from "./_root/pages/Profile/EditProfile";
+import { useUserContext } from "./context/AuthContext";
+import AuthProvider from "./context/AuthProvider";
 
 function App() {
+  const { isAuthenticated } = useUserContext();
   return (
     <>
-      <Header />
-      <main>
-        <Routes>
-          {/* Auth Routes */}
-          <Route element={<AuthLayout />}>
-            <Route path={`/auth/:type`} element={<Authorization />} />
-          </Route>
+      <AuthProvider isAuth={isAuthenticated}>
+        <Header />
+        <main>
+          <Routes>
+            {/* Auth Routes */}
+            <Route element={<AuthLayout />}>
+              <Route path={`/auth/:type`} element={<Authorization />} />
+            </Route>
 
-          {/* Public Routes */}
-          <Route path="/" element={<Main />} />
+            {/* Public Routes */}
+            <Route path="/" element={<Main />} />
 
-          {/* Private Routes */}
-          <Route element={<RootLayout />}>
-            <Route path={`/profile/:id`} element={<Profile />} />
-            <Route path={`/editProfile/:id`} element={<EditProfile/>} />
-            <Route
-              path={`/AllCompetitions/:type`}
-              element={<AllCompetitions />}
-            />
-            <Route path={`/competition/:id/:type`} element={<Competition />} />
+            {/* Private Routes */}
+            <Route element={<RootLayout />}>
+              <Route path={`/profile/:id`} element={<Profile />} />
+              <Route path={`/editProfile/:id`} element={<EditProfile />} />
+              <Route
+                path={`/AllCompetitions/:type`}
+                element={<AllCompetitions />}
+              />
+              <Route
+                path={`/competition/:id/:type`}
+                element={<Competition />}
+              />
+            </Route>
 
-          </Route>
-
-          {/* Admin Routes */}
-          <Route element={<AdminLayout />}>
-            <Route
-              path={`/createCompetition`}
-              element={<CreateCompetition />}
-            />
-            <Route
-              path={`/editCompetition/:id`}
-              element={<EditCompetition/>}
-            />
-          </Route>
-        </Routes>
-      </main>
-      <Footer />
-      <ToastContainer position="bottom-right" />
+            {/* Admin Routes */}
+            <Route element={<AdminLayout />}>
+              <Route
+                path={`/createCompetition`}
+                element={<CreateCompetition />}
+              />
+              <Route
+                path={`/editCompetition/:id`}
+                element={<EditCompetition />}
+              />
+            </Route>
+          </Routes>
+        </main>
+        <Footer />
+        <ToastContainer position="bottom-right" />
+      </AuthProvider>
     </>
   );
 }
