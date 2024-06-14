@@ -88,5 +88,31 @@
   },
   "editCompetition": {
     "title": "Edit Competition"
+  },
+  "registration": {
+    "pending": "Updating player status...",
+    "title": "Registration applications",
+    "show": "Show registration applications",
+    "close": "Close",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "approved": "Approved",
+    "notApproved": "Not approved",
+    "approve": "Approve registration",
+    "cancel": "Cancel registration",
+    "dropped": "Dropped",
+    "notDropped": "Not dropped",
+    "drop": "Drop",
+    "return": "Return",
+    "empty": "No registration applications yet"
+  },
+  "schedule": {
+    "emptyContent": "The match schedule has not yet been formed as the required number of players has not been reached",
+    "filterLimit": "Number of matches per page",
+    "team": "Team",
+    "game": "Game",
+    "unknownScore": "Match score is not yet known",
+    "emptyTeam": "There are no players in this team yet"
   }
 }

@@ -200,6 +200,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
             required={true}
             autoComplete="off"
             defaultValue={defaultValues.phone}
+            onFocus={(e) => {console.log(e.target.value)}}
             {...register("phone")}
             {...(errors.phone && {
               style: { borderColor: "red", outline: "none" },

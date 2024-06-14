@@ -1,16 +1,18 @@
 import { FC } from "react";
 import EmptyContent from "../EmptyElement/EmptyElement";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type CompetitionMatchProps = {
   match: ICompetitionMatch;
 };
 const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
+  const {t} = useTranslation();
   const renderPlayers = (team: IUser[]) => {
     if (!team.length)
       return (
         <div style={{ gridColumn: "1/-1" }}>
-          В этой команде пока нет игроков
+          {t("competitions.schedule.emptyTeam")}
         </div>
       );
     return team.map((player) => {
@@ -44,7 +46,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
     if (match.left_score && match.right_score) {
       matchesScore = <span className="matches__score">{match.left_score} : {match.right_score}</span>
     } else {
-      matchesScore = <span className="matches__score--unknown">Счет матча еще не известен</span>
+      matchesScore = <span className="matches__score--unknown">{t("competitions.schedule.unknownScore")}</span>
     }
     // const matchesScore =
     //   match.left_score && match.right_score
@@ -56,7 +58,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
           <span className="matches__day">{date}</span>
           <span className="matches__time">{time}</span>
         </div>
-        <span className="matches__name">Игра {match.id}</span>
+        <span className="matches__name">{t("competitions.schedule.game")} {match.id}</span>
         {/* <span className="matches__score">{3} : {1}</span> */}
         {matchesScore}
       </div>
@@ -66,12 +68,12 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
   return (
     <li className="matches__item">
       <div className="matches__team matches__team--left">
-        <span className="matches__team-name">Команда 1</span>
+        <span className="matches__team-name">{t("competitions.schedule.team")} 1</span>
         <div className="matches__players">{renderPlayers(match.left_team)}</div>
       </div>
       {renderTimeAndScore()}
       <div className="matches__team matches__team--right">
-        <span className="matches__team-name">Команда 2</span>
+        <span className="matches__team-name">{t("competitions.schedule.team")} 2</span>
         <div className="matches__players">
           {renderPlayers(match.right_team)}
         </div>

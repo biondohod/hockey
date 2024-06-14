@@ -6,6 +6,7 @@ import CompetitionMatch from "./CompetitionMatch";
 import { set } from "react-hook-form";
 import Loader from "../Loader/Loader";
 import EmptyContent from "../EmptyElement/EmptyElement";
+import { useTranslation } from "react-i18next";
 
 type CompetitionScheduleProps = {
   competitionId: number;
@@ -26,6 +27,7 @@ const CompetitionSchedule: FC<CompetitionScheduleProps> = ({
   const [competitionMatches, setCompetitionMatches] = useState<
     ICompetitionMatches | undefined
   >(undefined);
+  const {t} = useTranslation();
 
   useEffect(() => {
     {
@@ -128,18 +130,18 @@ const CompetitionSchedule: FC<CompetitionScheduleProps> = ({
   if (isFetching) return <Loader />;
 
   if (isError)
-    return <EmptyContent message="Произошла ошибка при загрузке данных" />;
+    return <EmptyContent message={t("global.loadError")} />;
 
   if (!competitionMatches?.matches.length)
     return (
-      <EmptyContent message="Расписание матчей пока не сформированно, так как не было набрано нужное количество игроков" />
+      <EmptyContent message={t("competitions.schedule.emptyContent")} />
     );
 
   return (
     <section className="schedule">
       <div className="schedule__filters">
         <span className="schedule__filter-name">
-          Количество матчей на странице
+        {t("competitions.schedule.filterLimit")}
         </span>
         <select
           name="limit"

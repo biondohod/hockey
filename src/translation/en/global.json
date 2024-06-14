@@ -4,5 +4,6 @@
     "unknownErrorMessage": "Unknown error"
   },
   "loader": "Loading... please wait",
+  "loadError": "An error occured while loading the content",
   "emptyElement": "No content available"
 }

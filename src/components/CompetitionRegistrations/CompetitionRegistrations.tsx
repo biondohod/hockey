@@ -11,6 +11,7 @@ import { getUserRole } from "../../lib/utils";
 import { toast } from "react-toastify";
 import { useUpdateRegistration } from "../../lib/react-query/mutations";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type CompetitionRegistrationsProps = {
   competitionId: number;
@@ -24,6 +25,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const { mutateAsync, isPending } = useUpdateRegistration();
   const { data: roles } = useGetRoles();
+  const {t} = useTranslation();
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -52,7 +54,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
     data: IUpdateRegistration
   ) => {
     toast.promise(mutateAsync({ playerId, competitionId, data }), {
-      pending: "Подождите...",
+      pending: t("competitions.registration.pending"),
     });
   };
 
@@ -66,17 +68,17 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
         {data.map((registration: ICompetitionRegistration, index: any) => (
           <li className="competition-registrations__item" key={index}>
             <div className="competition-registrations__row competition-registrations__row--first">
-              <Link to={`/profile/${registration.user.id}`}className="competition-registrations__name">{`Name: ${registration.user.last_name} ${registration.user.first_name} ${registration.user.middle_name}`}</Link>
+              <Link to={`/profile/${registration.user.id}`}className="competition-registrations__name">{`${t("competitions.registration.name")}: ${registration.user.last_name} ${registration.user.first_name} ${registration.user.middle_name}`}</Link>
               {/* <Link to={`/profile/${registration.user.id}`} className="competition-registrations__link">Профиль игрока</Link> */}
-              <span className="competition-registrations__email">{`Email: ${registration.user.email}`}</span>
-              <span className="competition-registrations__role">{`Role: ${
+              <span className="competition-registrations__email">{`${t("competitions.registration.email")}: ${registration.user.email}`}</span>
+              <span className="competition-registrations__role">{`${t("competitions.registration.role")}: ${
                 getUserRole(registration.user.role_id, roles)?.name
               }`}</span>
             </div>
             <div className="competition-registrations__row competition-registrations__row--second">
               {registration.is_approved
-                ? "Подтвержден"
-                : "Не подтвержден"}
+                ? t("competitions.registration.approved")
+                : t("competitions.registration.notApproved")}
               <button
                 className="competition-registrations__button competition-registrations__button--approve"
                 onClick={() =>
@@ -87,12 +89,12 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
                 disabled={isPending}
               >
                 {registration.is_approved
-                  ? "Отменить регистрацию"
-                  : "Подтвердить регистрацию"}
+                  ? t("competitions.registration.cancel")
+                  : t("competitions.registration.approve")}
               </button>
             </div>
             <div className="competition-registrations__row competition-registrations__row--third">
-              {registration.is_dropped ? "Исключен" : "Не исключен"}
+              {registration.is_dropped ? t("competitions.registration.dropped") : t("competitions.registration.notDropped")}
               <button
                 className="competition-registrations__button competition-registrations__button--exclude"
                 onClick={() =>
@@ -102,7 +104,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
                 }
                 disabled={isPending}
               >
-                {registration.is_dropped ? "Отменить исключение" : "Исключить"}
+                {registration.is_dropped ? t("competitions.registration.return") : t("competitions.registration.drop")}
               </button>
             </div>
           </li>
@@ -114,7 +116,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
   return (
     <div className="competition-registrations">
       <button className="competition-registrations__button competition-registrations__button--open" onClick={openModal}>
-        Показать заявки на регистрацию
+        {t("competitions.registration.show")}
       </button>
       <Modal
         isOpen={modalIsOpen}
@@ -129,13 +131,13 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
       >
         <div className="competition-registrations__header">
           <h2 className="competition-registrations__title">
-            Заявки на регистрацию
+            {t("competitions.registration.title")}
           </h2>
           <button
             className="competition-registrations__button competition-registrations__button--close"
             onClick={closeModal}
           >
-            Закрыть
+            {t("competitions.registration.close")}
           </button>
         </div>
         {renderRegistrations()}
