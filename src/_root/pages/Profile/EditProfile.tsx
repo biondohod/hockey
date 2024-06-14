@@ -57,7 +57,7 @@ const EditProfile = () => {
       };
       setDefaultValues(defaultValues);
     }
-  }, [user]);
+  }, [data]);
 
   const onSubmit = async (data: EditProfileForm | SignUpForm) => {
     const isMale: boolean = data.gender === "male";

@@ -2,14 +2,21 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import ReactModal from "react-modal";
-import "./ProfileDocuments.scss";
+import "./ProfileUploadDocuments.scss";
+import { Controller, set, useForm } from "react-hook-form";
+import { z } from "zod";
+import { ProfileDocumentsValidation } from "../../lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useUploadDocument } from "../../lib/react-query/mutations";
+import { toast } from "react-toastify";
 
-const ProfileDocuments = () => {
+const ProfileUploadDocuments = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const { t } = useTranslation();
+  const {mutateAsync, isSuccess, isPending} = useUploadDocument();
 
   useEffect(() => {
     ReactModal.setAppElement("#root");
@@ -23,6 +30,24 @@ const ProfileDocuments = () => {
       root.style.overflow = "auto";
     }
   }, [modalIsOpen]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      closeModal();
+      setFiles([]);
+    }
+  }, [isSuccess]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof ProfileDocumentsValidation>>({
+    resolver: zodResolver(ProfileDocumentsValidation),
+    defaultValues: {
+      name: files[0]?.name.split(".")[0],
+    },
+  });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
@@ -46,18 +71,14 @@ const ProfileDocuments = () => {
     setFiles((prevFiles) => prevFiles.filter((file, i) => i !== index));
   };
 
-  const hanleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("submit");
-    // console.log(event.target);
-    console.log(files);
-    if (files.length > 0) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        console.log(e.target?.result); // Logs the file data
-      };
-      reader.readAsDataURL(files[0]);
-    }
+  const onSubmit = (data: {name: string}) => {
+    const document: IDocument = {
+      document: files[0],
+      name: data.name,
+    };
+    toast.promise(mutateAsync(document), {
+      pending: "Uploading document...",
+    });
   };
 
   return (
@@ -87,10 +108,10 @@ const ProfileDocuments = () => {
             {t("competitions.registration.close")}
           </button>
         </div>
-        <form onSubmit={hanleSubmit} className="profile-docs__form">
+        <form onSubmit={handleSubmit(onSubmit)} className="profile-docs__form">
           {!files.length && (
             <div {...getRootProps()} className="dropzone">
-              <input {...getInputProps()} name="document" />
+              <input {...getInputProps()} name="document" autoComplete="false"/>
               <p>
                 {isDragActive
                   ? "Отпустите файлы здесь, чтобы загрузить"
@@ -116,12 +137,20 @@ const ProfileDocuments = () => {
                       <input
                         type="text"
                         id="name"
-                        name="name"
+                        {...register("name")}
                         placeholder="Название документа"
                         defaultValue={file.name.split(".")[0]}
                         className="auth__input"
                         required={true}
+                        {...(errors.name && {
+                          style: { borderColor: "red", outline: "none" },
+                        })}
                       />
+                      {errors.name && errors.name.message && (
+                        <span className="auth__error-msg">
+                          {t(errors.name.message)}
+                        </span>
+                      )}
                     </label>
                   </>
                 ) : (
@@ -151,4 +180,4 @@ const ProfileDocuments = () => {
   );
 };
 
-export default ProfileDocuments;
+export default ProfileUploadDocuments;

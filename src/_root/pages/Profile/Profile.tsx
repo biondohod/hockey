@@ -7,9 +7,9 @@ import { useGetRoles, useGetUser } from "../../../lib/react-query/queries";
 import Loader from "../../../components/Loader/Loader";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement";
 import { toast } from "react-toastify";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
-import ProfileDocuments from "../../../components/ProfileDocuments/ProfileDocuments";
+import ProfileUploadDocuments from "../../../components/ProfileUploadDocuments/ProfileUploadDocuments";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
@@ -109,7 +109,7 @@ const Profile = () => {
                   : t("profile.verified")}
               </span>
               {isUserProfile && (
-                <ProfileDocuments/>
+                <ProfileUploadDocuments/>
                 // <button className="profile-info__edit">
                 //   {t("profile.uploadDocs")}
                 // </button>

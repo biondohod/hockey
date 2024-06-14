@@ -9,6 +9,7 @@ import {
   updateProfile,
   updateProfileAsAdmin,
   updateRegistration,
+  uploadDocument,
 } from "../../api/api";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
@@ -252,3 +253,25 @@ export const useUpdateRegistration = () => {
     },
   });
 };
+
+export const useUploadDocument = () => {
+  const queryClient = useQueryClient();
+  const { user } = useUserContext();
+  return useMutation({
+    mutationFn: (document: IDocument) => uploadDocument(document),
+    onSuccess: () => {
+      toast.success("Документ успешно загружен", { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_DOCUMENTS, user?.id],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(`Ошибка при загрузке документа: ${message}`);
+      } else {
+        toast.error("Неизвестная ошибка при загрузке документа");
+      }
+    },
+  });
+}

@@ -24,7 +24,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
     useGetCompeitionRegistrations(competitionId);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const { mutateAsync, isPending } = useUpdateRegistration();
-  const { data: roles } = useGetRoles();
+  const { data: roles, isLoading: isLoadingRoles } = useGetRoles();
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
   };
 
   const renderRegistrations = () => {
-    if (isLoading)
+    if (isLoading || isLoadingRoles)
       return <Loader fontSize={24} loaderHeight={40} loaderWidth={40} />;
     if (isError) return <EmptyContent />;
     if (!data) return <EmptyContent />;

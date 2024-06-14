@@ -6,6 +6,7 @@ export enum QUERY_KEYS {
     GET_CURRENT_USER = "getCurrentUser",
     // GET_USERS = "getUsers",
     GET_USER_BY_ID = "getUserById",
+    GET_USER_DOCUMENTS = "getUserDocuments",
 
     //COMPETITION KEYS
     GET_COMPETITIONS = "getCompetitions",
@@ -15,6 +16,7 @@ export enum QUERY_KEYS {
 
     //ROLES KEYS
     GET_ROLES = "getRoles",
+
 
 
     // POST KEYS

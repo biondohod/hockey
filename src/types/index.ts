@@ -178,6 +178,11 @@ interface ICompetitionMatch {
   start_time: string;
 }
 
+interface IDocument {
+  document: File;
+  name: string;
+}
+
 type SignUpForm = {
   first_name: string;
   last_name: string;
@@ -215,3 +220,5 @@ type AuthFormResponse = {
   token: string;
   id: string;
 };
+
+

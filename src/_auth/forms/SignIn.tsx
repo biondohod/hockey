@@ -40,6 +40,9 @@ const SignIn = () => {
             {...register("email")}
             required={true}
             autoComplete="off"
+            {...(errors.email && {
+              style: { borderColor: "red", outline: "none" },
+            })}
           />
           {errors.email && errors.email.message && (
             <span className="auth__error-msg">{t(errors.email.message)}</span>

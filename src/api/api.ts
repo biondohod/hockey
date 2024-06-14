@@ -206,3 +206,17 @@ export const getCompetitionMatches = async (
   );
   return response.data;
 };
+
+export const uploadDocument = async (document: IDocument) => {
+  const token = localStorage.getItem("token");
+  const formData = new FormData();
+  formData.append("document", document.document);
+  formData.append("name", document.name);
+  if (!token) return null;
+  const response = await axios.post(`${URL_BASE}documents`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}
