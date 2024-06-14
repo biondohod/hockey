@@ -4,8 +4,10 @@ import {
   getCompetitionMatches,
   getCompetitionRegistrations,
   getCompetitions,
+  getDocumentUrl,
   getRoles,
   getUser,
+  getUserDocuments,
 } from "../../api/api";
 import { QUERY_KEYS } from "./queryKeys";
 
@@ -81,3 +83,21 @@ export const useGetCompetitionMatches = (
     staleTime: 1000 * 60 * 5,
   });
 };
+
+export const useGetUserDocuments = (id: number | undefined) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_DOCUMENTS, id],
+    queryFn: () => getUserDocuments(id!),
+    enabled: id !== undefined && !isNaN(id),
+    staleTime: 1000 * 60 * 60,
+  });
+}
+
+export const useGetDocumetUrl = (id: number | undefined) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_DOCUMENT_IMAGE, id],
+    queryFn: () => getDocumentUrl(id!),
+    enabled: id !== undefined && !isNaN(id),
+    staleTime: Infinity,
+  });
+} 

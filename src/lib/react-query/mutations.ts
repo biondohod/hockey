@@ -258,7 +258,7 @@ export const useUploadDocument = () => {
   const queryClient = useQueryClient();
   const { user } = useUserContext();
   return useMutation({
-    mutationFn: (document: IDocument) => uploadDocument(document),
+    mutationFn: (document: DocumentForm) => uploadDocument(document),
     onSuccess: () => {
       toast.success("Документ успешно загружен", { autoClose: 1500 });
       queryClient.invalidateQueries({

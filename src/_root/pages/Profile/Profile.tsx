@@ -2,14 +2,19 @@ import { Link, useParams } from "react-router-dom";
 import { useUserContext } from "../../../context/AuthContext";
 import "./Profile.scss";
 import { useEffect, useState } from "react";
-import { calculateAge, formatDate, transliterateText } from "../../../lib/utils";
+import {
+  calculateAge,
+  formatDate,
+  transliterateText,
+} from "../../../lib/utils";
 import { useGetRoles, useGetUser } from "../../../lib/react-query/queries";
 import Loader from "../../../components/Loader/Loader";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
-import ProfileUploadDocuments from "../../../components/ProfileUploadDocuments/ProfileUploadDocuments";
+import ProfileUploadDocuments from "../../../components/ProfileDocuments/ProfileUploadDocuments";
+import ProfileDocuments from "../../../components/ProfileDocuments/ProfileDocuments";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
@@ -17,7 +22,7 @@ const Profile = () => {
   const [userRole, setUserRole] = useState<Irole | null>(null);
   const { id } = useParams<{ id: string }>();
   const { user, role, isAdmin } = useUserContext();
-  const {data: roles} = useGetRoles();
+  const { data: roles } = useGetRoles();
   const { data, isLoading, isError, error } = useGetUser(
     id,
     localStorage.getItem("token")
@@ -37,7 +42,9 @@ const Profile = () => {
     } else {
       setIsUserProfile(false);
       setUserData(data);
-      setUserRole(roles?.find((role: Irole) => role.id === data?.role_id) || null);
+      setUserRole(
+        roles?.find((role: Irole) => role.id === data?.role_id) || null
+      );
     }
     if (isError) {
       const axiosError: AxiosError<ErrorResponse> =
@@ -59,7 +66,7 @@ const Profile = () => {
   if (!userData)
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
-  if (userRole?.is_admin) {
+  if (userRole?.is_admin || (isAdmin && isUserProfile)) {
     return (
       <section className="profile">
         <h1 className="profile__title">Профиль</h1>
@@ -98,18 +105,29 @@ const Profile = () => {
             />
             <div className="profile-info__name-container">
               <span className="profile-info__name">
-                {transliterateText(userData.first_name)} {transliterateText(userData.last_name)}
+                {transliterateText(userData.first_name)}{" "}
+                {transliterateText(userData.last_name)}
               </span>
               <span
                 className="profile-info__verification"
-                style={{ color: userRole?.name === "Неподтвержденный" ? "red" : "green" }}
+                style={{
+                  color:
+                    userRole?.name === "Неподтвержденный" ? "red" : "green",
+                }}
               >
                 {userRole?.name === "Неподтвержденный"
                   ? t("profile.unverified")
                   : t("profile.verified")}
               </span>
               {isUserProfile && (
-                <ProfileUploadDocuments/>
+                <ProfileUploadDocuments />
+                // <button className="profile-info__edit">
+                //   {t("profile.uploadDocs")}
+                // </button>
+              )}
+
+              {(isUserProfile || isAdmin) && (
+                <ProfileDocuments />
                 // <button className="profile-info__edit">
                 //   {t("profile.uploadDocs")}
                 // </button>
@@ -170,7 +188,10 @@ const Profile = () => {
               </li>
             </ul>
             {isUserProfile || isAdmin ? (
-              <Link to={`/editProfile/${userData.id}`} className="profile-info__about-btn">
+              <Link
+                to={`/editProfile/${userData.id}`}
+                className="profile-info__about-btn"
+              >
                 {t("profile.edit")}
               </Link>
             ) : (

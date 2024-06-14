@@ -36,9 +36,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkAuthUser = async () => {
     if (!isLoading) {
-      if (!token && !id && isAuthenticated === false) {
-        navigate("/auth/sign-in");
-      } else if (data) {
+      if (data) {
         // localStorage.setItem("isAuthenticated", "true");
         setUser(data);
         setIsAuthenticated(true);

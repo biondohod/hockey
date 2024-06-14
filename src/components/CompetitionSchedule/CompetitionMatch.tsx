@@ -2,6 +2,7 @@ import { FC } from "react";
 import EmptyContent from "../EmptyElement/EmptyElement";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { formatDateAndTime } from "../../lib/utils";
 
 type CompetitionMatchProps = {
   match: ICompetitionMatch;
@@ -24,24 +25,10 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
     });
   };
 
-  const formatDateAndTime = (dateTimeStr: string) => {
-    const dateObj = new Date(dateTimeStr);
 
-    const date = `${dateObj.getDate().toString().padStart(2, "0")}/${(
-      dateObj.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}/${dateObj.getFullYear()}`;
-    const time = `${dateObj.getHours().toString().padStart(2, "0")}:${dateObj
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:${dateObj.getSeconds().toString().padStart(2, "0")}`;
-
-    return { date, time };
-  };
 
   const renderTimeAndScore = () => {
-    const { date, time } = formatDateAndTime(match.start_time);
+    const { date, time } = formatDateAndTime(match.start_time, true);
     let matchesScore;
     if (match.left_score && match.right_score) {
       matchesScore = <span className="matches__score">{match.left_score} : {match.right_score}</span>

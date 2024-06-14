@@ -207,5 +207,5 @@ export const EditCompetitionValidation = z.object({
 });
 
 export const ProfileDocumentsValidation = z.object({
-  name: z.string().min(4, "profile.documents.validation.name"),
+  name: z.string().min(4, "profile.documents.validation.name.min").max(64, "profile.documents.validation.name.max"),
 });

@@ -6,6 +6,8 @@ export type EmptyContentProps = {
   message?: string;
   fontSize?: number;
   marginTop?: number;
+  width?: number | string;
+  minHeight?: number | string;
 };
 
 /**
@@ -20,10 +22,12 @@ const EmptyContent: FC<EmptyContentProps> = ({
   message,
   fontSize = 32,
   marginTop = 0,
+  width,
+  minHeight
 }: EmptyContentProps) => {
   const {t} = useTranslation();
   return (
-    <div className={"empty-content"} style={{ fontSize, marginTop }}>
+    <div className={"empty-content"} style={{ fontSize, marginTop, width, minHeight }}>
       {message || t("global.emptyElement")}
     </div>
   );

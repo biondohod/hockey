@@ -62,7 +62,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
     if (isLoading || isLoadingRoles)
       return <Loader fontSize={24} loaderHeight={40} loaderWidth={40} />;
     if (isError) return <EmptyContent />;
-    if (!data) return <EmptyContent />;
+    if (!data || !data.length) return <EmptyContent fontSize={24} width={"100%"} minHeight={150} message="На этот турнир еще никто не подавал заявку на участие"/>;
     return (
       <ul className="competition-registrations__list">
         {data.map((registration: ICompetitionRegistration, index: any) => (

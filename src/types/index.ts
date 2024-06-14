@@ -179,8 +179,14 @@ interface ICompetitionMatch {
 }
 
 interface IDocument {
-  document: File;
+  id: number;
   name: string;
+  created_at: string;
+  expires_at: string;
+}
+
+interface IDocumentUrl {
+  url: string;
 }
 
 type SignUpForm = {
@@ -220,5 +226,10 @@ type AuthFormResponse = {
   token: string;
   id: string;
 };
+
+type DocumentForm = {
+  document: File;
+  name: string;
+}
 
 

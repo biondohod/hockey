@@ -7,6 +7,7 @@ export enum QUERY_KEYS {
     // GET_USERS = "getUsers",
     GET_USER_BY_ID = "getUserById",
     GET_USER_DOCUMENTS = "getUserDocuments",
+    GET_DOCUMENT_IMAGE = "getDocumentImage",
 
     //COMPETITION KEYS
     GET_COMPETITIONS = "getCompetitions",

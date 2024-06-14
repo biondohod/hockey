@@ -167,6 +167,25 @@ export const getDataRange = (startDate: string, endDate: string): string => {
   )} - ${end.toLocaleDateString("ru-RU", endOptions)}`;
 };
 
+export const formatDateAndTime = (dateTimeStr: string, isNeedSeconds: boolean) => {
+  const dateObj = new Date(dateTimeStr);
+
+  const date = `${dateObj.getDate().toString().padStart(2, "0")}/${(
+    dateObj.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}/${dateObj.getFullYear()}`;
+  let time = `${dateObj.getHours().toString().padStart(2, "0")}:${dateObj
+    .getMinutes()
+    .toString().padStart(2, "0")}`;
+
+   if (isNeedSeconds) {
+    time += `:${dateObj.getSeconds().toString().padStart(2, "0")}`;
+   }
+
+  return { date, time };
+};
+
 // export function formatPhoneNumber(phoneNumberString: string) {
 //   const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
 //   const match = cleaned.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);
@@ -177,6 +196,7 @@ export const getDataRange = (startDate: string, endDate: string): string => {
 // }
 
 export const getUserRole = (userRoleId: number, rolesList: Irole[]) => {
+  if (!rolesList || !rolesList.length) return {name: "Неизвестно"};
   const role = rolesList.find((role) => role.id === userRoleId);
   return role || {name: "Неизвестно"};
 }

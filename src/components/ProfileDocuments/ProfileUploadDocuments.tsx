@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import ReactModal from "react-modal";
 import "./ProfileUploadDocuments.scss";
-import { Controller, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ProfileDocumentsValidation } from "../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ const ProfileUploadDocuments = () => {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const { t } = useTranslation();
-  const {mutateAsync, isSuccess, isPending} = useUploadDocument();
+  const { mutateAsync, isSuccess, isPending } = useUploadDocument();
 
   useEffect(() => {
     ReactModal.setAppElement("#root");
@@ -35,6 +35,7 @@ const ProfileUploadDocuments = () => {
     if (isSuccess) {
       closeModal();
       setFiles([]);
+      reset();
     }
   }, [isSuccess]);
 
@@ -42,6 +43,7 @@ const ProfileUploadDocuments = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<z.infer<typeof ProfileDocumentsValidation>>({
     resolver: zodResolver(ProfileDocumentsValidation),
     defaultValues: {
@@ -69,10 +71,11 @@ const ProfileUploadDocuments = () => {
 
   const removeFile = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((file, i) => i !== index));
+    reset();
   };
 
-  const onSubmit = (data: {name: string}) => {
-    const document: IDocument = {
+  const onSubmit = (data: { name: string }) => {
+    const document: DocumentForm = {
       document: files[0],
       name: data.name,
     };
@@ -111,7 +114,11 @@ const ProfileUploadDocuments = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="profile-docs__form">
           {!files.length && (
             <div {...getRootProps()} className="dropzone">
-              <input {...getInputProps()} name="document" autoComplete="false"/>
+              <input
+                {...getInputProps()}
+                name="document"
+                autoComplete="false"
+              />
               <p>
                 {isDragActive
                   ? "Отпустите файлы здесь, чтобы загрузить"
@@ -130,36 +137,37 @@ const ProfileUploadDocuments = () => {
                       alt={file.name}
                       className="profile-docs__image"
                     />
-                    <label className="profile-docs__label">
-                      <span className="profile-docs__label-text">
-                        Введите название документа
-                      </span>
-                      <input
-                        type="text"
-                        id="name"
-                        {...register("name")}
-                        placeholder="Название документа"
-                        defaultValue={file.name.split(".")[0]}
-                        className="auth__input"
-                        required={true}
-                        {...(errors.name && {
-                          style: { borderColor: "red", outline: "none" },
-                        })}
-                      />
-                      {errors.name && errors.name.message && (
-                        <span className="auth__error-msg">
-                          {t(errors.name.message)}
-                        </span>
-                      )}
-                    </label>
                   </>
                 ) : (
                   <p className="profile-docs__pdf">{file.name}</p>
                 )}
+                <label className="profile-docs__label">
+                  <span className="profile-docs__label-text">
+                    Введите название документа
+                  </span>
+                  <input
+                    type="text"
+                    id="name"
+                    {...register("name")}
+                    placeholder="Название документа"
+                    defaultValue={file.name.split(".")[0]}
+                    className="auth__input"
+                    required={true}
+                    {...(errors.name && {
+                      style: { borderColor: "red", outline: "none" },
+                    })}
+                  />
+                  {errors.name && errors.name.message && (
+                    <span className="auth__error-msg">
+                      {t(errors.name.message)}
+                    </span>
+                  )}
+                </label>
                 <div className="profile-docs__btns">
                   <button
                     className="profile-docs__btn profile-docs__btn--submit"
                     type="submit"
+                    disabled={isPending}
                   >
                     Upload document
                   </button>
@@ -167,6 +175,7 @@ const ProfileUploadDocuments = () => {
                     onClick={() => removeFile(index)}
                     className="profile-docs__btn profile-docs__btn--delete"
                     type="button"
+                    disabled={isPending}
                   >
                     Remove
                   </button>

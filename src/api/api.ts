@@ -207,7 +207,7 @@ export const getCompetitionMatches = async (
   return response.data;
 };
 
-export const uploadDocument = async (document: IDocument) => {
+export const uploadDocument = async (document: DocumentForm) => {
   const token = localStorage.getItem("token");
   const formData = new FormData();
   formData.append("document", document.document);
@@ -219,4 +219,26 @@ export const uploadDocument = async (document: IDocument) => {
     },
   });
   return response.data;
-}
+};
+
+export const getUserDocuments = async (userId: number) => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.get(`${URL_BASE}users/${userId}/documents`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const getDocumentUrl = async (documentId: number): Promise<IDocumentUrl | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.get(`${URL_BASE}documents/${documentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
