@@ -70,7 +70,7 @@ export const EditProfileValidation = z
       .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
     gender: z.string().nonempty("auth.validation.gender"),
     phone: z.string().refine(phone => 
-      /^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(phone), 
+      /^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(phone) || /^\+\d{11}$/.test(phone), 
       "auth.validation.phone"
     ),
     email: z.string().email("auth.validation.email"),
