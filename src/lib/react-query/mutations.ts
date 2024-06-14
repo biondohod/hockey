@@ -208,6 +208,9 @@ export const useUpdateProfileAsAdmin = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_BY_ID, data.id],
+      });
       navigate(`/profile/${data.id}`);
     },
     onError: (error: AxiosError) => {
