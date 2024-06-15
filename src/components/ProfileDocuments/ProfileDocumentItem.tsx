@@ -2,6 +2,9 @@ import { FC, useEffect } from "react";
 import { useGetDocumetUrl } from "../../lib/react-query/queries";
 import Loader from "../Loader/Loader";
 import { formatDateAndTime } from "../../lib/utils";
+import axios from "axios";
+import { saveAs } from 'file-saver';
+
 
 type ProfileDocumentItemProps = {
   document: IDocument;
@@ -11,15 +14,48 @@ const ProfileDocumentItem: FC<ProfileDocumentItemProps> = ({ document }) => {
   const { data, isLoading } = useGetDocumetUrl(document.id);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
 
   const openDocument = (url: string) => {
     window.open(url, "_blank");
-  }
+  };
 
   const createdAt = formatDateAndTime(document.created_at, false);
   const expiresAt = formatDateAndTime(document.expires_at, false);
+
+  const downloadDocument = (url: string, filename: string) => {
+    axios.get(url, {
+      responseType: 'blob',
+    })
+    .then((response) => {
+      const contentType = response.headers['content-type'];
+      let extension = '';
+  
+      switch(contentType) {
+        case 'image/jpeg':
+          extension = '.jpeg';
+          break;
+        case 'image/png':
+          extension = '.png';
+          break;
+        case 'application/pdf':
+          extension = '.pdf';
+          break;
+        case 'image/webp':
+          extension = '.webp';
+          break;
+        case 'image/gif':
+          extension = '.gif';
+          break;
+        // Add more cases as needed...
+      }
+  
+      saveAs(new Blob([response.data]), `${filename}${extension}`);
+    });
+  };
+
+  
 
   if (isLoading)
     return (
@@ -56,13 +92,20 @@ const ProfileDocumentItem: FC<ProfileDocumentItemProps> = ({ document }) => {
   //     </li>
   //   );
 
-
   return (
     <li className="profile-docs__item">
       {data ? (
-        <span className="profile-docs__file-name profile-docs__file-name--active" onClick={() => openDocument(data.url)}>
-          {document.name} (click to view)
-        </span>
+        <>
+          <span
+            className="profile-docs__file-name profile-docs__file-name--active"
+            // onClick={() => downloadDocument(data.url, document.name)}
+          >
+            {document.name}
+          </span>
+          <button className="competition-registrations__button competition-registrations__button--close"onClick={() => downloadDocument(data.url, document.name)}>
+            click to download
+          </button>
+        </>
       ) : (
         <span className="profile-docs__file-name">
           {document.name} (link is not available)
