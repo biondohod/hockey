@@ -16,6 +16,7 @@ import EditCompetition from "./_root/pages/Competitions/EditCompetition";
 import EditProfile from "./_root/pages/Profile/EditProfile";
 import { useUserContext } from "./context/AuthContext";
 import AuthProvider from "./context/AuthProvider";
+import AdminUsers from "./_root/pages/Admin/AdminUsers";
 
 function App() {
   const { isAuthenticated } = useUserContext();
@@ -56,6 +57,10 @@ function App() {
               <Route
                 path={`/editCompetition/:id`}
                 element={<EditCompetition />}
+              />
+              <Route
+                path={`/listAllUsers`}
+                element={<AdminUsers />}
               />
             </Route>
           </Routes>

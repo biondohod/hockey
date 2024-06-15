@@ -17,6 +17,7 @@ export enum QUERY_KEYS {
 
     //ROLES KEYS
     GET_ROLES = "getRoles",
+    GET_USERS_BY_ROLE_ID = "getUsersByRoleId",
 
 
 

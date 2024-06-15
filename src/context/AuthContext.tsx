@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetCurrentUser, useGetRoles } from "../lib/react-query/queries";
 import { toast } from "react-toastify";
+import { use } from "i18next";
 
 const INITIAL_STATE = {
   user: null,
@@ -35,13 +36,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoading = isLoadingRoles || isLoadingUser;
 
   const checkAuthUser = async () => {
-    if (!isLoading) {
-      if (data) {
+    if (!isLoading && !isLoadingRoles) {
+      if (data)  {
         // localStorage.setItem("isAuthenticated", "true");
         setUser(data);
         setIsAuthenticated(true);
-        setRole(roles?.find((role: Irole) => role.id === data.role_id));
-        setIsAdmin(data.role_id === 1);
+        const userRole: Irole | undefined = roles?.find((role: Irole) => role.id === data.role_id) || null;
+        if (userRole) {
+          setRole(userRole);  
+          setIsAdmin(userRole.is_admin);
+        } else {
+          setRole(null);
+          setIsAdmin(null);
+        }
       } else if (id && token && isError) {
         toast.error(
           `Ошибка при получении данных пользователя: ${error?.message}`
@@ -59,12 +66,17 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem("id");
         localStorage.removeItem("token");
         setIsAuthenticated(false);
+        setIsAdmin(null);
+        setRole(null);
         navigate("/auth/sign-in");
       } else {
         // localStorage.removeItem("isAuthenticated");
+        console.log("no data")
         localStorage.removeItem("id");
         localStorage.removeItem("token");
         setIsAuthenticated(false);
+        setIsAdmin(null);
+        setRole(null);
         // navigate("/auth/sign-in");
       }
     }

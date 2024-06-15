@@ -232,7 +232,9 @@ export const getUserDocuments = async (userId: number) => {
   return response.data;
 };
 
-export const getDocumentUrl = async (documentId: number): Promise<IDocumentUrl | null> => {
+export const getDocumentUrl = async (
+  documentId: number
+): Promise<IDocumentUrl | null> => {
   const token = localStorage.getItem("token");
   if (!token) return null;
   const response = await axios.get(`${URL_BASE}documents/${documentId}`, {
@@ -240,5 +242,23 @@ export const getDocumentUrl = async (documentId: number): Promise<IDocumentUrl |
       Authorization: `Bearer ${token}`,
     },
   });
+  return response.data;
+};
+
+export const getUsersAsAdmin = async (
+  roleId: number,
+  limit: number | string,
+  offset: number | string
+): Promise<IAllUsersByRole | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.get(
+    `${URL_BASE}admin/users?limit=${limit}&offset=${offset}&role_id=${roleId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };

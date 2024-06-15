@@ -22,7 +22,7 @@ const Profile = () => {
   const [userRole, setUserRole] = useState<Irole | null>(null);
   const { id } = useParams<{ id: string }>();
   const { user, role, isAdmin } = useUserContext();
-  const { data: roles } = useGetRoles();
+  const { data: roles, isLoading: isLoadingRoles } = useGetRoles();
   const { data, isLoading, isError, error } = useGetUser(
     id,
     localStorage.getItem("token")
@@ -58,7 +58,7 @@ const Profile = () => {
     }
   }, [id, user, data, isError, error]);
 
-  if (isLoading && !userData) return <Loader marginTop={48} />;
+  if (isLoading || isLoadingRoles) return <Loader marginTop={48} />;
 
   if ((isError || !userData) && !isLoading)
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
@@ -83,6 +83,7 @@ const Profile = () => {
                 <span className="profile-info__name">
                   {userData.first_name} {userData.last_name}
                 </span>
+              <Link to={`/listAllUsers`}>list all users</Link>
               </div>
             </div>
           </div>

@@ -8,6 +8,7 @@ import {
   getRoles,
   getUser,
   getUserDocuments,
+  getUsersAsAdmin,
 } from "../../api/api";
 import { QUERY_KEYS } from "./queryKeys";
 
@@ -91,7 +92,7 @@ export const useGetUserDocuments = (id: number | undefined) => {
     enabled: id !== undefined && !isNaN(id),
     staleTime: 1000 * 60 * 60,
   });
-}
+};
 
 export const useGetDocumetUrl = (id: number | undefined) => {
   return useQuery({
@@ -100,4 +101,17 @@ export const useGetDocumetUrl = (id: number | undefined) => {
     enabled: id !== undefined && !isNaN(id),
     staleTime: Infinity,
   });
-} 
+};
+
+export const useGetUsersAsAdmin = (
+  userId: number | undefined,
+  limit: number | string = 10,
+  offset: number | string = 0
+) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS_BY_ROLE_ID, userId],
+    queryFn: () => getUsersAsAdmin(userId!, limit, offset),
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+  });
+};

@@ -40,6 +40,12 @@ interface IUser {
   role_id: number;
 }
 
+interface IAllUsersByRole {
+  count: number;
+  total: number;
+  users: IUser[];
+}
+
 interface IContextType {
   user: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
