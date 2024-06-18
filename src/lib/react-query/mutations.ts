@@ -202,9 +202,16 @@ export const useUpdateProfileAsAdmin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: ({ id, user }: { id: number | string; user: IEditUser }) =>
-      updateProfileAsAdmin(id, user).then(() => ({ id })),
-    onSuccess: (data: { id: number | string }) => {
+    mutationFn: ({
+      id,
+      user,
+      isNavigateAfterSuccess = true,
+    }: {
+      id: number | string;
+      user: IEditUser;
+      isNavigateAfterSuccess: boolean;
+    }) => updateProfileAsAdmin(id, user).then(() => ({ id, user, isNavigateAfterSuccess })),
+    onSuccess: (data: { id: number | string; user: IEditUser, isNavigateAfterSuccess: boolean }) => {
       toast.success("Профиль успешно обновлен", { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
@@ -212,7 +219,12 @@ export const useUpdateProfileAsAdmin = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USER_BY_ID, data.id],
       });
-      navigate(`/profile/${data.id}`);
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS_BY_ROLE_ID, data.user?.role_id],
+      });
+      if (data.isNavigateAfterSuccess) {
+        navigate(`/profile/${data.id}`);
+      }
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -236,11 +248,17 @@ export const useUpdateRegistration = () => {
       playerId: number;
       competitionId: number;
       data: IUpdateRegistration;
-    }) => updateRegistration(playerId, competitionId, data).then(() => ({ competitionId })),
+    }) =>
+      updateRegistration(playerId, competitionId, data).then(() => ({
+        competitionId,
+      })),
     onSuccess: (data) => {
       toast.success("Регистрация успешно обновлена", { autoClose: 1500 });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.competitionId],
+        queryKey: [
+          QUERY_KEYS.GET_COMPETITION_REGISTRATIONS,
+          data.competitionId,
+        ],
       });
     },
     onError: (error: AxiosError) => {
@@ -274,4 +292,4 @@ export const useUploadDocument = () => {
       }
     },
   });
-}
+};

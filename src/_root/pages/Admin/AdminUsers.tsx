@@ -3,18 +3,32 @@ import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import Loader from "../../../components/Loader/Loader";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement";
-import { useGetRoles, useGetUsersAsAdmin } from "../../../lib/react-query/queries";
+import {
+  useGetRoles,
+  useGetUsersAsAdmin,
+} from "../../../lib/react-query/queries";
+import AdminUserItem from "../../../components/AdminUser/AdminUserItem";
+import './AdminUsers.scss'
 
 const AdminUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [roleId, setRoleId] = useState<string>(searchParams.get("roleId") || "3");
+  const [roleId, setRoleId] = useState<string>(
+    searchParams.get("roleId") || "3"
+  );
   const [limit, setLimit] = useState<string>(searchParams.get("limit") || "10");
   const [offset, setOffset] = useState<string>(
     searchParams.get("offset") || "0"
   );
+  // const [usersList, setUsersList] = useState<IUsersList | undefined>(undefined);
   const { data: roles, isLoading: isLoadingRoles } = useGetRoles();
   const { t } = useTranslation();
-  const {data: usersList, isLoading: isLoadingUsers} = useGetUsersAsAdmin(parseInt(roleId), limit, offset);
+  const { data: usersList, isLoading: isLoadingUsers, refetch, isFetching: isFetchingUsers } = useGetUsersAsAdmin(
+    parseInt(roleId),
+    limit,
+    offset
+  );
+
+  
 
   useEffect(() => {
     {
@@ -22,20 +36,20 @@ const AdminUsers = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     checkIfPageExists(offset, data.total);
-  //     setCompetitionMatches(data);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (usersList) {
+      checkIfPageExists(offset, usersList.total);
+      // setCompetitionMatches(data);
+    }
+  }, [usersList]);
 
   useEffect(() => {
     setSearchParams({
       limit,
       offset,
-      roleId
+      roleId,
     });
-    // refetch();
+    refetch();
   }, [limit, offset, roleId]);
 
   // useEffect(() => {
@@ -48,7 +62,7 @@ const AdminUsers = () => {
   const validateParams = (limit: string, offset: string) => {
     const validateOptions = {
       limit: ["10", "20", "50", "100"],
-      roles: roles.map((role: Irole) => role.id.toString())
+      roles: roles.map((role: Irole) => role.id.toString()),
     };
     // const validateOptions = ["10", "20", "50", "100"];
 
@@ -65,16 +79,19 @@ const AdminUsers = () => {
     } else setLimit(limit);
 
     if (!validateOptions.roles.includes(roleId)) {
-      console.log("not includes")
-      const defaultRole = roles.find((role: Irole) => role.name === "Неподтвержденный")?.id.toString() || "3"
+      console.log("not includes");
+      const defaultRole =
+        roles
+          .find((role: Irole) => role.name === "Неподтвержденный")
+          ?.id.toString() || "3";
       console.log(defaultRole);
       setRoleId(defaultRole);
       console.log("setted default role", roleId);
     } else {
-      console.log("includes")
-      setRoleId(roleId)
+      console.log("includes");
+      setRoleId(roleId);
       console.log("setted roleId itself", roleId);
-    };
+    }
 
     console.log(roleId);
   };
@@ -88,16 +105,19 @@ const AdminUsers = () => {
   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLimit(e.target.value);
     setOffset("0");
+    refetch();
   };
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoleId(e.target.value);
     setOffset("0");
-  }
+  };
 
   const renderPagination = () => {
-    // const pages = Math.ceil(competitionMatches!.total / parseInt(limit));
-    const pages = 5;
+    if (!usersList || !usersList.users?.length) return <></>;
+    const pages = Math.ceil(usersList!.total / parseInt(limit));
+    console.log(usersList!.total, parseInt(limit));
+    // const pages = Math.ceil(10 / 10);
     const currentPage = Math.ceil(parseInt(offset) / parseInt(limit) + 1);
     const pagination = [];
     for (let i = 1; i <= pages; i++) {
@@ -133,23 +153,22 @@ const AdminUsers = () => {
   if (!roles?.length) return <EmptyContent message={t("admin.users.empty")} />;
 
   const renderUsersList = () => {
-    if (isLoadingUsers) return <Loader />;
-    if (!usersList || !usersList.users?.length) return <EmptyContent message={t("admin.users.empty")} />;
+    if (isLoadingUsers || isFetchingUsers) return <Loader />;
+    if (!usersList || !usersList.users?.length)
+      return <EmptyContent message={t("admin.users.empty")} />;
     return (
-      <ul>
+      <ul className="admin-users__list">
         {usersList.users.map((user: IUser) => (
-          <li key={user.id}>
-            {user.first_name} {user.last_name}
-          </li>
+          <AdminUserItem key={user.id} user={user} />
         ))}
       </ul>
     );
-  }
+  };
 
   return (
-    <section className="adminUsers">
-      <div className="admin__filters">
-        <div className="admin__filter">
+    <section className="admin-users">
+      <div className="admin-users__filters">
+        <div className="admin-users__filter">
           <span className="schedule__filter-name">
             {t("admin.users.filterLimit")}
           </span>
@@ -166,7 +185,7 @@ const AdminUsers = () => {
             <option value="100">100</option>
           </select>
         </div>
-        <div className="admin__filter">
+        <div className="admin-users__filter">
           <span className="schedule__filter-name">
             {t("admin.users.filterRole")}
           </span>

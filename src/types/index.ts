@@ -11,13 +11,13 @@ interface INewUser {
 }
 
 interface IEditUser {
-  first_name: string;
-  last_name: string;
-  middle_name: string;
-  is_male: boolean;
-  phone: string;
-  email: string;
-  birth_date: string;
+  first_name?: string;
+  last_name?: string;
+  middle_name?: string;
+  is_male?: boolean;
+  phone?: string;
+  email?: string;
+  birth_date?: string;
   telegram?: string;
   password?: string;
   role_id?:  number;
