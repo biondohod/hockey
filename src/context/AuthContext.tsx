@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetCurrentUser, useGetRoles } from "../lib/react-query/queries";
 import { toast } from "react-toastify";
 import { use } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const INITIAL_STATE = {
   user: null,
@@ -25,7 +26,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [role, setRole] = useState<Irole | null>(null);
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const { data: roles, isLoading: isLoadingRoles } = useGetRoles();
   const {
     data,
@@ -37,22 +38,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkAuthUser = async () => {
     if (!isLoading && !isLoadingRoles) {
-      if (data)  {
+      if (data) {
         // localStorage.setItem("isAuthenticated", "true");
         setUser(data);
         setIsAuthenticated(true);
-        const userRole: Irole | undefined = roles?.find((role: Irole) => role.id === data.role_id) || null;
+        const userRole: Irole | undefined =
+          roles?.find((role: Irole) => role.id === data.role_id) || null;
         if (userRole) {
-          setRole(userRole);  
+          setRole(userRole);
           setIsAdmin(userRole.is_admin);
         } else {
           setRole(null);
           setIsAdmin(null);
         }
       } else if (id && token && isError) {
-        toast.error(
-          `Ошибка при получении данных пользователя: ${error?.message}`
-        );
+        toast.error(t("auth.error", { message: error?.message }));
         // localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("id");
         localStorage.removeItem("token");
@@ -60,18 +60,17 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         navigate("/auth/sign-in");
       } else if (id && token && !data) {
         // localStorage.removeItem("isAuthenticated");
-        toast.error(
-          `Ошибка при получении данных пользователя, пожалуйста, авторизуйтесь еще раз`
-        );
+        toast.error(t("auth.unkownError"));
         localStorage.removeItem("id");
         localStorage.removeItem("token");
         setIsAuthenticated(false);
         setIsAdmin(null);
         setRole(null);
         navigate("/auth/sign-in");
-      } else {
+      } 
+      else {
         // localStorage.removeItem("isAuthenticated");
-        console.log("no data")
+        console.log("no data");
         localStorage.removeItem("id");
         localStorage.removeItem("token");
         setIsAuthenticated(false);

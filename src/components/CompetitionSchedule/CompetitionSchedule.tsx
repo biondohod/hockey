@@ -158,8 +158,8 @@ const CompetitionSchedule: FC<CompetitionScheduleProps> = ({
       </div>
       <div className="schedule__matches">
           <ul className="matches__list">
-            {competitionMatches.matches.map((match) => (
-              <CompetitionMatch key={match.id} match={match} />
+            {competitionMatches.matches.map((match: ICompetitionMatch, index: number) => (
+              <CompetitionMatch key={match.id} match={match} gameNumber={index+parseInt(offset)+1}/>
             ))}
           </ul>
         {/* <div className="schedule__wrapper">

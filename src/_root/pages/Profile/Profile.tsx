@@ -56,17 +56,18 @@ const Profile = () => {
       });
       toast.error(errorMessage);
     }
-  }, [id, user, data, isError, error]);
+  }, [id, user, data, role, roles, isLoadingRoles, isError, error]);
 
   if (isLoading || isLoadingRoles) return <Loader marginTop={48} />;
 
   if ((isError || !userData) && !isLoading)
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
-  if (!userData)
+  if (!userData || !userRole)
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
   if (userRole?.is_admin || (isAdmin && isUserProfile)) {
+    console.log(userData, userRole, isAdmin, isUserProfile)
     return (
       <section className="profile">
         <h1 className="profile__title">Профиль</h1>
@@ -83,7 +84,7 @@ const Profile = () => {
                 <span className="profile-info__name">
                   {userData.first_name} {userData.last_name}
                 </span>
-              <Link to={`/listAllUsers`}>list all users</Link>
+                <Link to={`/listAllUsers`}>list all users</Link>
               </div>
             </div>
           </div>
@@ -120,19 +121,21 @@ const Profile = () => {
                   ? t("profile.unverified")
                   : t("profile.verified")}
               </span>
-              {isUserProfile && (
-                <ProfileUploadDocuments />
-                // <button className="profile-info__edit">
-                //   {t("profile.uploadDocs")}
-                // </button>
-              )}
+              <div className="profile-info__btns">
+                {isUserProfile && (
+                  <ProfileUploadDocuments />
+                  // <button className="profile-info__edit">
+                  //   {t("profile.uploadDocs")}
+                  // </button>
+                )}
 
-              {(isUserProfile || isAdmin) && (
-                <ProfileDocuments />
-                // <button className="profile-info__edit">
-                //   {t("profile.uploadDocs")}
-                // </button>
-              )}
+                {(isUserProfile || isAdmin) && (
+                  <ProfileDocuments id={userData.id.toString()} />
+                  // <button className="profile-info__edit">
+                  //   {t("profile.uploadDocs")}
+                  // </button>
+                )}
+              </div>
             </div>
           </div>
           <div className="profile-info__wrapper">

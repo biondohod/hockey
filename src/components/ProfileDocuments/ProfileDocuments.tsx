@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactModal from "react-modal";
 import { useParams } from "react-router-dom";
 import { useGetUserDocuments } from "../../lib/react-query/queries";
 import ProfileDocumentItem from "./ProfileDocumentItem";
+import EmptyContent from "../EmptyElement/EmptyElement";
+import Loader from "../Loader/Loader";
 
-const ProfileDocuments = () => {
-  const { id } = useParams();
-  const { data } = useGetUserDocuments(id ? parseInt(id) : undefined);
+type ProfileDocumentsType = {
+  id: string;
+};
+
+const ProfileDocuments: FC<ProfileDocumentsType> = ({id}) => {
+  // const { id } = useParams();
+  const { data, isLoading } = useGetUserDocuments(id ? parseInt(id) : undefined);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [documents, setDocuments] = useState<IDocument[]>([]);
   const openModal = () => setIsOpen(true);
@@ -30,10 +36,20 @@ const ProfileDocuments = () => {
   useEffect(() => {
     if (data) setDocuments(data);
   }, [data]);
+
+  const renderDocuments = () => {
+    if (isLoading) return <Loader />;
+    if (!documents.length) return <EmptyContent message={t("profile.documents.empty")}/>;
+    return documents.map((document: IDocument) => (
+      <ProfileDocumentItem document={document} key={document.id} />
+    ));
+  };
+
+
   return (
     <div className="profile-docs">
       <button className="profile-info__edit" onClick={openModal}>
-        Посмотреть документы
+        {t("profile.documents.view")}
       </button>
       <ReactModal
         isOpen={modalIsOpen}
@@ -58,9 +74,7 @@ const ProfileDocuments = () => {
           </button>
         </div>
         <ul className="profile-docs__preview">
-          {documents.map((document: IDocument) => (
-            <ProfileDocumentItem document={document} key={document.id} />
-          ))}
+          {renderDocuments()}
         </ul>
       </ReactModal>
     </div>

@@ -27,13 +27,12 @@ const EditProfile = () => {
       const userId = user.id.toString();
       const paramsId = id.toString();
       if (!isAdmin && !(userId === paramsId)) {
-        toast.warning("You don't have permission to edit this profile");
+        toast.warning(t("global.noRules"));
         navigate(`/profile/${userId}`);
       }
-    } else if (!isLoading && !user) {
-      console.log(user, isLoading);
-      toast.warning("You need to be logged in to edit your profile");
-      navigate("/");
+    // } else if (!isLoading && !user) {
+    //   toast.warning("You need to be logged in to edit your profile");
+    //   navigate("/");
     }
   }, [user, id]);
 
@@ -86,11 +85,11 @@ const EditProfile = () => {
     if (isAdmin) {
       if (!id) return;
       toast.promise(updateUserAsAdmin({ id, user: formattedUser }), {
-        pending: "Updating profile...",
+        pending: t("profile.editProfile.pending"),
       });
     } else {
       toast.promise(updateUser(formattedUser), {
-        pending: "Updating profile...",
+        pending: t("profile.editProfile.pending"),
       });
     }
   };

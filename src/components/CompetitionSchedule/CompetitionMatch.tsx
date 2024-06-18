@@ -6,8 +6,9 @@ import { formatDateAndTime } from "../../lib/utils";
 
 type CompetitionMatchProps = {
   match: ICompetitionMatch;
+  gameNumber: number;
 };
-const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
+const CompetitionMatch: FC<CompetitionMatchProps> = ({ match, gameNumber }) => {
   const {t} = useTranslation();
   const renderPlayers = (team: IUser[]) => {
     if (!team.length)
@@ -18,7 +19,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
       );
     return team.map((player) => {
       return (
-        <Link to={`/profile/${player.id}`}  key={player.id} className="matches__player">
+        <Link to={`/profile/${player.id}`} target="_blank" key={player.id} className="matches__player">
           {player.first_name} {player.last_name}
         </Link>
       );
@@ -45,7 +46,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ match }) => {
           <span className="matches__day">{date}</span>
           <span className="matches__time">{time}</span>
         </div>
-        <span className="matches__name">{t("competitions.schedule.game")} {match.id}</span>
+        <span className="matches__name">{t("competitions.schedule.game")} {gameNumber}</span>
         {/* <span className="matches__score">{3} : {1}</span> */}
         {matchesScore}
       </div>

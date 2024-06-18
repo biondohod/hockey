@@ -1,18 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { EditProfileValidation, SignUpValidation } from "../../lib/validation";
 import { useUserContext } from "../../context/AuthContext";
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 
 type ProfileFormProps = {
   onSubmit: (data: SignUpForm | EditProfileForm) => void;
   isPending: boolean;
   defaultValues: SignUpForm | EditProfileForm;
   type: "edit" | "signUp";
-  validation: z.ZodType<z.infer<typeof EditProfileValidation> | z.infer<typeof SignUpValidation>>;
+  validation: z.ZodType<
+    z.infer<typeof EditProfileValidation> | z.infer<typeof SignUpValidation>
+  >;
 };
 
 const ProfileForm: FC<ProfileFormProps> = ({
@@ -31,6 +33,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
     handleSubmit,
     setValue,
     trigger,
+    control,
     formState: { errors },
   } = useForm<SignUpForm | EditProfileForm>({
     resolver: zodResolver(validation),
@@ -193,18 +196,24 @@ const ProfileForm: FC<ProfileFormProps> = ({
 
         <label htmlFor="phone" className="auth__label">
           {t("auth.signUp.phone")}*
-          <InputMask
-            mask="+9 (999) 999-99-99"
-            id="phone"
-            className="auth__input"
-            required={true}
-            autoComplete="off"
+          <Controller
+            name="phone"
+            control={control}
             defaultValue={defaultValues.phone}
-            onFocus={(e) => {console.log(e.target.value)}}
-            {...register("phone")}
-            {...(errors.phone && {
-              style: { borderColor: "red", outline: "none" },
-            })}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <InputMask
+                {...field}
+                mask="+9 (999) 999-99-99"
+                id="phone"
+                className="auth__input"
+                required={true}
+                autoComplete="off"
+                {...(errors.phone && {
+                  style: { borderColor: "red", outline: "none" },
+                })}
+              />
+            )}
           />
           {/* <input
             id="phone"
@@ -356,7 +365,9 @@ const ProfileForm: FC<ProfileFormProps> = ({
         )}
 
         <button type="submit" className="auth__submit" disabled={isPending}>
-          {type === "signUp" ? t("auth.signUp.signUp") : t("profile.editProfile.save")}
+          {type === "signUp"
+            ? t("auth.signUp.signUp")
+            : t("profile.editProfile.save")}
         </button>
       </form>
     </div>

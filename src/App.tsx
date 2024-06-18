@@ -46,22 +46,19 @@ function App() {
                 path={`/competition/:id/:type`}
                 element={<Competition />}
               />
-            </Route>
 
-            {/* Admin Routes */}
-            <Route element={<AdminLayout />}>
-              <Route
-                path={`/createCompetition`}
-                element={<CreateCompetition />}
-              />
-              <Route
-                path={`/editCompetition/:id`}
-                element={<EditCompetition />}
-              />
-              <Route
-                path={`/listAllUsers`}
-                element={<AdminUsers />}
-              />
+              {/* Admin Routes */}
+              <Route element={<AdminLayout />}>
+                <Route
+                  path={`/createCompetition`}
+                  element={<CreateCompetition />}
+                />
+                <Route
+                  path={`/editCompetition/:id`}
+                  element={<EditCompetition />}
+                />
+                <Route path={`/listAllUsers`} element={<AdminUsers />} />
+              </Route>
             </Route>
           </Routes>
         </main>

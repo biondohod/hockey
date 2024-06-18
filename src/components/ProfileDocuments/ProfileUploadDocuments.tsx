@@ -9,6 +9,7 @@ import { ProfileDocumentsValidation } from "../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadDocument } from "../../lib/react-query/mutations";
 import { toast } from "react-toastify";
+import { transliterateText } from "../../lib/utils";
 
 const ProfileUploadDocuments = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -80,7 +81,7 @@ const ProfileUploadDocuments = () => {
       name: data.name,
     };
     toast.promise(mutateAsync(document), {
-      pending: "Uploading document...",
+      pending: t("profile.documents.pending"),
     });
   };
 
@@ -102,7 +103,7 @@ const ProfileUploadDocuments = () => {
       >
         <div className="competition-registrations__header">
           <h2 className="competition-registrations__title">
-            Загрузите ваши документы
+            {t("profile.documents.upload.title")}
           </h2>
           <button
             className="competition-registrations__button competition-registrations__button--close"
@@ -121,8 +122,8 @@ const ProfileUploadDocuments = () => {
               />
               <p>
                 {isDragActive
-                  ? "Отпустите файлы здесь, чтобы загрузить"
-                  : "Drag 'n' drop some files here, or click to select files"}
+                  ? t("profile.documents.upload.release")
+                  : t("profile.documents.upload.dragAndDrop")}
               </p>
             </div>
           )}
@@ -143,13 +144,13 @@ const ProfileUploadDocuments = () => {
                 )}
                 <label className="profile-docs__label">
                   <span className="profile-docs__label-text">
-                    Введите название документа
+                    {t("profile.documents.upload.inputName")}
                   </span>
                   <input
                     type="text"
                     id="name"
                     {...register("name")}
-                    placeholder="Название документа"
+                    placeholder={t("profile.documents.upload.namePlaceholder")}
                     defaultValue={file.name.split(".")[0]}
                     className="auth__input"
                     required={true}
@@ -169,7 +170,7 @@ const ProfileUploadDocuments = () => {
                     type="submit"
                     disabled={isPending}
                   >
-                    Upload document
+                    {t("profile.documents.upload.uploadButton")}
                   </button>
                   <button
                     onClick={() => removeFile(index)}
@@ -177,7 +178,7 @@ const ProfileUploadDocuments = () => {
                     type="button"
                     disabled={isPending}
                   >
-                    Remove
+                    {t("profile.documents.upload.removeButton")}
                   </button>
                 </div>
               </li>

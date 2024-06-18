@@ -68,7 +68,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
         {data.map((registration: ICompetitionRegistration, index: any) => (
           <li className="competition-registrations__item" key={index}>
             <div className="competition-registrations__row competition-registrations__row--first">
-              <Link to={`/profile/${registration.user.id}`}className="competition-registrations__name">{`${t("competitions.registration.name")}: ${registration.user.last_name} ${registration.user.first_name} ${registration.user.middle_name}`}</Link>
+              <Link to={`/profile/${registration.user.id}`} target="_blank" className="competition-registrations__name">{`${t("competitions.registration.name")}: ${registration.user.last_name} ${registration.user.first_name} ${registration.user.middle_name}`}</Link>
               {/* <Link to={`/profile/${registration.user.id}`} className="competition-registrations__link">Профиль игрока</Link> */}
               <span className="competition-registrations__email">{`${t("competitions.registration.email")}: ${registration.user.email}`}</span>
               <span className="competition-registrations__role">{`${t("competitions.registration.role")}: ${

@@ -17,6 +17,7 @@ import { useUserContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { QUERY_KEYS } from "./queryKeys";
 import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const useCreateUserAccount = () => {
   const { setIsAuthenticated } = useUserContext();
@@ -41,15 +42,19 @@ export const useCreateUserAccount = () => {
 };
 
 export const UseLoginUser = () => {
-  const { setIsAuthenticated } = useUserContext();
+  const { setIsAuthenticated, checkAuthUser } = useUserContext();
   return useMutation({
     mutationFn: (user: SignInForm) => loginUser(user.email, user.password),
     onSuccess: async (data: AuthFormResponse) => {
       toast.success(i18next.t("auth.signIn.success"), { autoClose: 1500 });
-      // console.log(data)
+      console.log(data);
       localStorage.setItem("token", data.token);
       localStorage.setItem("id", data.id);
+      // let token = localStorage.getItem("token");
+      // let id = localStorage.getItem("id");
+      // console.log(token, id);
       setIsAuthenticated(true);
+      // checkAuthUser();
       // navigate("/");
     },
     onError: (error: AxiosError) => {
@@ -66,11 +71,14 @@ export const UseLoginUser = () => {
 export const useCreateCompetition = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (competition: IFormattedCompetition) =>
       createCompetition(competition, localStorage.getItem("token")),
     onSuccess: (data: { id: number }) => {
-      toast.success("Соревнование успешно создано", { autoClose: 1500 });
+      toast.success(t("competitions.createCompetiton.success"), {
+        autoClose: 1500,
+      });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_COMPETITIONS],
       });
@@ -83,9 +91,9 @@ export const useCreateCompetition = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при создании соревнования: ${message}`);
+        toast.error(t("competitions.createCompetiton.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при создании соревнования");
+        toast.error(t("competitions.createCompetition.unknownError"));
       }
     },
   });
@@ -94,6 +102,7 @@ export const useCreateCompetition = () => {
 export const useUpdateCompetition = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: ({
       id,
@@ -103,7 +112,9 @@ export const useUpdateCompetition = () => {
       competition: IEditCompetition;
     }) => updateCompetition(id, competition).then(() => ({ id })),
     onSuccess: (data: { id: number }) => {
-      toast.success("Соревнование успешно обновлено", { autoClose: 1500 });
+      toast.success(t("competitions.editCompetition.success"), {
+        autoClose: 1500,
+      });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_COMPETITIONS],
       });
@@ -115,9 +126,9 @@ export const useUpdateCompetition = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при создании соревнования: ${message}`);
+        toast.error(t("competition.editCompetition.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при создании соревнования");
+        toast.error(t("competition.editCompetition.unknownError"));
       }
     },
   });
@@ -125,13 +136,13 @@ export const useUpdateCompetition = () => {
 
 export const useRegisterForCompetition = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (id: number) => registerForCompetition(id).then(() => ({ id })),
     onSuccess: (data) => {
-      toast.success("Вы успешно зарегистрировались на соревнование", {
+      toast.success(t("competitions.register.success"), {
         autoClose: 1500,
       });
-      console.log(data);
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
       });
@@ -139,9 +150,9 @@ export const useRegisterForCompetition = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при регистрации на соревнование: ${message}`);
+        toast.error(t("competitions.register.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при регистрации на соревнование");
+        toast.error(t("competitions.register.unknownError"));
       }
     },
   });
@@ -149,10 +160,11 @@ export const useRegisterForCompetition = () => {
 
 export const useCancelRegistration = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (id: number) => cancelRegistration(id).then(() => ({ id })),
     onSuccess: (data) => {
-      toast.success("Вы успешно отменили регистрацию на соревнование", {
+      toast.success(t("competitions.register.cancelSuccess"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
@@ -162,13 +174,9 @@ export const useCancelRegistration = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(
-          `Ошибка при отмене регистрации на соревнование: ${message}`
-        );
+        toast.error(t("competitions.register.cancelError", { message }));
       } else {
-        toast.error(
-          "Неизвестная ошибка при отмене регистрации на соревнование"
-        );
+        toast.error(t("competitions.register.cancelUnknownError"));
       }
     },
   });
@@ -178,10 +186,11 @@ export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { user } = useUserContext();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (user: INewUser | IEditUser) => updateProfile(user),
     onSuccess: () => {
-      toast.success("Профиль успешно обновлен", { autoClose: 1500 });
+      toast.success(t("profile.editProfile.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
@@ -190,9 +199,9 @@ export const useUpdateProfile = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при обновлении профиля: ${message}`);
+        toast.error(t("profile.editProfile.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при обновлении профиля");
+        toast.error(t("profile.editProfile.unknownError"));
       }
     },
   });
@@ -201,6 +210,7 @@ export const useUpdateProfile = () => {
 export const useUpdateProfileAsAdmin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: ({
       id,
@@ -209,10 +219,19 @@ export const useUpdateProfileAsAdmin = () => {
     }: {
       id: number | string;
       user: IEditUser;
+      isNavigateAfterSuccess?: boolean;
+    }) =>
+      updateProfileAsAdmin(id, user).then(() => ({
+        id,
+        user,
+        isNavigateAfterSuccess,
+      })),
+    onSuccess: (data: {
+      id: number | string;
+      user: IEditUser;
       isNavigateAfterSuccess: boolean;
-    }) => updateProfileAsAdmin(id, user).then(() => ({ id, user, isNavigateAfterSuccess })),
-    onSuccess: (data: { id: number | string; user: IEditUser, isNavigateAfterSuccess: boolean }) => {
-      toast.success("Профиль успешно обновлен", { autoClose: 1500 });
+    }) => {
+      toast.success(t("profile.editProfile.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
@@ -229,9 +248,9 @@ export const useUpdateProfileAsAdmin = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при обновлении профиля: ${message}`);
+        toast.error(t("profile.editProfile.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при обновлении профиля");
+        toast.error(t("profile.editProfile.unknownError"));
       }
     },
   });
@@ -239,6 +258,7 @@ export const useUpdateProfileAsAdmin = () => {
 
 export const useUpdateRegistration = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: ({
       playerId,
@@ -253,7 +273,7 @@ export const useUpdateRegistration = () => {
         competitionId,
       })),
     onSuccess: (data) => {
-      toast.success("Регистрация успешно обновлена", { autoClose: 1500 });
+      toast.success(t("competition.registration.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [
           QUERY_KEYS.GET_COMPETITION_REGISTRATIONS,
@@ -264,9 +284,9 @@ export const useUpdateRegistration = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при обновлении регистрации: ${message}`);
+        toast.error(t("competition.registration.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при обновлении регистрации");
+        toast.error(t("competition.registration.unknownError"));
       }
     },
   });
@@ -275,10 +295,11 @@ export const useUpdateRegistration = () => {
 export const useUploadDocument = () => {
   const queryClient = useQueryClient();
   const { user } = useUserContext();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (document: DocumentForm) => uploadDocument(document),
     onSuccess: () => {
-      toast.success("Документ успешно загружен", { autoClose: 1500 });
+      toast.success(t("profile.documents.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USER_DOCUMENTS, user?.id],
       });
@@ -286,9 +307,9 @@ export const useUploadDocument = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(`Ошибка при загрузке документа: ${message}`);
+        toast.error(t("profile.documents.error", { message }));
       } else {
-        toast.error("Неизвестная ошибка при загрузке документа");
+        toast.error(t("profile.documents.unknownError"));
       }
     },
   });

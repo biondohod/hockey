@@ -40,6 +40,7 @@
   },
   "createCompetition": {
     "pending": "Creating competition...",
+    "success": "Competition has been created successfully!",
     "error": "Error creating competition: {{message}}",
     "unknownError": "Unknown error while creating competition",
     "title": "Create Competition",
@@ -87,10 +88,27 @@
     }
   },
   "editCompetition": {
-    "title": "Edit Competition"
+    "title": "Edit Competition",
+    "pending": "Updating competition...",
+    "success": "Competition has been updated successfully!",
+    "error": "Error updating competition: {{message}}",
+    "unknownError": "Unknown error while updating competition"
+  },
+  "register": {
+    "pending": "Registering for the competition...",
+    "success": "You have successfully registered for the competition!",
+    "error": "Error registering for the competition: {{message}}",
+    "unknownError": "Unknown error while registering for the competition",
+    "cancelPending": "Canceling registration...",
+    "cancelSuccess": "You have successfully canceled your registration for the competition!",
+    "cancelError": "Error canceling registration for the competition: {{message}}",
+    "unknownCancelError": "Unknown error while canceling registration for the competition"
   },
   "registration": {
     "pending": "Updating player status...",
+    "success": "Player status has been updated successfully!",
+    "error": "Error updating player status: {{message}}",
+    "unknownError": "Unknown error while updating player status",
     "title": "Registration applications",
     "show": "Show registration applications",
     "close": "Close",

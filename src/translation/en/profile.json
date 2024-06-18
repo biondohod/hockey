@@ -28,9 +28,38 @@
     "rating": "Rating"
   },
   "editProfile": {
+    "pending": "Editing profile...",
+    "success": "Profile has been successfully updated",
+    "error": "Oops! An error occured while updating profile: {{message}}",
+    "unknownError": "Oops! Unknown error occured while updating profile",
     "title": "Edit profile",
     "editPassword": "Change password",
     "save": "Save changes",
     "role": "Choose user's role"
+  },
+  "documents": {
+    "pending": "Uploading documents...",
+    "success": "Documents have been successfully uploaded",
+    "error": "Oops! An error occured while uploading documents: {{message}}",
+    "unknownError": "Oops! Unknown error occured while uploading documents",
+    "empty": "No documents uploaded",
+    "title": "Documents",
+    "view": "View documents",
+    "uploaded": "Upload date",
+    "expires": "Expires",
+    "download": {
+      "loading": "Download link is being prepared...",
+      "click": "Click to download",
+      "notAvailable": "Document is not available for download"
+    },
+    "upload": {
+      "title": "Upload your documents",
+      "release": "Release files here to upload",
+      "dragAndDrop": "Drag and drop files here or click to select",
+      "inputName": "Enter the document name",
+      "namePlaceholder": "Document name",
+      "uploadButton": "Upload",
+      "removeButton": "Remove"
+    }
   }
 }

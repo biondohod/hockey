@@ -79,21 +79,15 @@ const AdminUsers = () => {
     } else setLimit(limit);
 
     if (!validateOptions.roles.includes(roleId)) {
-      console.log("not includes");
       const defaultRole =
         roles
           .find((role: Irole) => role.name === "Неподтвержденный")
           ?.id.toString() || "3";
-      console.log(defaultRole);
       setRoleId(defaultRole);
-      console.log("setted default role", roleId);
     } else {
-      console.log("includes");
       setRoleId(roleId);
-      console.log("setted roleId itself", roleId);
     }
 
-    console.log(roleId);
   };
 
   const checkIfPageExists = (offset: string, total: number) => {
@@ -150,12 +144,12 @@ const AdminUsers = () => {
   //     <EmptyContent message={t("competitions.schedule.emptyContent")} />
   //   );
 
-  if (!roles?.length) return <EmptyContent message={t("admin.users.empty")} />;
+  if (!roles?.length) return <EmptyContent message={t("global.admin.users.empty")} />;
 
   const renderUsersList = () => {
     if (isLoadingUsers || isFetchingUsers) return <Loader />;
     if (!usersList || !usersList.users?.length)
-      return <EmptyContent message={t("admin.users.empty")} />;
+      return <EmptyContent message={t("global.admin.users.empty")} />;
     return (
       <ul className="admin-users__list">
         {usersList.users.map((user: IUser) => (
@@ -170,7 +164,7 @@ const AdminUsers = () => {
       <div className="admin-users__filters">
         <div className="admin-users__filter">
           <span className="schedule__filter-name">
-            {t("admin.users.filterLimit")}
+            {t("global.admin.users.filterLimit")}
           </span>
           <select
             name="limit"
@@ -187,7 +181,7 @@ const AdminUsers = () => {
         </div>
         <div className="admin-users__filter">
           <span className="schedule__filter-name">
-            {t("admin.users.filterRole")}
+            {t("global.admin.users.filterRole")}
           </span>
           <select
             name="role_id"

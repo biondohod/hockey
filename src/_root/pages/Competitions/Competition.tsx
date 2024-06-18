@@ -48,6 +48,18 @@ const Competition = () => {
     }
   }, [isError, error]);
 
+  const onRegister = async (id: number) => {
+    toast.promise(register(id), {
+      pending: t("competitions.register.pending"),
+    });
+  }
+
+  const onCancelRegistration = async (id: number) => {
+    toast.promise(cancelRegistration(id), {
+      pending: t("competitions.register.cancelPending"),
+    });
+  }
+
   const renderTabContent = () => {
     if (isLoading) return <Loader fontSize={32} />;
 
@@ -132,10 +144,10 @@ const Competition = () => {
       <div className={"competition__content"}>{renderTabContent()}</div>
       {checkIsAwailableForRegistration() && (
         <div className="competition__registation">
-          <button className="competition__registrate" onClick={() => register(data!.id)} disabled={isRegistering}>
+          <button className="competition__registrate" onClick={() => onRegister(data!.id)} disabled={isRegistering}>
             {t("competitions.competition.registrate")}
           </button>
-          <button className="competition__cancel-registrate" onClick={() => cancelRegistration(data!.id)} disabled={isCancelling}>
+          <button className="competition__cancel-registrate" onClick={() => onCancelRegistration(data!.id)} disabled={isCancelling}>
             {t("competitions.competition.cancelRegistrate")}
           </button>
         </div>

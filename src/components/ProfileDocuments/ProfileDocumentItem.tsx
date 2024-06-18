@@ -1,10 +1,10 @@
 import { FC, useEffect } from "react";
 import { useGetDocumetUrl } from "../../lib/react-query/queries";
 import Loader from "../Loader/Loader";
-import { formatDateAndTime } from "../../lib/utils";
+import { formatDateAndTime, transliterateText } from "../../lib/utils";
 import axios from "axios";
-import { saveAs } from 'file-saver';
-
+import { saveAs } from "file-saver";
+import { useTranslation } from "react-i18next";
 
 type ProfileDocumentItemProps = {
   document: IDocument;
@@ -12,69 +12,71 @@ type ProfileDocumentItemProps = {
 
 const ProfileDocumentItem: FC<ProfileDocumentItemProps> = ({ document }) => {
   const { data, isLoading } = useGetDocumetUrl(document.id);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // console.log(data);
   }, [data]);
 
-  const openDocument = (url: string) => {
-    window.open(url, "_blank");
-  };
+  // const openDocument = (url: string) => {
+  //   window.open(url, "_blank");
+  // };
 
   const createdAt = formatDateAndTime(document.created_at, false);
   const expiresAt = formatDateAndTime(document.expires_at, false);
 
   const downloadDocument = (url: string, filename: string) => {
-    axios.get(url, {
-      responseType: 'blob',
-    })
-    .then((response) => {
-      const contentType = response.headers['content-type'];
-      let extension = '';
-  
-      switch(contentType) {
-        case 'image/jpeg':
-          extension = '.jpeg';
-          break;
-        case 'image/png':
-          extension = '.png';
-          break;
-        case 'application/pdf':
-          extension = '.pdf';
-          break;
-        case 'image/webp':
-          extension = '.webp';
-          break;
-        case 'image/gif':
-          extension = '.gif';
-          break;
-        // Add more cases as needed...
-      }
-  
-      saveAs(new Blob([response.data]), `${filename}${extension}`);
-    });
-  };
+    axios
+      .get(url, {
+        responseType: "blob",
+      })
+      .then((response) => {
+        const contentType = response.headers["content-type"];
+        let extension = "";
 
-  
+        switch (contentType) {
+          case "image/jpeg":
+            extension = ".jpeg";
+            break;
+          case "image/png":
+            extension = ".png";
+            break;
+          case "application/pdf":
+            extension = ".pdf";
+            break;
+          case "image/webp":
+            extension = ".webp";
+            break;
+          case "image/gif":
+            extension = ".gif";
+            break;
+          // Add more cases as needed...
+        }
+
+        saveAs(new Blob([response.data]), `${filename}${extension}`);
+      });
+  };
 
   if (isLoading)
     return (
       <li className="profile-docs__item">
         <div className="profile-docs__wrapper">
-          <span className="profile-docs__file-name">{document.name} </span>
+          <span className="profile-docs__file-name">
+            {transliterateText(document.name)}{" "}
+          </span>
           <Loader
             fontSize={20}
             loaderHeight={20}
             loaderWidth={20}
-            message="download link is loading.."
+            message={t("profile.documents.download.loading")}
           />
         </div>
         <div className="profile-docs__dates">
           <span className="profile-docs__date">
-            Дата загрузки: {createdAt.date} {createdAt.time}
+            {t("profile.documents.uploaded")}: {createdAt.date} {createdAt.time}
           </span>
           <span className="profile-docs__date">
-            Годен до: {expiresAt.date} {expiresAt.time}
+            {t("profile.documents.expires")}: {expiresAt.date} {expiresAt.time}
           </span>
         </div>
       </li>
@@ -100,23 +102,27 @@ const ProfileDocumentItem: FC<ProfileDocumentItemProps> = ({ document }) => {
             className="profile-docs__file-name profile-docs__file-name--active"
             // onClick={() => downloadDocument(data.url, document.name)}
           >
-            {document.name}
+            {transliterateText(document.name)}
           </span>
-          <button className="competition-registrations__button competition-registrations__button--close"onClick={() => downloadDocument(data.url, document.name)}>
-            click to download
+          <button
+            className="competition-registrations__button competition-registrations__button--close"
+            onClick={() => downloadDocument(data.url, document.name)}
+          >
+            {t("profile.documents.download.click")}
           </button>
         </>
       ) : (
         <span className="profile-docs__file-name">
-          {document.name} (link is not available)
+          {transliterateText(document.name)} (
+          {t("profile.documents.download.notAvailable")})
         </span>
       )}
       <div className="profile-docs__dates">
         <span className="profile-docs__date">
-          Дата загрузки: {createdAt.date} {createdAt.time}
+          {t("profile.documents.uploaded")}: {createdAt.date} {createdAt.time}
         </span>
         <span className="profile-docs__date">
-          Годен до: {expiresAt.date} {expiresAt.time}
+          {t("profile.documents.expires")}: {expiresAt.date} {expiresAt.time}
         </span>
       </div>
 

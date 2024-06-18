@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useUpdateProfileAsAdmin } from "../../lib/react-query/mutations";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
 
 type AdminUserItemProps = {
   user: IUser;
@@ -16,19 +17,23 @@ const AdminUserItem: FC<AdminUserItemProps> = ({user}) => {
     if (user.id.toString() !== e.target.value) {
       const role_id = parseInt(e.target.value);
       toast.promise(mutateAsync({id: user.id, user: {role_id}, isNavigateAfterSuccess: false}), {
-        pending: t("global.pending"),
+        pending: t("profile.editProfile.pending"),
       });
     }
   }
 
   return (
     <li className="admin-users__item">
+
+      <div className="admin-users__wrapper">
       <Link to={`/profile/${user.id}`} target="_blank" className="admin-users__name">
         {user.first_name} {user.last_name}
       </Link>
+      <ProfileDocuments id={user.id.toString()}/>
+      </div>
 
       <label htmlFor="last_name" className="auth__label">
-        {t("profile.editProfile.role")}*
+        {t("profile.editProfile.role")}
         <select
           id="last_name"
           className="auth__input"

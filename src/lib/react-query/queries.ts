@@ -20,7 +20,7 @@ export const useGetCurrentUser = (
     queryKey: [QUERY_KEYS.GET_CURRENT_USER],
     queryFn: () => getUser(id!, token!),
     enabled: !!id && !!token,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 };
 
@@ -32,7 +32,7 @@ export const useGetUser = (
     queryKey: [QUERY_KEYS.GET_USER_BY_ID, id],
     queryFn: () => getUser(id!, token!),
     enabled: !!id && !!token,
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 };
 
@@ -40,7 +40,7 @@ export const useGetCompetitions = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_COMPETITIONS],
     queryFn: () => getCompetitions(),
-    staleTime: 1000 * 60 * 10,
+    // staleTime: 1000 * 60 * 10,
   });
 };
 
@@ -51,7 +51,7 @@ export const useGetCompetition = (
     queryKey: [QUERY_KEYS.GET_COMPETITION_BY_ID, id],
     queryFn: () => getCompetition(id!),
     enabled: id !== undefined && !isNaN(id),
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 };
 
@@ -60,7 +60,7 @@ export const useGetCompeitionRegistrations = (id: number | undefined) => {
     queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, id],
     queryFn: () => getCompetitionRegistrations(id!),
     enabled: id !== undefined && !isNaN(id),
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 5,
   });
 };
 
@@ -68,7 +68,7 @@ export const useGetRoles = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ROLES],
     queryFn: () => getRoles(),
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 };
 
@@ -81,7 +81,7 @@ export const useGetCompetitionMatches = (
     queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, id],
     queryFn: () => getCompetitionMatches(id!, offset, limit),
     enabled: id !== undefined && !isNaN(id),
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 5,
   });
 };
 
@@ -90,7 +90,7 @@ export const useGetUserDocuments = (id: number | undefined) => {
     queryKey: [QUERY_KEYS.GET_USER_DOCUMENTS, id],
     queryFn: () => getUserDocuments(id!),
     enabled: id !== undefined && !isNaN(id),
-    staleTime: 1000 * 60 * 60,
+    // staleTime: 1000 * 60 * 60,
   });
 };
 
@@ -112,6 +112,6 @@ export const useGetUsersAsAdmin = (
     queryKey: [QUERY_KEYS.GET_USERS_BY_ROLE_ID, userId],
     queryFn: () => getUsersAsAdmin(userId!, limit, offset),
     enabled: !!userId,
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 5,
   });
 };
