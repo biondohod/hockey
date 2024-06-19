@@ -61,5 +61,16 @@
       "uploadButton": "Upload",
       "removeButton": "Remove"
     }
-  }
+  },
+  "delete": {
+    "title": "Danger zone",
+    "button": "Delete Profile",
+    "text": "Are you sure you want to delete the profile?",
+    "confirm": "Yes, delete",
+    "cancel": "Cancel",
+    "pending": "Profile deletion in progress...",
+    "success": "Profile successfully deleted",
+    "error": "An error occurred while deleting the profile: {{message}}",
+    "unknownError": "An unknown error occurred while deleting the profile"
+}
 }

@@ -273,3 +273,14 @@ export const creatUserAsAdmin = async (user: INewUser) => {
   });
   return response.data;
 };
+
+export const deleteUser = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.delete(`${URL_BASE}users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}

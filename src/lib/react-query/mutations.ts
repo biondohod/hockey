@@ -3,6 +3,7 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
+  deleteUser,
   loginUser,
   registerForCompetition,
   updateCompetition,
@@ -18,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { QUERY_KEYS } from "./queryKeys";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
+import { LogOutUser } from "../utils";
 
 const UNVERIFIED_USER_ROLE_ID = 3;
 
@@ -336,6 +338,26 @@ export const useCreateUserAsAdmin = () => {
         toast.error(t("auth.signUp.error", { message }));
       } else {
         toast.error(t("auth.signUp.unknownError"));
+      }
+    },
+  });
+}
+
+export const useDeleteUser = () => {
+  const { t } = useTranslation();
+  const logOut = LogOutUser(false);
+  return useMutation({
+    mutationFn: () => deleteUser(),
+    onSuccess: () => {
+      toast.success(t("profile.delete.success"), { autoClose: 1500 });
+      logOut();
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("profile.delete.error", { message }));
+      } else {
+        toast.error(t("profile.delete.unknownError"));
       }
     },
   });
