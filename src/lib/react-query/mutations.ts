@@ -19,6 +19,8 @@ import { QUERY_KEYS } from "./queryKeys";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 
+const UNVERIFIED_USER_ROLE_ID = 3;
+
 export const useCreateUserAccount = () => {
   const { setIsAuthenticated } = useUserContext();
   return useMutation({
@@ -314,3 +316,27 @@ export const useUploadDocument = () => {
     },
   });
 };
+
+export const useCreateUserAsAdmin = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (user: IEditUser) => createUserAccount(user),
+    onSuccess: (data) => {
+      toast.success(t("auth.signUp.success"), { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS_BY_ROLE_ID, UNVERIFIED_USER_ROLE_ID],
+      });
+      navigate(`/profile/${data.id}`);
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("auth.signUp.error", { message }));
+      } else {
+        toast.error(t("auth.signUp.unknownError"));
+      }
+    },
+  });
+}

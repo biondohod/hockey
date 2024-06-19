@@ -67,7 +67,7 @@ const Profile = () => {
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
   if (userRole?.is_admin || (isAdmin && isUserProfile)) {
-    console.log(userData, userRole, isAdmin, isUserProfile)
+    // console.log(userData, userRole, isAdmin, isUserProfile)
     return (
       <section className="profile">
         <h1 className="profile__title">Профиль</h1>
@@ -85,6 +85,7 @@ const Profile = () => {
                   {userData.first_name} {userData.last_name}
                 </span>
                 <Link to={`/listAllUsers`}>list all users</Link>
+                <Link to={`/createUser`}>create user</Link>
               </div>
             </div>
           </div>

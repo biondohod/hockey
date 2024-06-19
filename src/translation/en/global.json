@@ -9,6 +9,7 @@
     "unknownErrorMessage": "Unknown error"
   },
   "admin": {
+    "createUser": "Create user",
     "users": {
       "filterLimit": "Number of users per page",
       "filterRole": "User role",

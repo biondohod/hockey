@@ -2,7 +2,7 @@ import axios from "axios";
 
 const URL_BASE = "https://proj.raitonobe.ru/api/";
 
-export const createUserAccount = async (user: INewUser) => {
+export const createUserAccount = async (user: INewUser | IEditUser) => {
   const response = await axios.post(`${URL_BASE}register`, user);
   return response.data;
 };
@@ -151,7 +151,7 @@ export const updateProfileAsAdmin = async (
 ) => {
   const token = localStorage.getItem("token");
   if (!token) return null;
-  const response = await axios.patch(`${URL_BASE}admin/users/${id}`, user, {
+  const response = await axios.patch(`${URL_BASE}users/${id}`, user, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -253,12 +253,23 @@ export const getUsersAsAdmin = async (
   const token = localStorage.getItem("token");
   if (!token) return null;
   const response = await axios.get(
-    `${URL_BASE}admin/users?limit=${limit}&offset=${offset}&role_id=${roleId}`,
+    `${URL_BASE}users?limit=${limit}&offset=${offset}&role_id=${roleId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
   );
+  return response.data;
+};
+
+export const creatUserAsAdmin = async (user: INewUser) => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.post(`${URL_BASE}users`, user, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
