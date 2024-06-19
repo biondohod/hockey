@@ -96,7 +96,7 @@ export const useGetUserDocuments = (id: number | undefined) => {
 
 export const useGetDocumetUrl = (id: number | undefined) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_DOCUMENT_IMAGE, id],
+    queryKey: [QUERY_KEYS.GET_DOCUMENT_URL, id],
     queryFn: () => getDocumentUrl(id!),
     enabled: id !== undefined && !isNaN(id),
     staleTime: Infinity,

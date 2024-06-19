@@ -5,6 +5,10 @@
   justify-content: center;
   align-items: center;
 
+  &--document {
+    margin-top: 0;
+  }
+
   &__title {
     font-size: 48px;
     font-weight: 900;
@@ -32,6 +36,11 @@
       background-color: white;
       color: black;
       margin-right: 16px;
+    }
+
+    &--document {
+      font-size: 16px;
+      padding: 4px 8px;
     }
   }
 }

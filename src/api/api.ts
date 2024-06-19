@@ -284,3 +284,14 @@ export const deleteUser = async () => {
   });
   return response.data;
 }
+
+export const deleteDocument = async (documentId: number) => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.delete(`${URL_BASE}documents/${documentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}

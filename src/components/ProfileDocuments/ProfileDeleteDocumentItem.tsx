@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
-import "./DeleteProfile.scss";
-import ReactModal from "react-modal";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDeleteUser } from "../../lib/react-query/mutations";
+import { useDeleteDocument, useDeleteUser } from "../../lib/react-query/mutations";
+import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 
-const DeleteProfile = () => {
+type ProfileDeleteDocumentItemProps = {
+  id: number; 
+};
+
+const ProfileDeleteDocumentItem: FC<ProfileDeleteDocumentItemProps> = ({id}) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const { t } = useTranslation();
-  const { mutateAsync, isPending } = useDeleteUser();
+  const {mutateAsync, isPending} = useDeleteDocument();
+
+  // const { mutateAsync, isPending } = useDeleteUser();
 
   useEffect(() => {
     ReactModal.setAppElement("#root");
@@ -26,20 +31,19 @@ const DeleteProfile = () => {
   }, [modalIsOpen]);
 
   const onDeleteUser = async () => {
-    toast.promise(mutateAsync(), {
-      pending: t("profile.delete.pending"),
+    toast.promise(mutateAsync(id), {
+      pending: t("profile.documents.delete.pending"),
     });
     closeModal();
   };
 
   return (
-    <div className="profile-delete">
-      <h2 className="profile-delete__title">{t("profile.delete.title")}</h2>
+    <div className="profile-delete profile-delete--document ">
       <button
-        className="profile-delete__btn profile-delete__btn--open"
+        className="profile-delete__btn profile-delete__btn--open profile-delete__btn--document"
         onClick={openModal}
       >
-        {t("profile.delete.button")}
+        {t("profile.documents.delete.button")}
       </button>
       <ReactModal
         isOpen={modalIsOpen}
@@ -53,7 +57,7 @@ const DeleteProfile = () => {
       >
         <div className="competition-registrations__header">
           <h2 className="competition-registrations__title">
-            {t("profile.delete.text")}
+            {t("profile.documents.delete.text")}
           </h2>
           <button
             className="competition-registrations__button competition-registrations__button--close"
@@ -80,6 +84,6 @@ const DeleteProfile = () => {
       </ReactModal>
     </div>
   );
-};
+}
 
-export default DeleteProfile;
+export default ProfileDeleteDocumentItem

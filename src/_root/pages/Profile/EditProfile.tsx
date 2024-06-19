@@ -118,7 +118,7 @@ const EditProfile = () => {
                   type="edit"
                   validation={EditProfileValidation}
                 />
-                {isUserProfile && <DeleteProfile id={user.id} />}
+                {isUserProfile && <DeleteProfile />}
               </>
             )}
           </div>

@@ -3,6 +3,7 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
+  deleteDocument,
   deleteUser,
   loginUser,
   registerForCompetition,
@@ -358,6 +359,31 @@ export const useDeleteUser = () => {
         toast.error(t("profile.delete.error", { message }));
       } else {
         toast.error(t("profile.delete.unknownError"));
+      }
+    },
+  });
+}
+
+export const useDeleteDocument = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  return useMutation({
+    mutationFn: (documentId: number) => deleteDocument(documentId).then(() => ( documentId )),
+    onSuccess: (documentId: number) => {
+      toast.success(t("profile.documents.delete.success"), { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_DOCUMENTS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_DOCUMENT_URL, documentId],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("profile.documents.delete.error", { message }));
+      } else {
+        toast.error(t("profile.documents.delete.unknownError"));
       }
     },
   });
