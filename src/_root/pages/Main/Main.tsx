@@ -1,4 +1,4 @@
-import Tournaments from "../../../components/Tournaments/Tournaments";
+ import MainCompetitoins from "../../../components/MainCompetitions/MainCompetitions";
 import "./Main.scss";
 
 const Main = () => {
@@ -20,7 +20,7 @@ const Main = () => {
                     />
                 </div>
             </section>
-            <Tournaments/>
+            <MainCompetitoins/>
             <section className="partners">
                 <h2 className="partners__title">Наши партнеры</h2>
                 <ul className="partners__list">

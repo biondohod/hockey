@@ -195,6 +195,16 @@ interface IDocumentUrl {
   url: string;
 }
 
+interface IUserRegistrations {
+  count: number;
+  total: number;
+  registrations: {
+    competition: ISingleCompetition;
+    is_approved: boolean;
+    is_dropped: boolean;
+  }[];
+}
+
 type SignUpForm = {
   first_name: string;
   last_name: string;

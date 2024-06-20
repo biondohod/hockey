@@ -8,6 +8,7 @@ import {
   getRoles,
   getUser,
   getUserDocuments,
+  getUserRegistrations,
   getUsersAsAdmin,
 } from "../../api/api";
 import { QUERY_KEYS } from "./queryKeys";
@@ -96,7 +97,7 @@ export const useGetUserDocuments = (id: number | undefined) => {
 
 export const useGetDocumetUrl = (id: number | undefined) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_DOCUMENT_IMAGE, id],
+    queryKey: [QUERY_KEYS.GET_DOCUMENT_URL, id],
     queryFn: () => getDocumentUrl(id!),
     enabled: id !== undefined && !isNaN(id),
     staleTime: Infinity,
@@ -115,3 +116,12 @@ export const useGetUsersAsAdmin = (
     // staleTime: 1000 * 60 * 5,
   });
 };
+
+export const useGetUserRegistrations = (id: number | undefined, offset: number | string = 0, limit: number | string = 10) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, id],
+    queryFn: () => getUserRegistrations(id!, offset, limit),
+    enabled: id !== undefined && !isNaN(id),
+    // staleTime: 1000 * 60 * 60,
+  });
+}

@@ -11,12 +11,14 @@ import ProfileForm from "../../../components/ProfileForm/ProfileForm";
 import { useTranslation } from "react-i18next";
 import { EditProfileValidation } from "../../../lib/validation";
 import { useGetUser } from "../../../lib/react-query/queries";
+import DeleteProfile from "../../../components/DeleteProfile/DeleteProfile";
 
 const EditProfile = () => {
   const { isAdmin, user, isLoading } = useUserContext();
   const { id } = useParams<{ id: string }>();
   const { data } = useGetUser(id, localStorage.getItem("token"));
   const navigate = useNavigate();
+  const [isUserProfile, setIsUserProfile] = useState(false);
   const { mutateAsync: updateUser, isPending } = useUpdateProfile();
   const { mutateAsync: updateUserAsAdmin } = useUpdateProfileAsAdmin();
   const [defaultValues, setDefaultValues] = useState<SignUpForm | null>(null);
@@ -30,9 +32,14 @@ const EditProfile = () => {
         toast.warning(t("global.noRules"));
         navigate(`/profile/${userId}`);
       }
-    // } else if (!isLoading && !user) {
-    //   toast.warning("You need to be logged in to edit your profile");
-    //   navigate("/");
+      if (userId === paramsId) {
+        setIsUserProfile(true);
+      } else {
+        setIsUserProfile(false);
+      }
+      // } else if (!isLoading && !user) {
+      //   toast.warning("You need to be logged in to edit your profile");
+      //   navigate("/");
     }
   }, [user, id]);
 
@@ -101,15 +108,18 @@ const EditProfile = () => {
         <div className="auth__wrapper">
           <div className="auth__content">
             {isLoading || !user || !defaultValues ? (
-              <Loader />
+            <Loader />
             ) : (
-              <ProfileForm
-                onSubmit={onSubmit}
-                defaultValues={defaultValues}
-                isPending={isPending}
-                type="edit"
-                validation={EditProfileValidation}
-              />
+              <>
+                <ProfileForm
+                  onSubmit={onSubmit}
+                  defaultValues={defaultValues}
+                  isPending={isPending}
+                  type="edit"
+                  validation={EditProfileValidation}
+                />
+                {isUserProfile && <DeleteProfile />}
+              </>
             )}
           </div>
         </div>

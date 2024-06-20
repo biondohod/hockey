@@ -47,7 +47,7 @@ export const SignUpValidation = z
         "auth.validation.password.refine"
       ),
     confirmPassword: z.string(),
-    role_id: z.number().optional(),
+    // role_id: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "auth.validation.confirmPassword",

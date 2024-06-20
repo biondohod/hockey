@@ -60,6 +60,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
     if (event.target.value === "") {
       setValue("telegram", "@");
     }
+    console.log(errors)
   };
 
   const handleTelegramBlur = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -71,7 +72,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
   return (
     <div className="auth__sign-up">
       <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
-        {isAdmin && (
+        {isAdmin && type === "edit" && (
           <label htmlFor="last_name" className="auth__label">
             {t("profile.editProfile.role")}*
             <select
@@ -79,14 +80,13 @@ const ProfileForm: FC<ProfileFormProps> = ({
               className="auth__input"
               required={true}
               autoComplete="off"
-              maxLength={16}
               {...register("role_id")}
             >
-              <option value={1}>Администратор</option>
-              <option value={2}>Судья</option>
-              <option value={3}>Неподтвержденный</option>
-              <option value={4}>Игрок</option>
-              <option value={5}>Спартаковец</option>
+              <option value={"1"}>Администратор</option>
+              <option value={"2"}>Судья</option>
+              <option value={"3"}>Неподтвержденный</option>
+              <option value={"4"}>Игрок</option>
+              <option value={"5"}>Спартаковец</option>
             </select>
           </label>
         )}

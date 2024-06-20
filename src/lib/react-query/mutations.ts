@@ -3,7 +3,12 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
+<<<<<<< HEAD
   editMatchScore,
+=======
+  deleteDocument,
+  deleteUser,
+>>>>>>> d381e9dba7ad64ced1d48d9c6d759c822ca43dc4
   loginUser,
   registerForCompetition,
   updateCompetition,
@@ -19,6 +24,9 @@ import { useNavigate } from "react-router-dom";
 import { QUERY_KEYS } from "./queryKeys";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
+import { LogOutUser } from "../utils";
+
+const UNVERIFIED_USER_ROLE_ID = 3;
 
 export const useCreateUserAccount = () => {
   const { setIsAuthenticated } = useUserContext();
@@ -138,15 +146,19 @@ export const useUpdateCompetition = () => {
 export const useRegisterForCompetition = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const {user} = useUserContext();
   return useMutation({
-    mutationFn: (id: number) => registerForCompetition(id).then(() => ({ id })),
-    onSuccess: (data) => {
+    mutationFn: (id: number) => registerForCompetition(id),
+    onSuccess: (_, competitionId) => {
       toast.success(t("competitions.register.success"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitionId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id]
+      })
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -162,15 +174,19 @@ export const useRegisterForCompetition = () => {
 export const useCancelRegistration = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const {user} = useUserContext();
   return useMutation({
-    mutationFn: (id: number) => cancelRegistration(id).then(() => ({ id })),
-    onSuccess: (data) => {
+    mutationFn: (id: number) => cancelRegistration(id),
+    onSuccess: (_, competitoinId) => {
       toast.success(t("competitions.register.cancelSuccess"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitoinId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id]
+      })
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -273,21 +289,24 @@ export const useUpdateRegistration = () => {
       updateRegistration(playerId, competitionId, data).then(() => ({
         competitionId,
       })),
-    onSuccess: (data) => {
-      toast.success(t("competition.registration.success"), { autoClose: 1500 });
+    onSuccess: (data, variables) => {
+      toast.success(t("competitions.registration.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [
           QUERY_KEYS.GET_COMPETITION_REGISTRATIONS,
           data.competitionId,
         ],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, variables.playerId]
+      })
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(t("competition.registration.error", { message }));
+        toast.error(t("competitions.registration.error", { message }));
       } else {
-        toast.error(t("competition.registration.unknownError"));
+        toast.error(t("competitions.registration.unknownError"));
       }
     },
   });
@@ -316,6 +335,7 @@ export const useUploadDocument = () => {
   });
 };
 
+<<<<<<< HEAD
 export const useEditMatchScore = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -337,11 +357,70 @@ export const useEditMatchScore = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, values.competitionId],
+=======
+export const useCreateUserAsAdmin = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (user: IEditUser) => createUserAccount(user),
+    onSuccess: (data) => {
+      toast.success(t("auth.signUp.success"), { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS_BY_ROLE_ID, UNVERIFIED_USER_ROLE_ID],
+      });
+      navigate(`/profile/${data.id}`);
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("auth.signUp.error", { message }));
+      } else {
+        toast.error(t("auth.signUp.unknownError"));
+      }
+    },
+  });
+}
+
+export const useDeleteUser = () => {
+  const { t } = useTranslation();
+  const logOut = LogOutUser(false);
+  return useMutation({
+    mutationFn: () => deleteUser(),
+    onSuccess: () => {
+      toast.success(t("profile.delete.success"), { autoClose: 1500 });
+      logOut();
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("profile.delete.error", { message }));
+      } else {
+        toast.error(t("profile.delete.unknownError"));
+      }
+    },
+  });
+}
+
+export const useDeleteDocument = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  return useMutation({
+    mutationFn: (documentId: number) => deleteDocument(documentId).then(() => ( documentId )),
+    onSuccess: (documentId: number) => {
+      toast.success(t("profile.documents.delete.success"), { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_DOCUMENTS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_DOCUMENT_URL, documentId],
+>>>>>>> d381e9dba7ad64ced1d48d9c6d759c822ca43dc4
       });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
+<<<<<<< HEAD
         toast.error(t("competitions.schedule.editScore.error", { message }));
       } else {
         toast.error(t("competitions.schedule.editScore.unknownError"));
@@ -349,3 +428,12 @@ export const useEditMatchScore = () => {
     },
   });
 };
+=======
+        toast.error(t("profile.documents.delete.error", { message }));
+      } else {
+        toast.error(t("profile.documents.delete.unknownError"));
+      }
+    },
+  });
+}
+>>>>>>> d381e9dba7ad64ced1d48d9c6d759c822ca43dc4

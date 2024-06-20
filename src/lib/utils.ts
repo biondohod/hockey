@@ -6,21 +6,20 @@ import i18next from "i18next";
 import { transliterate } from "transliteration";
 import { toast } from "react-toastify";
 
-export const LogOutUser = () => {
+export const LogOutUser = (showToast: boolean = true) => {
   const navigate = useNavigate();
   const { setIsAuthenticated } = useUserContext();
   const queryClient = useQueryClient();
 
   return () => {
-    toast.success(i18next.t("auth.signOut.success"), { autoClose: 1500 });
+    if (showToast) {
+      toast.success(i18next.t("auth.signOut.success"), { autoClose: 1500 });
+    }
     localStorage.removeItem("id");
     localStorage.removeItem("token");
     setIsAuthenticated(false);
     navigate("/auth/sign-in");
     queryClient.removeQueries({
-      queryKey: [QUERY_KEYS.GET_CURRENT_USER],
-    });
-    queryClient.invalidateQueries({
       queryKey: [QUERY_KEYS.GET_CURRENT_USER],
     });
     // checkAuthUser();

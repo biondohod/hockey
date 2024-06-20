@@ -17,6 +17,7 @@ import EditProfile from "./_root/pages/Profile/EditProfile";
 import { useUserContext } from "./context/AuthContext";
 import AuthProvider from "./context/AuthProvider";
 import AdminUsers from "./_root/pages/Admin/AdminUsers";
+import AdminCreateUser from "./_root/pages/Admin/AdminCreateUser";
 
 function App() {
   const { isAuthenticated } = useUserContext();
@@ -57,6 +58,7 @@ function App() {
                   path={`/editCompetition/:id`}
                   element={<EditCompetition />}
                 />
+                <Route path={`/createUser`} element={<AdminCreateUser />} />
                 <Route path={`/listAllUsers`} element={<AdminUsers />} />
               </Route>
             </Route>

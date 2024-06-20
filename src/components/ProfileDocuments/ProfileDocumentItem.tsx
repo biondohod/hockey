@@ -5,6 +5,7 @@ import { formatDateAndTime, transliterateText } from "../../lib/utils";
 import axios from "axios";
 import { saveAs } from "file-saver";
 import { useTranslation } from "react-i18next";
+import ProfileDeleteDocumentItem from "./ProfileDeleteDocumentItem";
 
 type ProfileDocumentItemProps = {
   document: IDocument;
@@ -125,6 +126,7 @@ const ProfileDocumentItem: FC<ProfileDocumentItemProps> = ({ document }) => {
           {t("profile.documents.expires")}: {expiresAt.date} {expiresAt.time}
         </span>
       </div>
+      <ProfileDeleteDocumentItem id={document.id} />
 
       {/* {file.type.includes("image") ? (
         <>

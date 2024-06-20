@@ -6,8 +6,14 @@ import { useTranslation } from "react-i18next";
 
 type CompetitionItemProps = {
   competition: ICompetition;
+  is_approved?: boolean;
+  is_dropped?: boolean;
 };
-const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
+const CompetitionItem: FC<CompetitionItemProps> = ({
+  competition,
+  is_approved,
+  is_dropped,
+}) => {
   const { t } = useTranslation();
   const getCompetitionStatus = (closes_at: string) => {
     const closesAtDate = new Date(closes_at);
@@ -38,6 +44,19 @@ const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
     }
   };
 
+  let registrationStatus: string | null = null;
+
+  if (is_approved !== undefined && is_dropped !== undefined) {
+    if (is_approved) {
+      registrationStatus = "approved";
+    } else if (!is_approved) {
+      registrationStatus = "not approved";
+    }
+    if (is_dropped) {
+      registrationStatus = "dropped";
+    }
+  }
+
   return (
     <li className="competitions__item">
       <div className={"competitions__wrapper"}>
@@ -59,6 +78,16 @@ const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
           </div>
         </div>
         <p className="competitions__description">{competition.description}</p>
+        {/* {registrationStatus && (
+          <div className="profile-competition__registration">
+            <span className="profile-comeptition__text">
+              Ваш статус регистрации на турнир{" "}
+            </span>
+            <span className="profile-comeptition__status">
+              {registrationStatus}
+            </span>
+          </div>
+        )} */}
       </div>
       <Link
         to={`/competition/${competition.id}/info`}

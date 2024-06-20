@@ -9,6 +9,7 @@
     "unknownErrorMessage": "Неизвестная ошибка"
   },
   "admin": {
+    "createUser": "Создать пользователя",
     "users": {
       "filterLimit": "Количество пользователей на странице",
       "filterRole": "Роль пользователей",

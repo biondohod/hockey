@@ -17,6 +17,10 @@
     "closes_at": "Registration end date",
     "about": "More details"
   },
+  "profile": {
+    "empty": "No confirmed applications for the tournament",
+    "error": "Oops! We can't load tournament applications. Please try again later"
+  },
   "competition": {
     "info": "Competition information",
     "players": "Player list",

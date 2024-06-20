@@ -15,6 +15,7 @@ import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import ProfileUploadDocuments from "../../../components/ProfileDocuments/ProfileUploadDocuments";
 import ProfileDocuments from "../../../components/ProfileDocuments/ProfileDocuments";
+import ProfileCompetitions from "../../../components/ProfileCompetitoins/ProfileCompetitions";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
@@ -67,7 +68,7 @@ const Profile = () => {
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
   if (userRole?.is_admin || (isAdmin && isUserProfile)) {
-    console.log(userData, userRole, isAdmin, isUserProfile)
+    // console.log(userData, userRole, isAdmin, isUserProfile)
     return (
       <section className="profile">
         <h1 className="profile__title">Профиль</h1>
@@ -85,6 +86,7 @@ const Profile = () => {
                   {userData.first_name} {userData.last_name}
                 </span>
                 <Link to={`/listAllUsers`}>list all users</Link>
+                <Link to={`/createUser`}>create user</Link>
               </div>
             </div>
           </div>
@@ -156,22 +158,22 @@ const Profile = () => {
                   {calculateAge(userData.player.birth_date) || ""}
                 </span>
               </li>
-              <li className="profile-info__about">
+              {/* <li className="profile-info__about">
                 <span className="profile-info__about-title">
                   {t("profile.trainer")}
                 </span>
                 <span className="profile-info__about-value">
                   {transliterateText("Иванов И.И.")}
                 </span>
-              </li>
-              <li className="profile-info__about">
+              </li> */}
+              {/* <li className="profile-info__about">
                 <span className="profile-info__about-title">
                   {t("profile.healthStatus.title")}
                 </span>
                 <span className="profile-info__about-value">
                   {t("profile.healthStatus.healthy")}
                 </span>
-              </li>
+              </li> */}
               <li className="profile-info__about">
                 <span className="profile-info__about-title">
                   {t("profile.sex.sex")}
@@ -182,14 +184,14 @@ const Profile = () => {
                     : t("profile.sex.female") || ""}
                 </span>
               </li>
-              <li className="profile-info__about">
+              {/* <li className="profile-info__about">
                 <span className="profile-info__about-title">
                   {t("profile.trainingLevel.title")}
                 </span>
                 <span className="profile-info__about-value">
                   {t("profile.trainingLevel.2level")}
                 </span>
-              </li>
+              </li> */}
             </ul>
             {isUserProfile || isAdmin ? (
               <Link
@@ -203,13 +205,13 @@ const Profile = () => {
             )}
           </div>
         </div>
-        <div className="profile__tournaments">
+        <div className="profile__competitions">
           <h2 className="profile__subtitle">
             {t("profile.competitions.title")}
           </h2>
-
-          <ul className="profile-tournaments__list">
-            {/* <li className="profile-tournaments__item">
+          <ProfileCompetitions id={data.id}/>
+          {/* <ul className="profile-tournaments__list">
+            <li className="profile-tournaments__item">
               <div className="profile-tournaments__wrapper">
                 <span className="profile-tournaments__name">
                   Ранее вы зарегистровались на участие в турнире (Название
@@ -229,8 +231,8 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </li> */}
-          </ul>
+            </li>
+          </ul> */}
         </div>
         <div className="profile__rating">
           <h2 className="profile__subtitle">{t("profile.rating.rating")}</h2>
