@@ -3,6 +3,7 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
+  editMatchScore,
   loginUser,
   registerForCompetition,
   updateCompetition,
@@ -310,6 +311,40 @@ export const useUploadDocument = () => {
         toast.error(t("profile.documents.error", { message }));
       } else {
         toast.error(t("profile.documents.unknownError"));
+      }
+    },
+  });
+};
+
+export const useEditMatchScore = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  return useMutation({
+    mutationFn: ({
+      competitionId,
+      matchId,
+      leftScore,
+      rightScore,
+    }: {
+      competitionId: number;
+      matchId: number;
+      leftScore: number;
+      rightScore: number;
+    }) => editMatchScore(competitionId, matchId, leftScore, rightScore),
+    onSuccess: (_, values) => {
+      toast.success(t("competitions.schedule.editScore.success"), {
+        autoClose: 1500,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, values.competitionId],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("competitions.schedule.editScore.error", { message }));
+      } else {
+        toast.error(t("competitions.schedule.editScore.unknownError"));
       }
     },
   });

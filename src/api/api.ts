@@ -262,3 +262,23 @@ export const getUsersAsAdmin = async (
   );
   return response.data;
 };
+
+export const editMatchScore = async (
+  competitionId: number,
+  matchId: number,
+  leftScore: number,
+  rightScore: number
+) => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.patch(
+    `${URL_BASE}competitions/${competitionId}/matches/${matchId}`,
+    { leftScore, rightScore },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};

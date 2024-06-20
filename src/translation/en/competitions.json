@@ -131,6 +131,15 @@
     "team": "Team",
     "game": "Game",
     "unknownScore": "Match score is not yet known",
-    "emptyTeam": "There are no players in this team yet"
+    "emptyTeam": "There are no players in this team yet",
+    "setUnknownScore": "The match score is not yet set. Set the score for the left and right team below.",
+    "setScore": "Change score",
+    "editScore": {
+      "pending": "Updating match score...",
+      "success": "Match score has been updated successfully!",
+      "error": "Error updating match score: {{message}}",
+      "unknownError": "Unknown error while updating match score",
+      "invalidScore": "Please provide a valid match score"
+    }
   }
 }
