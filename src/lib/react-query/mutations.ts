@@ -142,15 +142,19 @@ export const useUpdateCompetition = () => {
 export const useRegisterForCompetition = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const {user} = useUserContext();
   return useMutation({
-    mutationFn: (id: number) => registerForCompetition(id).then(() => ({ id })),
-    onSuccess: (data) => {
+    mutationFn: (id: number) => registerForCompetition(id),
+    onSuccess: (_, competitionId) => {
       toast.success(t("competitions.register.success"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitionId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id]
+      })
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -166,15 +170,19 @@ export const useRegisterForCompetition = () => {
 export const useCancelRegistration = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const {user} = useUserContext();
   return useMutation({
-    mutationFn: (id: number) => cancelRegistration(id).then(() => ({ id })),
-    onSuccess: (data) => {
+    mutationFn: (id: number) => cancelRegistration(id),
+    onSuccess: (_, competitoinId) => {
       toast.success(t("competitions.register.cancelSuccess"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, data.id],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitoinId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id]
+      })
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -277,21 +285,24 @@ export const useUpdateRegistration = () => {
       updateRegistration(playerId, competitionId, data).then(() => ({
         competitionId,
       })),
-    onSuccess: (data) => {
-      toast.success(t("competition.registration.success"), { autoClose: 1500 });
+    onSuccess: (data, variables) => {
+      toast.success(t("competitions.registration.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
         queryKey: [
           QUERY_KEYS.GET_COMPETITION_REGISTRATIONS,
           data.competitionId,
         ],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, variables.playerId]
+      })
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(t("competition.registration.error", { message }));
+        toast.error(t("competitions.registration.error", { message }));
       } else {
-        toast.error(t("competition.registration.unknownError"));
+        toast.error(t("competitions.registration.unknownError"));
       }
     },
   });

@@ -8,6 +8,7 @@ export enum QUERY_KEYS {
     GET_USER_BY_ID = "getUserById",
     GET_USER_DOCUMENTS = "getUserDocuments",
     GET_DOCUMENT_URL = "getDocumentUrl",
+    GET_USER_REGISTRATIONS = "getUserRegistrations",
 
     //COMPETITION KEYS
     GET_COMPETITIONS = "getCompetitions",

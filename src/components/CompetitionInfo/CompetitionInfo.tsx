@@ -17,6 +17,7 @@ type CompetitionInfoProps = {
 const CompetitionInfo: FC<CompetitionInfoProps> = ({ data }) => {
   const { user, isAdmin } = useUserContext();
   const { t } = useTranslation();
+  console.log(isAdmin, data);
   return (
     <>
       <div className={"competition-info"}>

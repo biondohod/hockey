@@ -283,7 +283,7 @@ export const deleteUser = async () => {
     },
   });
   return response.data;
-}
+};
 
 export const deleteDocument = async (documentId: number) => {
   const token = localStorage.getItem("token");
@@ -294,4 +294,22 @@ export const deleteDocument = async (documentId: number) => {
     },
   });
   return response.data;
-}
+};
+
+export const getUserRegistrations = async (
+  id: number,
+  offset: number | string,
+  limit: number | string
+): Promise<IUserRegistrations | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.get(
+    `${URL_BASE}users/${id}/registrations?limit=${limit}&offset=${offset}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};

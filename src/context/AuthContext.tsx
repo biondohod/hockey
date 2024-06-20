@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [role, setRole] = useState<Irole | null>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: roles, isLoading: isLoadingRoles } = useGetRoles();
+  const { data: roles, isLoading: isLoadingRoles, isError: isErrorRoles } = useGetRoles();
   const {
     data,
     error,
@@ -37,7 +37,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoading = isLoadingRoles || isLoadingUser;
 
   const checkAuthUser = async () => {
-    if (!isLoading && !isLoadingRoles) {
+    if (!isLoading) {
       if (data) {
         // localStorage.setItem("isAuthenticated", "true");
         setUser(data);
