@@ -3,12 +3,9 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
-<<<<<<< HEAD
-  editMatchScore,
-=======
   deleteDocument,
   deleteUser,
->>>>>>> d381e9dba7ad64ced1d48d9c6d759c822ca43dc4
+  editMatchScore,
   loginUser,
   registerForCompetition,
   updateCompetition,
@@ -146,7 +143,7 @@ export const useUpdateCompetition = () => {
 export const useRegisterForCompetition = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const {user} = useUserContext();
+  const { user } = useUserContext();
   return useMutation({
     mutationFn: (id: number) => registerForCompetition(id),
     onSuccess: (_, competitionId) => {
@@ -157,8 +154,8 @@ export const useRegisterForCompetition = () => {
         queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitionId],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id]
-      })
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id],
+      });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -174,7 +171,7 @@ export const useRegisterForCompetition = () => {
 export const useCancelRegistration = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const {user} = useUserContext();
+  const { user } = useUserContext();
   return useMutation({
     mutationFn: (id: number) => cancelRegistration(id),
     onSuccess: (_, competitoinId) => {
@@ -185,8 +182,8 @@ export const useCancelRegistration = () => {
         queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitoinId],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id]
-      })
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id],
+      });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -290,7 +287,9 @@ export const useUpdateRegistration = () => {
         competitionId,
       })),
     onSuccess: (data, variables) => {
-      toast.success(t("competitions.registration.success"), { autoClose: 1500 });
+      toast.success(t("competitions.registration.success"), {
+        autoClose: 1500,
+      });
       queryClient.invalidateQueries({
         queryKey: [
           QUERY_KEYS.GET_COMPETITION_REGISTRATIONS,
@@ -298,8 +297,8 @@ export const useUpdateRegistration = () => {
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, variables.playerId]
-      })
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, variables.playerId],
+      });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -335,29 +334,6 @@ export const useUploadDocument = () => {
   });
 };
 
-<<<<<<< HEAD
-export const useEditMatchScore = () => {
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-  return useMutation({
-    mutationFn: ({
-      competitionId,
-      matchId,
-      leftScore,
-      rightScore,
-    }: {
-      competitionId: number;
-      matchId: number;
-      leftScore: number;
-      rightScore: number;
-    }) => editMatchScore(competitionId, matchId, leftScore, rightScore),
-    onSuccess: (_, values) => {
-      toast.success(t("competitions.schedule.editScore.success"), {
-        autoClose: 1500,
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, values.competitionId],
-=======
 export const useCreateUserAsAdmin = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -380,7 +356,7 @@ export const useCreateUserAsAdmin = () => {
       }
     },
   });
-}
+};
 
 export const useDeleteUser = () => {
   const { t } = useTranslation();
@@ -400,13 +376,14 @@ export const useDeleteUser = () => {
       }
     },
   });
-}
+};
 
 export const useDeleteDocument = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   return useMutation({
-    mutationFn: (documentId: number) => deleteDocument(documentId).then(() => ( documentId )),
+    mutationFn: (documentId: number) =>
+      deleteDocument(documentId).then(() => documentId),
     onSuccess: (documentId: number) => {
       toast.success(t("profile.documents.delete.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
@@ -414,13 +391,45 @@ export const useDeleteDocument = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_DOCUMENT_URL, documentId],
->>>>>>> d381e9dba7ad64ced1d48d9c6d759c822ca43dc4
       });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-<<<<<<< HEAD
+        toast.error(t("profile.documents.delete.error", { message }));
+      } else {
+        toast.error(t("profile.documents.delete.unknownError"));
+      }
+    },
+  });
+};
+
+export const useEditMatchScore = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  return useMutation({
+    mutationFn: ({
+      competitionId,
+      matchId,
+      leftScore,
+      rightScore,
+    }: {
+      competitionId: number;
+      matchId: number;
+      leftScore: number;
+      rightScore: number;
+    }) => editMatchScore(competitionId, matchId, leftScore, rightScore),
+    onSuccess: (_, values) => {
+      toast.success(t("competitions.schedule.editScore.success"), {
+        autoClose: 1500,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, values.competitionId],
+      });
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
         toast.error(t("competitions.schedule.editScore.error", { message }));
       } else {
         toast.error(t("competitions.schedule.editScore.unknownError"));
@@ -428,12 +437,3 @@ export const useDeleteDocument = () => {
     },
   });
 };
-=======
-        toast.error(t("profile.documents.delete.error", { message }));
-      } else {
-        toast.error(t("profile.documents.delete.unknownError"));
-      }
-    },
-  });
-}
->>>>>>> d381e9dba7ad64ced1d48d9c6d759c822ca43dc4

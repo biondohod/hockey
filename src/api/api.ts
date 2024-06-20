@@ -324,7 +324,7 @@ export const editMatchScore = async (
   if (!token) return null;
   const response = await axios.patch(
     `${URL_BASE}competitions/${competitionId}/matches/${matchId}`,
-    { leftScore, rightScore },
+    { left_score: leftScore, right_score: rightScore },
     {
       headers: {
         Authorization: `Bearer ${token}`,

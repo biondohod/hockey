@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDeleteDocument, useDeleteUser } from "../../lib/react-query/mutations";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
+import { useDeleteDocument } from "../../lib/react-query/mutations";
 
 type ProfileDeleteDocumentItemProps = {
   id: number; 
