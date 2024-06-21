@@ -44,16 +44,28 @@ const CompetitionItem: FC<CompetitionItemProps> = ({
     }
   };
 
-  let registrationStatus: string | null = null;
+  let registrationStatus: JSX.Element | null = null;
 
   if (is_approved !== undefined && is_dropped !== undefined) {
     if (is_approved) {
-      registrationStatus = "approved";
+      registrationStatus = (
+        <span className="profile-comeptition__status profile-comeptition__status--approved">
+          {t("profile.competition.approved")}
+        </span>
+      );
     } else if (!is_approved) {
-      registrationStatus = "not approved";
+      registrationStatus = (
+        <span className="profile-comeptition__status profile-comeptition__status--not-approved">
+          {t("profile.competition.notApproved")}
+        </span>
+      );
     }
     if (is_dropped) {
-      registrationStatus = "dropped";
+      registrationStatus = (
+        <span className="profile-comeptition__status profile-comeptition__status--dropped">
+          {t("profile.competition.dropped")}
+        </span>
+      );
     }
   }
 
@@ -78,16 +90,14 @@ const CompetitionItem: FC<CompetitionItemProps> = ({
           </div>
         </div>
         <p className="competitions__description">{competition.description}</p>
-        {/* {registrationStatus && (
+        {registrationStatus && (
           <div className="profile-competition__registration">
             <span className="profile-comeptition__text">
-              Ваш статус регистрации на турнир{" "}
+              {t("profile.competition.status")}:{" "}
             </span>
-            <span className="profile-comeptition__status">
               {registrationStatus}
-            </span>
           </div>
-        )} */}
+        )}
       </div>
       <Link
         to={`/competition/${competition.id}/info`}

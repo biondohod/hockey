@@ -62,15 +62,15 @@
       "removeButton": "Remove"
     },
     "delete": {
-    "button": "Delete Document",
-    "text": "Are you sure you want to delete the document?",
-    "confirm": "Yes, delete",
-    "cancel": "Cancel",
-    "pending": "Document deletion in progress...",
-    "success": "Document successfully deleted",
-    "error": "An error occurred while deleting the document: {{message}}",
-    "unknownError": "An unknown error occurred while deleting the document"
-}
+      "button": "Delete Document",
+      "text": "Are you sure you want to delete the document?",
+      "confirm": "Yes, delete",
+      "cancel": "Cancel",
+      "pending": "Document deletion in progress...",
+      "success": "Document successfully deleted",
+      "error": "An error occurred while deleting the document: {{message}}",
+      "unknownError": "An unknown error occurred while deleting the document"
+    }
   },
   "delete": {
     "title": "Danger zone",
@@ -82,5 +82,11 @@
     "success": "Profile successfully deleted",
     "error": "An error occurred while deleting the profile: {{message}}",
     "unknownError": "An unknown error occurred while deleting the profile"
-}
+  },
+  "competition": {
+    "status": "Your status in the competition",
+    "approved": "Approved",
+    "notApproved": "Waiting for approval",
+    "dropped": "Dropped"
+  }
 }

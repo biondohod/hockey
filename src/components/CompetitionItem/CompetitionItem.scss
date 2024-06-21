@@ -41,3 +41,19 @@
     color: #000;
   }
 }
+
+.profile-comeptition {
+  &__status {
+    &--approved {
+      color: rgb(26, 214, 56);
+    }
+
+    &--not-approved {
+      color: rgb(0, 133, 255);
+    }
+
+    &--dropped {
+      color: red;
+    }
+  }
+}
