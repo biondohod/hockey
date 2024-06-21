@@ -40,7 +40,11 @@
       "age": "Eligible player age",
       "format": "Format",
       "edit": "Edit"
-    }
+    },
+    "approved": "Your registration for the tournament has been confirmed. You can opt out by clicking the button on the right",
+    "notApproved": "Your registration for the tournament has not yet been confirmed. Please wait for confirmation from the organizer or opt out by clicking the button on the right",
+    "notRegistered": "You can apply to participate in the tournament by clicking the button on the right",
+    "dropped": "You have been dropped from participating in the tournament"
   },
   "createCompetition": {
     "pending": "Creating competition...",

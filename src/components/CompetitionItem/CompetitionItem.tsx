@@ -19,7 +19,6 @@ const CompetitionItem: FC<CompetitionItemProps> = ({
     const closesAtDate = new Date(closes_at);
     const today = new Date();
 
-    // Reset the time part of the dates to compare only the date part
     closesAtDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
 

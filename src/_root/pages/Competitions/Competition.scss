@@ -8,9 +8,8 @@
   &__registation {
     max-width: 1286px;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     gap: 24px;
     margin-top: 52px;
   }

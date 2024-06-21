@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useGetCompetition } from "../../../lib/react-query/queries";
+import {
+  useGetCompetition,
+  useGetUserRegistrations,
+} from "../../../lib/react-query/queries";
 import CompetitionInfo from "../../../components/CompetitionInfo/CompetitionInfo.tsx";
 import "./Competition.scss";
 import { useTranslation } from "react-i18next";
@@ -8,7 +11,10 @@ import Loader from "../../../components/Loader/Loader.tsx";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement.tsx";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { useCancelRegistration, useRegisterForCompetition } from "../../../lib/react-query/mutations.ts";
+import {
+  useCancelRegistration,
+  useRegisterForCompetition,
+} from "../../../lib/react-query/mutations.ts";
 import { useUserContext } from "../../../context/AuthContext.tsx";
 import CompetitionRegistrations from "../../../components/CompetitionRegistrations/CompetitionRegistrations.tsx";
 import CompetitionSchedule from "../../../components/CompetitionSchedule/CompetitionSchedule.tsx";
@@ -18,11 +24,19 @@ const Competition = () => {
   const COMPETITION_TABS = ["info", "players", "games", "table"];
   const parsedId = id ? parseInt(id) : undefined;
   const [selectedType, setSelectedType] = useState("info");
-  const {user, isAdmin} = useUserContext();
+  const { user, isAdmin } = useUserContext();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const {mutateAsync: register, isPending: isRegistering} = useRegisterForCompetition();
-  const {mutateAsync: cancelRegistration, isPending: isCancelling} = useCancelRegistration();
+  const { mutateAsync: register, isPending: isRegistering } =
+    useRegisterForCompetition();
+  const { mutateAsync: cancelRegistration, isPending: isCancelling } =
+    useCancelRegistration();
+  const userId = typeof user?.id === "string" ? parseInt(user?.id) : user?.id;
+  const { data: userRegistrations, isLoading: isUserRegistrationsLoading } =
+    useGetUserRegistrations(userId);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [isDropped, setIsDropped] = useState(false);
 
   // Call the hook at the top level
   const { data, isLoading, isError, error } = useGetCompetition(parsedId);
@@ -48,17 +62,34 @@ const Competition = () => {
     }
   }, [isError, error]);
 
+  useEffect(() => {
+    if (userRegistrations) {
+      const competiton = userRegistrations.registrations.find(
+        (registration) => registration.competition.id === parsedId
+      );
+      if (competiton) {
+        setIsRegistered(true);
+        setIsApproved(competiton.is_approved);
+        setIsDropped(competiton.is_dropped);
+      } else {
+        setIsRegistered(false);
+        setIsApproved(false);
+        setIsDropped(false);
+      }
+    }
+  }, [userRegistrations]);
+
   const onRegister = async (id: number) => {
     toast.promise(register(id), {
       pending: t("competitions.register.pending"),
     });
-  }
+  };
 
   const onCancelRegistration = async (id: number) => {
     toast.promise(cancelRegistration(id), {
       pending: t("competitions.register.cancelPending"),
     });
-  }
+  };
 
   const renderTabContent = () => {
     if (isLoading) return <Loader fontSize={32} />;
@@ -84,18 +115,73 @@ const Competition = () => {
           <EmptyContent message={t("competitions.competition.emptyCategory")} />
         );
       default:
-        return (
-          <EmptyContent/>
-        );
+        return <EmptyContent />;
     }
   };
 
   const checkIsAwailableForRegistration = () => {
-    if (!data || isLoading || isError || user?.role_id !== 4 && user?.role_id !== 5 ) return false;
+    if (
+      !data ||
+      isLoading ||
+      isError ||
+      (user?.role_id !== 4 && user?.role_id !== 5)
+    )
+      return false;
     const currentDate = new Date();
     const closesAt = new Date(data.closes_at);
     return currentDate < closesAt;
-  }
+  };
+
+  const renderRegisrationButtons = () => {
+    let button: JSX.Element | null = null;
+    let text: JSX.Element | null = null;
+    const isAvailable = checkIsAwailableForRegistration();
+    if (isAvailable) {
+      if (isDropped)
+        text = <span>{t("competitions.competition.dropped")}</span>;
+      else if (!isRegistered) {
+        text = <span>{t("competitions.competition.notRegistered")}</span>;
+        button = (
+          <button
+            className="competition__registrate"
+            onClick={() => onRegister(data!.id)}
+            disabled={isRegistering}
+          >
+            {t("competitions.competition.registrate")}
+          </button>
+        );
+      }
+      else if (isRegistered && isApproved) {
+        text = <span>{t("competitions.competition.approved")}</span>;
+        button = (
+          <button
+            className="competition__cancel-registrate"
+            onClick={() => onCancelRegistration(data!.id)}
+            disabled={isCancelling}
+          >
+            {t("competitions.competition.cancelRegistrate")}
+          </button>
+        );
+      } else if (isRegistered && !isApproved) {
+        text = <span>{t("competitions.competition.notApproved")}</span>;
+        button = (
+          <button
+            className="competition__cancel-registrate"
+            onClick={() => onCancelRegistration(data!.id)}
+            disabled={isCancelling}
+          >
+            {t("competitions.competition.cancelRegistrate")}
+          </button>
+        );
+      }
+    }
+    return (
+      <>
+        {text}
+        {button}
+      </>
+    );
+  };
 
   return (
     <section className="competitions">
@@ -143,16 +229,8 @@ const Competition = () => {
 
       <div className={"competition__content"}>{renderTabContent()}</div>
       {checkIsAwailableForRegistration() && (
-        <div className="competition__registation">
-          <button className="competition__registrate" onClick={() => onRegister(data!.id)} disabled={isRegistering}>
-            {t("competitions.competition.registrate")}
-          </button>
-          <button className="competition__cancel-registrate" onClick={() => onCancelRegistration(data!.id)} disabled={isCancelling}>
-            {t("competitions.competition.cancelRegistrate")}
-          </button>
-        </div>
+        <div className="competition__registation">{renderRegisrationButtons()}</div>
       )}
-      
     </section>
   );
 };
