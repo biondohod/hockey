@@ -149,5 +149,13 @@
       "unknownError": "Unknown error while updating match score",
       "invalidScore": "Please provide a valid match score"
     }
+  },
+  "delete": {
+    "text": "Are you sure you want to delete the competition? This action cannot be undone!",
+    "button": "Delete competition",
+    "pending": "Deleting competition...",
+    "success": "Competition has been deleted successfully!",
+    "error": "Error deleting competition: {{message}}",
+    "unknownError": "Unknown error while deleting competition"
   }
 }

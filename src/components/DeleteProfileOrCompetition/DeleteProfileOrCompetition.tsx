@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
-import "./DeleteProfile.scss";
+import { FC, useEffect, useState } from "react";
+import "./DeleteProfileOrCompetition.scss";
 import ReactModal from "react-modal";
 import { useTranslation } from "react-i18next";
-import { useDeleteUser } from "../../lib/react-query/mutations";
+import { useDeleteCompetition, useDeleteUser } from "../../lib/react-query/mutations";
 import { toast } from "react-toastify";
 
-const DeleteProfile = () => {
+type DeleteProfileOrCompetitionProps = {
+  type: "profile" | "competition";
+  competitionId?: number | undefined;
+};
+
+const DeleteProfileOrCompetition: FC<DeleteProfileOrCompetitionProps> = ({type, competitionId}) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const { t } = useTranslation();
-  const { mutateAsync, isPending } = useDeleteUser();
+  const { mutateAsync: deleteUser, isPending: isPendingDeleteUser } = useDeleteUser();
+  const { mutateAsync: deleteCompetition, isPending: isPendingDeleteCompetition } = useDeleteCompetition();
 
   useEffect(() => {
     ReactModal.setAppElement("#root");
@@ -26,11 +32,18 @@ const DeleteProfile = () => {
   }, [modalIsOpen]);
 
   const onDeleteUser = async () => {
-    toast.promise(mutateAsync(), {
-      pending: t("profile.delete.pending"),
+    if (type === "profile") {      
+      toast.promise(deleteUser(), {
+        pending: t("profile.delete.pending"),
+      });
+    }
+    if (type === "competition" && competitionId) {
+    toast.promise(deleteCompetition(competitionId), {
+      pending: t("competitions.delete.pending"),
     });
     closeModal();
   };
+}
 
   return (
     <div className="profile-delete">
@@ -39,7 +52,7 @@ const DeleteProfile = () => {
         className="profile-delete__btn profile-delete__btn--open"
         onClick={openModal}
       >
-        {t("profile.delete.button")}
+        {type === "profile" ? t("profile.delete.button") : t("competitions.delete.button")}
       </button>
       <ReactModal
         isOpen={modalIsOpen}
@@ -53,7 +66,7 @@ const DeleteProfile = () => {
       >
         <div className="competition-registrations__header">
           <h2 className="competition-registrations__title">
-            {t("profile.delete.text")}
+            {type === "profile" ? t("profile.delete.text") : t("competitions.delete.text")}
           </h2>
           <button
             className="competition-registrations__button competition-registrations__button--close"
@@ -66,7 +79,7 @@ const DeleteProfile = () => {
           <button
             className="profile-delete__btn profile-delete__btn--delete"
             onClick={onDeleteUser}
-            disabled={isPending}
+            disabled={isPendingDeleteCompetition || isPendingDeleteUser}
           >
             {t("profile.delete.confirm")}
           </button>
@@ -82,4 +95,4 @@ const DeleteProfile = () => {
   );
 };
 
-export default DeleteProfile;
+export default DeleteProfileOrCompetition;

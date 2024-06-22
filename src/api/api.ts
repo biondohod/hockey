@@ -333,3 +333,17 @@ export const editMatchScore = async (
   );
   return response.data;
 };
+
+export const deleteCompetition = async (competitionId: number) => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.delete(
+    `${URL_BASE}competitions/${competitionId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};

@@ -11,7 +11,7 @@ import ProfileForm from "../../../components/ProfileForm/ProfileForm";
 import { useTranslation } from "react-i18next";
 import { EditProfileValidation } from "../../../lib/validation";
 import { useGetUser } from "../../../lib/react-query/queries";
-import DeleteProfile from "../../../components/DeleteProfile/DeleteProfile";
+import DeleteProfileOrCompetition from "../../../components/DeleteProfileOrCompetition/DeleteProfileOrCompetition";
 
 const EditProfile = () => {
   const { isAdmin, user, isLoading } = useUserContext();
@@ -118,7 +118,7 @@ const EditProfile = () => {
                   type="edit"
                   validation={EditProfileValidation}
                 />
-                {isUserProfile && <DeleteProfile />}
+                {isUserProfile && <DeleteProfileOrCompetition type="profile"/>}
               </>
             )}
           </div>

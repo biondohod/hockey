@@ -47,6 +47,8 @@ const Competition = () => {
     } else {
       navigate(`/competition/${id}/info`);
     }
+
+    console.log(data)
   }, [id, data]);
 
   useEffect(() => {

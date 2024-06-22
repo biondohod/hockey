@@ -23,6 +23,7 @@ const AllCompetitions = () => {
     } else {
       navigate("/AllCompetitions/4x4");
     }
+    console.log(data)
   }, [type]);
 
   useEffect(() => {

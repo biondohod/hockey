@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { EditCompetitionValidation } from "../../../lib/validation";
+import DeleteProfileOrCompetition from "../../../components/DeleteProfileOrCompetition/DeleteProfileOrCompetition";
 
 const EditCompetition = () => {
   const { id } = useParams<{ id: string }>();
@@ -123,6 +124,7 @@ const EditCompetition = () => {
               {t(`competitions.createCompetition.edit`)}
             </button>
           </form>
+          <DeleteProfileOrCompetition type="competition" competitionId={competitionId}/>
         </div>
       )}
     </>

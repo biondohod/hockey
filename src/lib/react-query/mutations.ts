@@ -82,7 +82,7 @@ export const useCreateCompetition = () => {
     mutationFn: (competition: IFormattedCompetition) =>
       createCompetition(competition, localStorage.getItem("token")),
     onSuccess: (data: { id: number }) => {
-      toast.success(t("competitions.createCompetiton.success"), {
+      toast.success(t("competitions.createCompetition.success"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
@@ -97,7 +97,7 @@ export const useCreateCompetition = () => {
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
       if (message) {
-        toast.error(t("competitions.createCompetiton.error", { message }));
+        toast.error(t("competitions.createCompetition.error", { message }));
       } else {
         toast.error(t("competitions.createCompetition.unknownError"));
       }
@@ -437,3 +437,31 @@ export const useEditMatchScore = () => {
     },
   });
 };
+
+export const useDeleteCompetition = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const {user} = useUserContext();
+  return useMutation({
+    mutationFn: (id: number) => deleteDocument(id),
+    onSuccess: () => {
+      toast.success(t("competitions.delete.success"), { autoClose: 1500 });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITIONS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id],
+      });
+      navigate("/AllCompetitions/4x4");
+    },
+    onError: (error: AxiosError) => {
+      const { message } = error.response?.data as { message?: string };
+      if (message) {
+        toast.error(t("competitions.delete.error", { message }));
+      } else {
+        toast.error(t("competitions.delete.unknownError"));
+      }
+    },
+  });
+}
