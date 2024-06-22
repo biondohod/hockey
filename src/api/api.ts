@@ -51,15 +51,15 @@ export const createCompetition = async (
   return response.data;
 };
 
-export const getCompetitions = async () => {
+export const getCompetitions = async (offset: number | string, limit: number | string) => {
   const token = localStorage.getItem("token");
   if (!token) return null;
-  const response = await axios.get(`${URL_BASE}competitions`, {
+  const response = await axios.get(`${URL_BASE}competitions?limit=${limit}&offset=${offset}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data.competitions;
+  return response.data;
 };
 
 export const getCompetition = async (id: number) => {

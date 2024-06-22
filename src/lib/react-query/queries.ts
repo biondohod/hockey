@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, UseQueryResult } from "@tanstack/react-query";
 import {
   getCompetition,
   getCompetitionMatches,
@@ -37,10 +37,28 @@ export const useGetUser = (
   });
 };
 
-export const useGetCompetitions = () => {
+// export const useGetCompetitions = () => {
+//   return useInfiniteQuery({
+//     queryKey: [QUERY_KEYS.GET_COMPETITIONS],
+//     queryFn: getCompetitions as any,
+//     getNextPageParam: (lastPage: any) => {
+//       // If there's no data, there are no more pages.
+//       if (lastPage && lastPage.documents.length === 0) {
+//         return null;
+//       }
+
+//       // Use the $id of the last document as the cursor.
+//       const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+//       return lastId;
+//     },
+//     initialPageParam: null,
+//   });
+// };
+
+export const useGetCompetitions =  (offset: number | string = 0, limit: number | string = 10) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_COMPETITIONS],
-    queryFn: () => getCompetitions(),
+    queryFn: () => getCompetitions(offset, limit),
     // staleTime: 1000 * 60 * 10,
   });
 };

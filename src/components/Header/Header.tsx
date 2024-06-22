@@ -26,16 +26,16 @@ const Header = () => {
               </h2>
               <ul className="header__popup">
                 <li>
-                  <Link to={"/AllCompetitions/4x4"}>4x4</Link>
+                  <Link to={"/AllCompetitions/4x4?limit=10&offset=0"}>4x4</Link>
                 </li>
                 <li>
-                  <Link to={"/AllCompetitions/6x6"}>6x6</Link>
+                  <Link to={"/AllCompetitions/6x6?limit=10&offset=0"}>6x6</Link>
                 </li>
                 <li>
-                  <Link to={"/AllCompetitions/paid"}>{t("header.paid")}</Link>
+                  <Link to={"/AllCompetitions/paid?limit=10&offset=0"}>{t("header.paid")}</Link>
                 </li>
                 <li>
-                  <Link to={"/AllCompetitions/archive"}>
+                  <Link to={"/AllCompetitions/archive?limit=10&offset=0"}>
                     {t("header.archive")}
                   </Link>
                 </li>
