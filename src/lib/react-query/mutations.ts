@@ -3,6 +3,7 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
+  deleteCompetition,
   deleteDocument,
   deleteUser,
   editMatchScore,
@@ -444,16 +445,16 @@ export const useDeleteCompetition = () => {
   const { t } = useTranslation();
   const {user} = useUserContext();
   return useMutation({
-    mutationFn: (id: number) => deleteDocument(id),
+    mutationFn: (id: number) => deleteCompetition(id),
     onSuccess: () => {
       toast.success(t("competitions.delete.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITIONS],
-      });
-      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id],
       });
-      navigate("/AllCompetitions/4x4");
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITIONS],
+      }).then(() => navigate("/AllCompetitions/4x4"));
+     ;
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };

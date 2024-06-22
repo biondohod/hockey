@@ -59,7 +59,7 @@ export const useGetCompetitions =  (offset: number | string = 0, limit: number |
   return useQuery({
     queryKey: [QUERY_KEYS.GET_COMPETITIONS],
     queryFn: () => getCompetitions(offset, limit),
-    // staleTime: 1000 * 60 * 10,
+    // staleTime: Infinity,
   });
 };
 

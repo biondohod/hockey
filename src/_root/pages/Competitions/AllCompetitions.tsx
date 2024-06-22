@@ -43,7 +43,15 @@ const AllCompetitions = () => {
   }, [isError, error]);
 
   useEffect(() => {
-    if (data) setCompetitionsList((prev) => prev.concat(data.competitions));
+    if (data)
+      setCompetitionsList((prev) => {
+        // if (prev.includes(data)) return prev;
+        // return prev.concat(data.competitions);
+        return data.competitions;
+      });
+    if (data && data.total < competitionsList.length) {
+      setOffset(0);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -171,11 +179,28 @@ const AllCompetitions = () => {
           {renderCompetitions(competitionsList)}
         </ul>
       }
-      {data && competitionsList.length && (data.total !== competitionsList.length) && (
-        <button className="competitions__btn competitions__btn--load-more" onClick={onLoadMore} disabled={isFetching}>
-          {t("competitions.loadMore")}
-        </button>
-      )}
+      {data &&
+        competitionsList.length &&
+        data.total !== competitionsList.length && (
+          <button
+            className="competitions__btn competitions__btn--load-more"
+            onClick={onLoadMore}
+            disabled={isFetching}
+          >
+            {t("competitions.loadMore")}
+          </button>
+        )}
+      {data &&
+        competitionsList.length &&
+        data.total === competitionsList.length && competitionsList.length > 10 && (
+          <button
+            className="competitions__btn competitions__btn--load-more"
+            onClick={onLoadMore}
+            disabled={isFetching}
+          >
+            В начало
+          </button>
+        )}
     </section>
   );
 };
