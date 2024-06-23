@@ -18,6 +18,7 @@ import { useUserContext } from "./context/AuthContext";
 import AuthProvider from "./context/AuthProvider";
 import AdminUsers from "./_root/pages/Admin/AdminUsers";
 import AdminCreateUser from "./_root/pages/Admin/AdminCreateUser";
+import MyCompetitions from "./_root/pages/Competitions/MyCompetitions";
 
 function App() {
   const { isAuthenticated } = useUserContext();
@@ -47,6 +48,7 @@ function App() {
                 path={`/competition/:id/:type`}
                 element={<Competition />}
               />
+              <Route path={`/myCompetitions`} element={<MyCompetitions />} />
 
               {/* Admin Routes */}
               <Route element={<AdminLayout />}>

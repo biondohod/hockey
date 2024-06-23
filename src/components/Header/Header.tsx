@@ -6,7 +6,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const { isAuthenticated, user } = useUserContext();
+  const { isAuthenticated, user, role, isAdmin } = useUserContext();
   const { t } = useTranslation();
   const logOut = LogOutUser();
 
@@ -95,10 +95,10 @@ const Header = () => {
               </ul>
             </div>
 
-            {isAuthenticated && (
-              <a href="" className="header__link">
+            {isAuthenticated && role?.name !== "Неподтвержденный" && !isAdmin && (
+              <Link to={'/myCompetitions'} className="header__link">
                 {t("header.my-matches")}
-              </a>
+              </Link>
             )}
             <a href="" className="header__link">
               {t("header.stop-list")}
