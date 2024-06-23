@@ -19,91 +19,128 @@ const Header = () => {
             <span className="header__text">{t("header.text")}</span>
           </Link>
 
-          <nav className="header__navigation">
-            <div className="header__competitions">
-              <h2 className="header__link header__link--popup">
-                {t("header.competitions")}
-              </h2>
-              <ul className="header__popup">
-                <li>
-                  <Link to={"/AllCompetitions/4x4?limit=10&offset=0"}>4x4</Link>
-                </li>
-                <li>
-                  <Link to={"/AllCompetitions/6x6?limit=10&offset=0"}>6x6</Link>
-                </li>
-                <li>
-                  <Link to={"/AllCompetitions/paid?limit=10&offset=0"}>{t("header.paid")}</Link>
-                </li>
-                <li>
-                  <Link to={"/AllCompetitions/archive?limit=10&offset=0"}>
-                    {t("header.archive")}
-                  </Link>
-                </li>
-                {(user?.role_id === 1 || user?.role_id === 2) && (
+          {isAuthenticated && (
+            <nav className="header__navigation">
+              <div className="header__competitions">
+                <h2 className="header__link header__link--popup">
+                  {t("header.competitions")}
+                </h2>
+                <ul className="header__popup">
                   <li>
-                    <Link to="/createCompetition">{t("header.creation")}</Link>
+                    <Link to={"/AllCompetitions/4x4?limit=10&offset=0"}>
+                      4x4
+                    </Link>
                   </li>
+                  <li>
+                    <Link to={"/AllCompetitions/6x6?limit=10&offset=0"}>
+                      6x6
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/AllCompetitions/paid?limit=10&offset=0"}>
+                      {t("header.paid")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/AllCompetitions/archive?limit=10&offset=0"}>
+                      {t("header.archive")}
+                    </Link>
+                  </li>
+                  {(isAdmin || role?.name === "Судья") && (
+                    <li>
+                      <Link to="/createCompetition">
+                        {t("header.creation")}
+                      </Link>
+                    </li>
+                  )}
+                  {role?.name === "Игрок" ||
+                    (role?.name === "Спартаковец" && (
+                      <li>
+                        <Link to={"/myCompetitions"}>
+                          {t("header.my-competitions")}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+
+              <div className="header__ratings">
+                <h2 className="header__link header__link--popup">
+                  {t("header.ratings")}
+                </h2>
+                <ul className="header__popup">
+                  <li>
+                    <a href="">{t("header.general-m")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.goalkeepers-m")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.defenders-m")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.forwards-m")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.center-m")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.general-f")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.goalkeepers-f")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.defenders-f")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.forwards-f")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.center-f")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.coaches")}</a>
+                  </li>
+                  <li>
+                    <a href="">{t("header.methods")}</a>
+                  </li>
+                  <li></li>
+                </ul>
+              </div>
+
+              {isAuthenticated &&
+                role?.name !== "Неподтвержденный" &&
+                !isAdmin && (
+                  <Link to={"/myCompetitions"} className="header__link">
+                    {t("header.my-matches")}
+                  </Link>
                 )}
-                <li>
-                  <a href="">{t("header.my-competitions")}</a>
-                </li>
-              </ul>
-            </div>
 
-            <div className="header__ratings">
-              <h2 className="header__link header__link--popup">
-                {t("header.ratings")}
-              </h2>
-              <ul className="header__popup">
-                <li>
-                  <a href="">{t("header.general-m")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.goalkeepers-m")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.defenders-m")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.forwards-m")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.center-m")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.general-f")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.goalkeepers-f")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.defenders-f")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.forwards-f")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.center-f")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.coaches")}</a>
-                </li>
-                <li>
-                  <a href="">{t("header.methods")}</a>
-                </li>
-                <li></li>
-              </ul>
-            </div>
-
-            {isAuthenticated && role?.name !== "Неподтвержденный" && !isAdmin && (
-              <Link to={'/myCompetitions'} className="header__link">
-                {t("header.my-matches")}
-              </Link>
-            )}
-            <a href="" className="header__link">
-              {t("header.stop-list")}
-            </a>
-          </nav>
+              {isAdmin && (
+                <div className="header__competitions">
+                  <h2 className="header__link header__link--popup">
+                    {t("global.admin.header.links")}
+                  </h2>
+                  <ul className="header__popup">
+                    <li>
+                      <Link to={"/listAllUsers"}>
+                        {t("global.admin.header.allUsers")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/createUser"}>
+                        {t("global.admin.header.createUser")}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+              <a href="" className="header__link">
+                {t("header.stop-list")}
+              </a>
+            </nav>
+          )}
 
           <div className="header__users">
             <div className="header__notifications">

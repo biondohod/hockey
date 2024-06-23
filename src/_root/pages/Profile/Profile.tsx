@@ -85,8 +85,6 @@ const Profile = () => {
                 <span className="profile-info__name">
                   {userData.first_name} {userData.last_name}
                 </span>
-                <Link to={`/listAllUsers`}>list all users</Link>
-                <Link to={`/createUser`}>create user</Link>
               </div>
             </div>
           </div>

@@ -118,7 +118,7 @@ export const EditProfileValidation = z
 
 export const SignInValidation = z.object({
   email: z.string().email("auth.validation.email"),
-  password: z.string(),
+  password: z.string().min(1),
 });
 
 export const CreateCompetitionValidation = z

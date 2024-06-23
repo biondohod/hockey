@@ -57,6 +57,7 @@ const SignIn = () => {
             className="auth__input"
             {...register("password")}
             placeholder={t("auth.passwordPlaceholder")}
+            required={true}
           />
         </label>
         {/* <div className="auth__checkbox">

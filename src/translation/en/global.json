@@ -14,6 +14,11 @@
       "filterLimit": "Number of users per page",
       "filterRole": "User role",
       "empty": "No users with such role"
+    },
+    "header": {
+      "links": "Admin's panel",
+      "allUsers": "All users",
+      "createUser":"Create user"
     }
   }
 }
