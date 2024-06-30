@@ -18,6 +18,7 @@ import {
 import { useUserContext } from "../../../context/AuthContext.tsx";
 import CompetitionRegistrations from "../../../components/CompetitionRegistrations/CompetitionRegistrations.tsx";
 import CompetitionSchedule from "../../../components/CompetitionSchedule/CompetitionSchedule.tsx";
+import CompetitionPlayers from "../../../components/CompetitionPlayers/CompetitionPlayers.tsx";
 
 const Competition = () => {
   const { id, type } = useParams();
@@ -48,7 +49,7 @@ const Competition = () => {
       navigate(`/competition/${id}/info`);
     }
 
-    console.log(data)
+    // console.log(data)
   }, [id, data]);
 
   useEffect(() => {
@@ -105,11 +106,18 @@ const Competition = () => {
       );
     switch (selectedType) {
       case "info":
-        return <CompetitionInfo data={data} />;
-      case "players":
         return (
-          <EmptyContent message={t("competitions.competition.emptyCategory")} />
+          <>
+            <CompetitionInfo data={data} />
+            {checkIsAwailableForRegistration() && (
+              <div className="competition__registation">
+                {renderRegisrationButtons()}
+              </div>
+            )}
+          </>
         );
+      case "players":
+        return <CompetitionPlayers competitionId={data.id} />;
       case "games":
         return <CompetitionSchedule competitionId={data.id} />;
       case "table":
@@ -152,8 +160,7 @@ const Competition = () => {
             {t("competitions.competition.registrate")}
           </button>
         );
-      }
-      else if (isRegistered && isApproved) {
+      } else if (isRegistered && isApproved) {
         text = <span>{t("competitions.competition.approved")}</span>;
         button = (
           <button
@@ -230,9 +237,11 @@ const Competition = () => {
       </div>
 
       <div className={"competition__content"}>{renderTabContent()}</div>
-      {checkIsAwailableForRegistration() && (
-        <div className="competition__registation">{renderRegisrationButtons()}</div>
-      )}
+      {/* {checkIsAwailableForRegistration() && (
+        <div className="competition__registation">
+          {renderRegisrationButtons()}
+        </div>
+      )} */}
     </section>
   );
 };

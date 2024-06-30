@@ -82,7 +82,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
               <button
                 className="competition-registrations__button competition-registrations__button--approve"
                 onClick={() =>
-                  onSubmit(registration.user.id, competitionId, {
+                  onSubmit(Number(registration.user.id), competitionId, {
                     is_approved: !registration.is_approved,
                   })
                 }
@@ -98,7 +98,7 @@ const CompetitionRegistrations: FC<CompetitionRegistrationsProps> = ({
               <button
                 className="competition-registrations__button competition-registrations__button--exclude"
                 onClick={() =>
-                  onSubmit(registration.user.id, competitionId, {
+                  onSubmit(Number(registration.user.id), competitionId, {
                     is_dropped: !registration.is_dropped,
                   })
                 }

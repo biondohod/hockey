@@ -139,14 +139,15 @@ interface ISingleCompetition {
 interface ICompetitionRegistration {
   is_approved: boolean;
   is_dropped: boolean;
-  user: {
-  first_name: string;
-    last_name: string;
-    middle_name: string;
-    email: string;
-    id: number
-    role_id: number;
-  };
+  user: IUser;
+  // user: {
+  // first_name: string;
+  //   last_name: string;
+  //   middle_name: string;
+  //   email: string;
+  //   id: number
+  //   role_id: number;
+  // };
 }
 
 interface IUpdateRegistration {
