@@ -18,7 +18,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ competitionId, match, gam
   const [leftScore, setLeftScore] = useState<number>(0);
   const [rightScore, setRightScore] = useState<number>(0);
   const {mutateAsync, isPending} = useEditMatchScore();
-  const renderPlayers = (team: IUser[]) => {
+  const renderPlayers = (team: IMatchUser[]) => {
     if (!team.length)
       return (
         <div style={{ gridColumn: "1/-1" }}>
@@ -26,6 +26,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ competitionId, match, gam
         </div>
       );
     return team.map((player) => {
+      console.log(player)
       return (
         <Link
           to={`/profile/${player.id}`}
@@ -33,7 +34,7 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ competitionId, match, gam
           key={player.id}
           className="matches__player"
         >
-          {player.first_name} {player.last_name}
+          {player.name}
         </Link>
       );
     });

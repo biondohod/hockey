@@ -46,6 +46,11 @@ interface IAllUsersByRole {
   users: IUser[];
 }
 
+interface IMatchUser {
+  id: number;
+  name: string;
+}
+
 interface IContextType {
   user: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
@@ -179,9 +184,9 @@ interface ICompetitionMatches {
 interface ICompetitionMatch {
   id: number;
   left_score: number;
-  left_team: IUser[];
+  left_team: IMatchUser[];
   right_score: number;
-  right_team: IUser[];
+  right_team: IMatchUser[];
   start_time: string;
 }
 
