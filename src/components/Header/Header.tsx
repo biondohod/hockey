@@ -6,7 +6,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const { isAuthenticated, user, role, isAdmin } = useUserContext();
+  const { isAuthenticated, user, role } = useUserContext();
   const { t } = useTranslation();
   const logOut = LogOutUser();
 
@@ -19,7 +19,7 @@ const Header = () => {
             <span className="header__text">{t("header.text")}</span>
           </Link>
 
-          {isAuthenticated && (
+          {role?.can_view && (
             <nav className="header__navigation">
               <div className="header__competitions">
                 <h2 className="header__link header__link--popup">
@@ -46,21 +46,20 @@ const Header = () => {
                       {t("header.archive")}
                     </Link>
                   </li>
-                  {(isAdmin || role?.name === "Судья") && (
+                  {role?.can_create && (
                     <li>
                       <Link to="/createCompetition">
                         {t("header.creation")}
                       </Link>
                     </li>
                   )}
-                  {role?.name === "Игрок" ||
-                    (role?.name === "Спартаковец" && (
-                      <li>
-                        <Link to={"/myCompetitions"}>
-                          {t("header.my-competitions")}
-                        </Link>
-                      </li>
-                    ))}
+                  {role?.can_participate && (
+                    <li>
+                      <Link to={"/myCompetitions"}>
+                        {t("header.my-competitions")}
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
 
@@ -109,15 +108,13 @@ const Header = () => {
                 </ul>
               </div>
 
-              {isAuthenticated &&
-                role?.name !== "Неподтвержденный" &&
-                !isAdmin && (
-                  <Link to={"/myCompetitions"} className="header__link">
-                    {t("header.my-matches")}
-                  </Link>
-                )}
+              {role?.can_participate && (
+                <Link to={"/myCompetitions"} className="header__link">
+                  {t("header.my-matches")}
+                </Link>
+              )}
 
-              {isAdmin && (
+              {role?.is_admin && (
                 <div className="header__competitions">
                   <h2 className="header__link header__link--popup">
                     {t("global.admin.header.links")}
@@ -136,14 +133,17 @@ const Header = () => {
                   </ul>
                 </div>
               )}
-              <a href="" className="header__link">
-                {t("header.stop-list")}
-              </a>
+
+              {role?.is_admin && (
+                <a href="" className="header__link">
+                  {t("header.stop-list")}
+                </a>
+              )}
             </nav>
           )}
 
           <div className="header__users">
-            <div className="header__notifications">
+            {/* <div className="header__notifications">
               <span className="header-notifications__icon"></span>
               <span className="visually-hidden">
                 {t("header.notifications")}
@@ -165,7 +165,7 @@ const Header = () => {
                   </div>
                 </li>
               </ul>
-            </div>
+            </div> */}
 
             <div className="header__profile">
               {isAuthenticated ? (

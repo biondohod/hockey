@@ -31,14 +31,7 @@ export const SignUpValidation = z
         return age >= 14;
       }, "auth.validation.birth_date.age"),
     telegram: z
-      .string()
-      .optional()
-      .refine((telegram) => {
-        if (telegram) {
-          return telegram.length >= 6;
-        }
-        return true;
-      }, "auth.validation.telegram"),
+      .string().min(6, { message: "auth.validation.telegram" }),
     password: z
       .string()
       .min(8, { message: "auth.validation.password.min" })
@@ -47,7 +40,8 @@ export const SignUpValidation = z
         "auth.validation.password.refine"
       ),
     confirmPassword: z.string(),
-    // role_id: z.string().optional(),
+    role_id: z.string().optional(),
+    position: z.string().nonempty(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "auth.validation.confirmPassword",
@@ -69,6 +63,7 @@ export const EditProfileValidation = z
       .min(2, { message: "auth.validation.middle_name.min" })
       .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
     gender: z.string().nonempty("auth.validation.gender"),
+    position: z.string().nonempty(),
     phone: z.string().refine(phone => 
       /^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(phone) || /^\+\d{11}$/.test(phone), 
       "auth.validation.phone"
@@ -120,6 +115,62 @@ export const SignInValidation = z.object({
   email: z.string().email("auth.validation.email"),
   password: z.string().min(1),
 });
+
+export const CreateUserValidation = z
+  .object({
+    first_name: z
+      .string()
+      .min(2, { message: "auth.validation.first_name.min" })
+      .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.first_name.regex"),
+    last_name: z
+      .string()
+      .min(2, { message: "auth.validation.last_name.min" })
+      .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.last_name.regex"),
+    middle_name: z
+      .string()
+      .min(2, { message: "auth.validation.middle_name.min" })
+      .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
+    gender: z.string().optional(),
+    phone: z.string().optional().refine((phone) => 
+      phone === undefined || /^\+\d \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(phone), 
+      "auth.validation.phone"
+    ),
+      // .refine((phone) => phone.trim().length === 18, "auth.validation.phone"),
+    email: z.string().email("auth.validation.email"),
+    birth_date: z
+    .string()
+    .optional()
+    .refine((date) => {
+      if (date === undefined || date === "") return true; // Immediately return true if date is undefined, as it's optional
+      const birthDate = new Date(date);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+      return age >= 14;
+    }, "auth.validation.birth_date.age"),
+    telegram: z
+      .string()
+      .optional()
+      .refine((telegram) => {
+        if (telegram) {
+          return telegram.length >= 6;
+        }
+        return true;
+      }, "auth.validation.telegram"),
+    password: z
+      .string()
+      .min(8, { message: "auth.validation.password.min" })
+      .refine(
+        (password) => /[A-Za-z]/.test(password) && /\d/.test(password),
+        "auth.validation.password.refine"
+      ),
+    confirmPassword: z.string(),
+    role_id: z.string(),
+    position: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "auth.validation.confirmPassword",
+    path: ["confirmPassword"],
+  });
 
 export const CreateCompetitionValidation = z
   .object({

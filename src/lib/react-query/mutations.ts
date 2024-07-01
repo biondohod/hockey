@@ -340,7 +340,7 @@ export const useCreateUserAsAdmin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (user: IEditUser) => createUserAccount(user),
+    mutationFn: (user: INewUserAdmin) => createUserAccount(user),
     onSuccess: (data) => {
       toast.success(t("auth.signUp.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({

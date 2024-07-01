@@ -35,7 +35,8 @@
     "title": "Edit profile",
     "editPassword": "Change password",
     "save": "Save changes",
-    "role": "Choose user's role"
+    "role": "Choose user's role",
+    "position": "Choose position"
   },
   "documents": {
     "pending": "Uploading documents...",

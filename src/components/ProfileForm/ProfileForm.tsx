@@ -60,7 +60,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
     if (event.target.value === "") {
       setValue("telegram", "@");
     }
-    console.log(errors)
+    console.log(errors);
   };
 
   const handleTelegramBlur = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -73,10 +73,10 @@ const ProfileForm: FC<ProfileFormProps> = ({
     <div className="auth__sign-up">
       <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
         {isAdmin && type === "edit" && (
-          <label htmlFor="last_name" className="auth__label">
+          <label htmlFor="role_id" className="auth__label">
             {t("profile.editProfile.role")}*
             <select
-              id="last_name"
+              id="role_id"
               className="auth__input"
               required={true}
               autoComplete="off"
@@ -193,6 +193,21 @@ const ProfileForm: FC<ProfileFormProps> = ({
         <option value="female">II юношеский спортивный разряд</option>
         <option value="female">III юношеский спортивный разряд</option>
       </select> */}
+        {type === "edit" && (
+          <label htmlFor="position" className="auth__label">
+            {t("profile.editProfile.position")}*
+            <select
+              id="position"
+              className="auth__input"
+              required={true}
+              autoComplete="off"
+              {...register("position")}
+            >
+              <option value={"player"}>Игрок</option>
+              <option value={"goalkeeper"}>Вратарь</option>
+            </select>
+          </label>
+        )}
 
         <label htmlFor="phone" className="auth__label">
           {t("auth.signUp.phone")}*
@@ -242,6 +257,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
             className="auth__input"
             required={true}
             autoComplete="off"
+            type="email"
             {...register("email")}
             {...(errors.email && {
               style: { borderColor: "red", outline: "none" },
@@ -277,6 +293,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
             type="text"
             id="telegram"
             className="auth__input"
+            required={true}
             {...register("telegram")}
             // value={telegram}
             onChange={handleTelegramChange}

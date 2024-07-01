@@ -58,10 +58,12 @@ const EditProfile = () => {
         changePassword: false,
         password: "",
         confirmPassword: "",
+        position: player.position,
         telegram: player.telegram,
         role_id: role_id.toString(),
       };
       setDefaultValues(defaultValues);
+      console.log(defaultValues);
     }
   }, [data]);
 
@@ -83,6 +85,10 @@ const EditProfile = () => {
       if (data.role_id) {
         formattedUser.role_id = parseInt(data.role_id);
       }
+    }
+
+    if ("position" in data) {
+      formattedUser.position = data.position;
     }
 
     if (data.password) {

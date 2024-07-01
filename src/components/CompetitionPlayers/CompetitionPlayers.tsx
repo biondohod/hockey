@@ -26,7 +26,7 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
   const [players, setPlayers] = useState<ICompetitionRegistration[]>([]);
   const { role } = useUserContext();
   const { mutateAsync, isPending } = useUpdateRegistration();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (data) {
@@ -85,7 +85,17 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
     },
     {
       header: "Имя",
-      accessorFn: (row) => row.user.first_name + " " + row.user.last_name,
+      cell: (info) => (
+        <Link
+          to={`/profile/${info.row.original.user.id}`}
+          className="competition-players__name"
+          target="_blank"
+        >
+          {info.row.original.user.first_name +
+            " " +
+            info.row.original.user.last_name}
+        </Link>
+      ),
     },
     {
       header: "Возраст",
@@ -93,7 +103,7 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
     },
     {
       header: "Амплуа",
-      accessorFn: (row) => row.user.player.position || "Нападающий",
+      accessorFn: (row) => row.user.player.position || "Неизвестно",
     },
     {
       header: "Шайбы",

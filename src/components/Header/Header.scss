@@ -142,8 +142,7 @@
   &__users {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    min-width: 260px;
+    gap: 24px;
   }
 
   &__language--active {
