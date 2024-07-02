@@ -191,6 +191,7 @@ interface ICompetitionScore {
   lose_score: number;
   user: IUser;
   matchScores?: {win: number | string, lose: number | string}[];
+  team?: string[];
 }
 
 

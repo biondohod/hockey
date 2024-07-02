@@ -70,7 +70,49 @@
     flex-direction: column;
     gap: 32px;
     td {
+      position: relative;
       text-align: center;
     }
+  }
+
+  &__score--game {
+    display: flex;
+    gap: 4px;
+  }
+
+  &__score--match-left,
+  &__score--match-right {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+  }
+
+  &__score--match-left {
+    background-color: #EF9A9A;
+  }
+
+  &__score--match-right {
+    background-color: #2196F3;
+  }
+
+  &__score--right-team,
+  &__score--left-team{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 12px 15px;
+  }
+
+  &__score--right-team {
+    background-color: #2196F3;
+  }
+
+  &__score--left-team {
+    background-color: #EF9A9A;
   }
 }

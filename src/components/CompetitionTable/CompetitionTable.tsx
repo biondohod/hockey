@@ -88,28 +88,30 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
   const playerData = useMemo(() => {
     if (competitionMatches && competitionScores) {
       const temp = [...competitionScores];
-      temp.map((player) => {
-        player.matchScores;
-      });
+      // temp.map((player) => {
+      //   player.matchScores;
+      // });
       temp.sort((a) => a.win_score - a.lose_score);
-      temp.map((player) => {
+      temp.forEach((player) => {
         player.matchScores = [];
+        player.team = [];
         for (const match of competitionMatches.matches) {
           if (!player.matchScores) player.matchScores = [];
           let isFinished: boolean = false;
 
-          // console.log(match)
           if (match.left_score === null && match.right_score === null) {
             player.matchScores.push({ win: "-", lose: "-" });
+            player.team?.push("none");
             continue;
           }
 
           for (const teamPlayer of match.left_team) {
             if (teamPlayer.id === player.user.id) {
+              player.team?.push("left");
               isFinished = true;
               player.matchScores!.push({
-                win: match.left_score,
-                lose: match.right_score,
+                win: teamPlayer.win_score,
+                lose: teamPlayer.lose_score,
               });
               break;
             }
@@ -120,9 +122,10 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
           for (const teamPlayer of match.right_team) {
             if (teamPlayer.id === player.user.id) {
               isFinished = true;
+              player.team?.push("right");
               player.matchScores!.push({
-                win: match.right_score,
-                lose: match.left_score,
+                win: teamPlayer.win_score,
+                lose: teamPlayer.lose_score,
               });
               break;
             }
@@ -131,6 +134,7 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
           if (isFinished) continue;
 
           player.matchScores.push({ win: "-", lose: "-" });
+          player.team?.push("none");
         }
       });
       return temp;
@@ -144,15 +148,27 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
       header: () => (
         <div className="competition-players__game-name">
           <span>Игра {index + 1 + parseInt(offset)}</span>
-          <span>
-            {match.left_score !== null ? match.left_score : "-"} :{" "}
-            {match.right_score !== null ? match.right_score : "-"}
-          </span>
+          <div className="competition-players__score--game">
+            <span className="competition-players__score--match-left">{match.left_score !== null ? match.left_score : "-"}</span>:
+            <span className="competition-players__score--match-right">{match.right_score !== null ? match.right_score : "-"}</span>
+          </div>
         </div>
       ),
-      accessorFn: (row) =>
-        row.matchScores![index].win + " : " + row.matchScores![index].lose,
-      
+      cell: (info) => (
+        <div
+          className={`${
+            info.row.original.team![index] === "left"
+              ? "competition-players__score--left-team"
+              : info.row.original.team![index] === "right"
+              ? "competition-players__score--right-team"
+              : ""
+          }`}
+        >
+          {info.row.original.matchScores![index].win +
+            " : " +
+            info.row.original.matchScores![index].lose}
+        </div>
+      ),
     })) ?? [];
 
   const columns: ColumnDef<ICompetitionScore>[] = [
@@ -224,7 +240,9 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
           ))}
         </tbody>
       </table>
-      <div className="schedule__pagination">{renderPaginationButtons(competitionMatches, setOffset, offset, limit)}</div>
+      <div className="schedule__pagination">
+        {renderPaginationButtons(competitionMatches, setOffset, offset, limit)}
+      </div>
     </section>
   );
 };
