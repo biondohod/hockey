@@ -9,7 +9,6 @@ import { ProfileDocumentsValidation } from "../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadDocument } from "../../lib/react-query/mutations";
 import { toast } from "react-toastify";
-import { transliterateText } from "../../lib/utils";
 
 const ProfileUploadDocuments = () => {
   const [modalIsOpen, setIsOpen] = useState(false);

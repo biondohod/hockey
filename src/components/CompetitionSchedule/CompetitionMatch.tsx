@@ -2,10 +2,10 @@ import { FC, useState } from "react";
 import EmptyContent from "../EmptyElement/EmptyElement";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { formatDateAndTime } from "../../lib/utils";
 import { useUserContext } from "../../context/AuthContext";
 import { useEditMatchScore } from "../../lib/react-query/mutations";
 import { toast } from "react-toastify";
+import { formatDateAndTime } from "../../lib/utils";
 
 type CompetitionMatchProps = {
   competitionId: number;

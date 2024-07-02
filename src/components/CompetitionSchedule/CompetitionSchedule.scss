@@ -39,10 +39,11 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
   }
 
   &__pagination-button {
+    width: 50px;
     font-size: 24px;
     font-weight: 300;
     color: #000;

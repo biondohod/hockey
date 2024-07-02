@@ -7,11 +7,11 @@ import {
 import "./CompetitionRegistrations.scss";
 import Loader from "../Loader/Loader";
 import EmptyContent from "../EmptyElement/EmptyElement";
-import { getUserRole } from "../../lib/utils";
 import { toast } from "react-toastify";
 import { useUpdateRegistration } from "../../lib/react-query/mutations";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { getUserRole } from "../../lib/utils";
 
 type CompetitionRegistrationsProps = {
   competitionId: number;

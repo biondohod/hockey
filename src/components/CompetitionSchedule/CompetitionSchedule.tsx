@@ -7,6 +7,7 @@ import { set } from "react-hook-form";
 import Loader from "../Loader/Loader";
 import EmptyContent from "../EmptyElement/EmptyElement";
 import { useTranslation } from "react-i18next";
+import { renderPaginationButtons } from "../../lib/utils";
 
 type CompetitionScheduleProps = {
   competitionId: number;
@@ -103,29 +104,6 @@ const CompetitionSchedule: FC<CompetitionScheduleProps> = ({
     // navigate(`?limit=${e.target.value}&offset=0`);
   };
 
-  const renderPagination = () => {
-    const pages = Math.ceil(competitionMatches!.total / parseInt(limit));
-    const currentPage = Math.ceil(parseInt(offset) / parseInt(limit) + 1);
-    const pagination = [];
-    for (let i = 1; i <= pages; i++) {
-      pagination.push(
-        <button
-          key={i}
-          onClick={() => {
-            setOffset(((i - 1) * parseInt(limit)).toString());
-          }}
-          disabled={currentPage === i}
-          className={`schedule__pagination-button ${
-            currentPage === i ? "schedule__pagination-button--active" : ""
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-    return pagination;
-  };
-
   // isFetching or isLoading
   if (isFetching) return <Loader />;
 
@@ -165,7 +143,7 @@ const CompetitionSchedule: FC<CompetitionScheduleProps> = ({
         {/* <div className="schedule__wrapper">
           {isFetching && <Loader message="Обновляем список матчей" />}
         </div> */}
-        <div className="schedule__pagination">{renderPagination()}</div>
+        <div className="schedule__pagination">{renderPaginationButtons(competitionMatches, setOffset, offset, limit)}</div>
       </div>
     </section>
   );

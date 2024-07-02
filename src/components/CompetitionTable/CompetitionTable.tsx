@@ -1,0 +1,232 @@
+import { FC, useEffect, useMemo, useState } from "react";
+import {
+  useGetCompetitionMatches,
+  useGetCompetitionScores,
+} from "../../lib/react-query/queries";
+import { Link, useSearchParams } from "react-router-dom";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import Loader from "../Loader/Loader";
+import EmptyContent from "../EmptyElement/EmptyElement";
+import { renderPaginationButtons } from "../../lib/utils";
+
+type CompetitionTableProps = {
+  competitionId: number;
+};
+
+const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [offset, setOffset] = useState<string>(
+    searchParams.get("offset") || "0"
+  );
+  const limit = "8";
+  const [competitionMatches, setCompetitionMatches] = useState<
+    ICompetitionMatches | undefined
+  >(undefined);
+  const [competitionScores, setCompetitionScores] = useState<
+    ICompetitionScore[]
+  >([]);
+  const {
+    data: matches,
+    refetch,
+    isLoading: isLoadingMatches,
+    isError: isErrorMatches,
+    isFetching,
+  } = useGetCompetitionMatches(competitionId, offset, limit);
+  const {
+    data: scores,
+    isLoading: isLoadingScores,
+    isError: isErrorScores,
+  } = useGetCompetitionScores(competitionId);
+
+  useEffect(() => {
+    {
+      validateParams(offset);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (scores) {
+      setCompetitionScores(scores);
+    }
+  }, [scores]);
+
+  useEffect(() => {
+    if (matches) {
+      checkIfPageExists(offset, matches.total);
+      setCompetitionMatches(matches);
+    }
+  }, [matches]);
+
+  useEffect(() => {
+    setSearchParams({
+      offset,
+    });
+    refetch();
+  }, [offset]);
+
+  const checkIfPageExists = (offset: string, total: number) => {
+    if (parseInt(offset) > total) {
+      setOffset("0");
+    }
+  };
+
+  const validateParams = (offset: string) => {
+    if (!isNaN(parseInt(offset))) {
+      if (parseInt(offset) < 0) {
+        setOffset(Math.abs(parseInt(offset)).toString());
+      } else {
+        setOffset(offset);
+      }
+    } else setOffset("0");
+  };
+
+  const playerData = useMemo(() => {
+    if (competitionMatches && competitionScores) {
+      const temp = [...competitionScores];
+      temp.map((player) => {
+        player.matchScores;
+      });
+      temp.sort((a) => a.win_score - a.lose_score);
+      temp.map((player) => {
+        player.matchScores = [];
+        for (const match of competitionMatches.matches) {
+          if (!player.matchScores) player.matchScores = [];
+          let isFinished: boolean = false;
+
+          // console.log(match)
+          if (match.left_score === null && match.right_score === null) {
+            player.matchScores.push({ win: "-", lose: "-" });
+            continue;
+          }
+
+          for (const teamPlayer of match.left_team) {
+            if (teamPlayer.id === player.user.id) {
+              isFinished = true;
+              player.matchScores!.push({
+                win: match.left_score,
+                lose: match.right_score,
+              });
+              break;
+            }
+          }
+
+          if (isFinished) continue;
+
+          for (const teamPlayer of match.right_team) {
+            if (teamPlayer.id === player.user.id) {
+              isFinished = true;
+              player.matchScores!.push({
+                win: match.right_score,
+                lose: match.left_score,
+              });
+              break;
+            }
+          }
+
+          if (isFinished) continue;
+
+          player.matchScores.push({ win: "-", lose: "-" });
+        }
+      });
+      return temp;
+    }
+    return [];
+  }, [competitionScores, competitionMatches]);
+
+  const gamesColumns: ColumnDef<ICompetitionScore>[] =
+    competitionMatches?.matches?.map((match, index) => ({
+      id: index.toString(),
+      header: () => (
+        <div className="competition-players__game-name">
+          <span>Игра {index + 1 + parseInt(offset)}</span>
+          <span>
+            {match.left_score !== null ? match.left_score : "-"} :{" "}
+            {match.right_score !== null ? match.right_score : "-"}
+          </span>
+        </div>
+      ),
+      accessorFn: (row) =>
+        row.matchScores![index].win + " : " + row.matchScores![index].lose,
+      
+    })) ?? [];
+
+  const columns: ColumnDef<ICompetitionScore>[] = [
+    {
+      id: "rowNumber",
+      header: "№",
+      cell: (info) => info.row.index + 1,
+    },
+    {
+      header: "Имя",
+      cell: (info) => (
+        <Link
+          to={`/profile/${info.row.original.user.id}`}
+          className="competition-players__name"
+          target="_blank"
+        >
+          {info.row.original.user.first_name +
+            " " +
+            info.row.original.user.last_name}
+        </Link>
+      ),
+    },
+    {
+      header: "Разность",
+      accessorFn: (row) => row.win_score - row.lose_score,
+    },
+    ...gamesColumns,
+  ];
+
+  const table = useReactTable({
+    data: playerData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  if (isLoadingMatches || isLoadingScores) return <Loader />;
+  if (isErrorMatches || isErrorScores)
+    return <EmptyContent message="Ошибка загрузки данных" />;
+  if (!competitionScores?.length || !competitionMatches?.matches.length) {
+    return <EmptyContent message="Нет данных" />;
+  }
+
+  return (
+    <section className="competition-players competition-players--table">
+      <table className="competition-players__table">
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="schedule__pagination">{renderPaginationButtons(competitionMatches, setOffset, offset, limit)}</div>
+    </section>
+  );
+};
+
+export default CompetitionTable;

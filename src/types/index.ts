@@ -63,6 +63,8 @@ interface IAllUsersByRole {
 interface IMatchUser {
   id: number;
   name: string;
+  win_score: number;
+  lose_score: number;
 }
 
 interface IContextType {
@@ -182,6 +184,13 @@ interface Irole {
   is_admin: boolean;
   is_free: boolean;
   name: string;
+}
+
+interface ICompetitionScore {
+  win_score: number;
+  lose_score: number;
+  user: IUser;
+  matchScores?: {win: number | string, lose: number | string}[];
 }
 
 

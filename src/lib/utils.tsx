@@ -151,7 +151,8 @@ export const getDataRange = (startDate: string, endDate: string): string => {
   };
 
   if (i18next.language.split("-")[0] === "en") {
-    if (startDate === endDate) return end.toLocaleDateString("en-US", endOptions);
+    if (startDate === endDate)
+      return end.toLocaleDateString("en-US", endOptions);
     return `${start.toLocaleDateString(
       "en-US",
       startOptions
@@ -166,7 +167,10 @@ export const getDataRange = (startDate: string, endDate: string): string => {
   )} - ${end.toLocaleDateString("ru-RU", endOptions)}`;
 };
 
-export const formatDateAndTime = (dateTimeStr: string, isNeedSeconds: boolean) => {
+export const formatDateAndTime = (
+  dateTimeStr: string,
+  isNeedSeconds: boolean
+) => {
   const dateObj = new Date(dateTimeStr);
 
   const date = `${dateObj.getDate().toString().padStart(2, "0")}/${(
@@ -176,11 +180,12 @@ export const formatDateAndTime = (dateTimeStr: string, isNeedSeconds: boolean) =
     .padStart(2, "0")}/${dateObj.getFullYear()}`;
   let time = `${dateObj.getHours().toString().padStart(2, "0")}:${dateObj
     .getMinutes()
-    .toString().padStart(2, "0")}`;
+    .toString()
+    .padStart(2, "0")}`;
 
-   if (isNeedSeconds) {
+  if (isNeedSeconds) {
     time += `:${dateObj.getSeconds().toString().padStart(2, "0")}`;
-   }
+  }
 
   return { date, time };
 };
@@ -195,7 +200,139 @@ export const formatDateAndTime = (dateTimeStr: string, isNeedSeconds: boolean) =
 // }
 
 export const getUserRole = (userRoleId: number, rolesList: Irole[]) => {
-  if (!rolesList || !rolesList.length) return {name: "Неизвестно"};
+  if (!rolesList || !rolesList.length) return { name: "Неизвестно" };
   const role = rolesList.find((role) => role.id === userRoleId);
-  return role || {name: "Неизвестно"};
-}
+  return role || { name: "Неизвестно" };
+};
+
+export const renderPaginationButtons = (
+  dataList: any,
+  setOffset: React.Dispatch<React.SetStateAction<string>>,
+  offset: string,
+  limit: string
+) => {
+  const pages = Math.ceil(dataList.total / parseInt(limit));
+  const currentPage = Math.ceil(parseInt(offset) / parseInt(limit) + 1);
+  const pagination = [];
+  for (let i = 1; i <= pages; i++) {
+    pagination.push(
+      <button
+        key={i}
+        onClick={() => {
+          setOffset(((i - 1) * parseInt(limit)).toString());
+        }}
+        disabled={currentPage === i}
+        className={`schedule__pagination-button ${
+          currentPage === i ? "schedule__pagination-button--active" : ""
+        }`}
+      >
+        {i}
+      </button>
+    );
+  }
+  return pagination;
+};
+
+// export const renderPaginationButtons = (
+//   dataList: any,
+//   setOffset: React.Dispatch<React.SetStateAction<string>>,
+//   offset: string,
+//   limit: string
+// ) => {
+//   const totalItems = dataList.total;
+//   const itemsPerPage = parseInt(limit);
+//   const totalPages = Math.ceil(totalItems / itemsPerPage);
+//   const currentPage = Math.ceil(parseInt(offset) / itemsPerPage + 1);
+//   const maxButtons = 10;
+//   let startPage, endPage;
+
+//   if (totalPages <= maxButtons) {
+//     // Less than maxButtons total pages so show all
+//     startPage = 1;
+//     endPage = totalPages;
+//   } else {
+//     // More than maxButtons total pages so calculate start and end pages
+//     if (currentPage <= 6) {
+//       startPage = 1;
+//       endPage = maxButtons - 1; // Adjust to always show maxButtons
+//     } else if (currentPage + 4 >= totalPages) {
+//       startPage = totalPages - (maxButtons - 2);
+//       endPage = totalPages;
+//     } else {
+//       startPage = currentPage - 4;
+//       endPage = currentPage + 4;
+//       // Adjust if we have space to add more buttons
+//       if (startPage === 2) {
+//         // If startPage is 2, we can just show 2 instead of an ellipsis
+//         startPage = 1;
+//       }
+//       if (endPage === totalPages - 1) {
+//         // Similarly, if endPage is second last, show last page instead of ellipsis
+//         endPage = totalPages;
+//       }
+//     }
+//   }
+
+//   if (currentPage === 1 && totalPages >= maxButtons) {
+//     endPage = maxButtons - 1; // Since first page is always shown, adjust endPage to maintain button count
+//   }
+//   if (currentPage === totalPages && totalPages >= maxButtons) {
+//     startPage = totalPages - (maxButtons - 2); // Adjust startPage to maintain button count
+//   }
+
+//   const pagination = [];
+
+//   // Always add the first page
+//   pagination.push(
+//     <button
+//       key={1}
+//       onClick={() => setOffset('0')}
+//       disabled={currentPage === 1}
+//       className={`schedule__pagination-button ${currentPage === 1 ? "schedule__pagination-button--active" : ""}`}
+//     >
+//       1
+//     </button>
+//   );
+
+//   // Ellipsis after the first page if needed
+//   if (startPage > 2) {
+//     pagination.push(<span key="ellipsis-start" className="pagination-ellipsis">...</span>);
+//   }
+
+//   // Middle pages
+//   for (let i = startPage; i <= endPage; i++) {
+//     if (i !== 1 && i !== totalPages) {
+//       pagination.push(
+//         <button
+//           key={i}
+//           onClick={() => setOffset(((i - 1) * itemsPerPage).toString())}
+//           disabled={currentPage === i}
+//           className={`schedule__pagination-button ${currentPage === i ? "schedule__pagination-button--active" : ""}`}
+//         >
+//           {i}
+//         </button>
+//       );
+//     }
+//   }
+
+//   // Ellipsis before the last page if needed
+//   if (endPage < totalPages - 1) {
+//     pagination.push(<span key="ellipsis-end" className="pagination-ellipsis">...</span>);
+//   }
+
+//   // Always add the last page if it's not the first page
+//   if (totalPages !== 1) {
+//     pagination.push(
+//       <button
+//         key={totalPages}
+//         onClick={() => setOffset(((totalPages - 1) * itemsPerPage).toString())}
+//         disabled={currentPage === totalPages}
+//         className={`schedule__pagination-button ${currentPage === totalPages ? "schedule__pagination-button--active" : ""}`}
+//       >
+//         {totalPages}
+//       </button>
+//     );
+//   }
+
+//   return pagination;
+// };

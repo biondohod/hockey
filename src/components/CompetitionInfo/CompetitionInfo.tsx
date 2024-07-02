@@ -1,14 +1,10 @@
 import { FC } from "react";
 import "./CompetitionInfo.scss";
 import { useUserContext } from "../../context/AuthContext.tsx";
-import {
-  calculateDays,
-  getDataRange,
-  transliterateText,
-} from "../../lib/utils.ts";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import CompetitionRegistrations from "../CompetitionRegistrations/CompetitionRegistrations.tsx";
+import { calculateDays, getDataRange, transliterateText } from "../../lib/utils.tsx";
 
 type CompetitionInfoProps = {
   data: ISingleCompetition;

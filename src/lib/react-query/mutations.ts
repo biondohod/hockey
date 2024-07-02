@@ -157,6 +157,9 @@ export const useRegisterForCompetition = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_SCORES, competitionId],
+      });
     },
     onError: (error: AxiosError) => {
       const { message } = error.response?.data as { message?: string };
@@ -175,15 +178,18 @@ export const useCancelRegistration = () => {
   const { user } = useUserContext();
   return useMutation({
     mutationFn: (id: number) => cancelRegistration(id),
-    onSuccess: (_, competitoinId) => {
+    onSuccess: (_, competitionId) => {
       toast.success(t("competitions.register.cancelSuccess"), {
         autoClose: 1500,
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitoinId],
+        queryKey: [QUERY_KEYS.GET_COMPETITION_REGISTRATIONS, competitionId],
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, user?.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_SCORES, competitionId],
       });
     },
     onError: (error: AxiosError) => {
@@ -299,6 +305,9 @@ export const useUpdateRegistration = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USER_REGISTRATIONS, variables.playerId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_SCORES, data.competitionId],
       });
     },
     onError: (error: AxiosError) => {
@@ -426,6 +435,9 @@ export const useEditMatchScore = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_COMPETITION_MATCHES, values.competitionId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_COMPETITION_SCORES, values.competitionId],
       });
     },
     onError: (error: AxiosError) => {

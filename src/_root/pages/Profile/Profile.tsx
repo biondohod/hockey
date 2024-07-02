@@ -2,11 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useUserContext } from "../../../context/AuthContext";
 import "./Profile.scss";
 import { useEffect, useState } from "react";
-import {
-  calculateAge,
-  formatDate,
-  transliterateText,
-} from "../../../lib/utils";
+
 import { useGetRoles, useGetUser } from "../../../lib/react-query/queries";
 import Loader from "../../../components/Loader/Loader";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement";
@@ -16,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import ProfileUploadDocuments from "../../../components/ProfileDocuments/ProfileUploadDocuments";
 import ProfileDocuments from "../../../components/ProfileDocuments/ProfileDocuments";
 import ProfileCompetitions from "../../../components/ProfileCompetitoins/ProfileCompetitions";
+import { calculateAge, formatDate, transliterateText } from "../../../lib/utils";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);

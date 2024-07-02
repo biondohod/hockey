@@ -1,11 +1,11 @@
 import { FC, useEffect } from "react";
 import { useGetDocumetUrl } from "../../lib/react-query/queries";
 import Loader from "../Loader/Loader";
-import { formatDateAndTime, transliterateText } from "../../lib/utils";
 import axios from "axios";
 import { saveAs } from "file-saver";
 import { useTranslation } from "react-i18next";
 import ProfileDeleteDocumentItem from "./ProfileDeleteDocumentItem";
+import { formatDateAndTime, transliterateText } from "../../lib/utils";
 
 type ProfileDocumentItemProps = {
   document: IDocument;

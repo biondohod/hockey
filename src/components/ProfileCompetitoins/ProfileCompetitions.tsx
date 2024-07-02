@@ -4,13 +4,14 @@ import Loader from "../Loader/Loader";
 import EmptyContent from "../EmptyElement/EmptyElement";
 import CompetitionItem from "../CompetitionItem/CompetitionItem";
 import { useTranslation } from "react-i18next";
+import { renderPaginationButtons } from "../../lib/utils";
 
 type ProfileCompetitionsProps = {
   id: number;
 };
 const ProfileCompetitions: FC<ProfileCompetitionsProps> = ({ id }) => {
-  const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(5);
+  const [offset, setOffset] = useState("0");
+  const [limit, setLimit] = useState("5");
   const { data, isLoading, isError, refetch, isFetching } = useGetUserRegistrations(
     id,
     offset,
@@ -45,26 +46,7 @@ const ProfileCompetitions: FC<ProfileCompetitionsProps> = ({ id }) => {
 
   const renderPagination = () => {
     if (!data || !data.registrations?.length || isError) return <></>;
-    const pages = Math.ceil(data!.total / limit);
-    const currentPage = Math.ceil(offset / limit + 1);
-    const pagination = [];
-    for (let i = 1; i <= pages; i++) {
-      pagination.push(
-        <button
-          key={i}
-          onClick={() => {
-            setOffset(((i - 1) * limit));
-          }}
-          disabled={currentPage === i}
-          className={`schedule__pagination-button ${
-            currentPage === i ? "schedule__pagination-button--active" : ""
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-    return pagination;
+    return renderPaginationButtons(data, setOffset, offset, limit);
   };
 
   return (

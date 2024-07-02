@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { formatDate, transliterateText } from "../../lib/utils.ts";
 import { Link } from "react-router-dom";
 import "./CompetitionItem.scss";
 import { useTranslation } from "react-i18next";
+import { formatDate, transliterateText } from "../../lib/utils";
 
 type CompetitionItemProps = {
   competition: ICompetition;

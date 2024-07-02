@@ -19,6 +19,7 @@ import { useUserContext } from "../../../context/AuthContext.tsx";
 import CompetitionRegistrations from "../../../components/CompetitionRegistrations/CompetitionRegistrations.tsx";
 import CompetitionSchedule from "../../../components/CompetitionSchedule/CompetitionSchedule.tsx";
 import CompetitionPlayers from "../../../components/CompetitionPlayers/CompetitionPlayers.tsx";
+import CompetitionTable from "../../../components/CompetitionTable/CompetitionTable.tsx";
 
 const Competition = () => {
   const { id, type } = useParams();
@@ -121,9 +122,7 @@ const Competition = () => {
       case "games":
         return <CompetitionSchedule competitionId={data.id} />;
       case "table":
-        return (
-          <EmptyContent message={t("competitions.competition.emptyCategory")} />
-        );
+        return <CompetitionTable competitionId={data.id} />;
       default:
         return <EmptyContent />;
     }

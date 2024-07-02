@@ -9,6 +9,7 @@ import {
 } from "../../../lib/react-query/queries";
 import AdminUserItem from "../../../components/AdminUser/AdminUserItem";
 import './AdminUsers.scss'
+import { renderPaginationButtons } from "../../../lib/utils";
 
 const AdminUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -109,28 +110,7 @@ const AdminUsers = () => {
 
   const renderPagination = () => {
     if (!usersList || !usersList.users?.length) return <></>;
-    const pages = Math.ceil(usersList!.total / parseInt(limit));
-    console.log(usersList!.total, parseInt(limit));
-    // const pages = Math.ceil(10 / 10);
-    const currentPage = Math.ceil(parseInt(offset) / parseInt(limit) + 1);
-    const pagination = [];
-    for (let i = 1; i <= pages; i++) {
-      pagination.push(
-        <button
-          key={i}
-          onClick={() => {
-            setOffset(((i - 1) * parseInt(limit)).toString());
-          }}
-          disabled={currentPage === i}
-          className={`schedule__pagination-button ${
-            currentPage === i ? "schedule__pagination-button--active" : ""
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-    return pagination;
+    return renderPaginationButtons(usersList, setOffset, offset, limit);
   };
 
   // isFetching or isLoading

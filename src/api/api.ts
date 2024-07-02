@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const URL_BASE = "https://proj.raitonobe.ru/api/";
 
 export const createUserAccount = async (user: INewUser | IEditUser | INewUserAdmin) => {
@@ -347,3 +346,17 @@ export const deleteCompetition = async (competitionId: number) => {
   );
   return response.data;
 };
+
+export const getCompetitionScores = async (CompetitionId: number): Promise<ICompetitionScore[] | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.get(
+    `${URL_BASE}competitions/${CompetitionId}/scores`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}

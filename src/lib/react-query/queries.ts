@@ -4,6 +4,7 @@ import {
   getCompetitionMatches,
   getCompetitionRegistrations,
   getCompetitions,
+  getCompetitionScores,
   getDocumentUrl,
   getRoles,
   getUser,
@@ -141,5 +142,13 @@ export const useGetUserRegistrations = (id: number | undefined, offset: number |
     queryFn: () => getUserRegistrations(id!, offset, limit),
     enabled: id !== undefined && !isNaN(id),
     // staleTime: 1000 * 60 * 60,
+  });
+}
+
+export const useGetCompetitionScores = (competitionId: number | undefined) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_COMPETITION_SCORES, competitionId],
+    queryFn: () => getCompetitionScores(competitionId!),
+    enabled: competitionId !== undefined && !isNaN(competitionId),
   });
 }

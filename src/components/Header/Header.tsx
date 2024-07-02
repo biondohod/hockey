@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Header.scss";
 import { useUserContext } from "../../context/AuthContext";
-import { LogOutUser, transliterateText } from "../../lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { LogOutUser, transliterateText } from "../../lib/utils";
 
 const Header = () => {
   const { isAuthenticated, user, role } = useUserContext();
