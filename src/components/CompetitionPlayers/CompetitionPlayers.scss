@@ -73,6 +73,16 @@
       position: relative;
       text-align: center;
     }
+
+    tr {
+      &:hover {
+        .competition-players__score--right-team,
+        .competition-players__score--left-team {
+          opacity: 0.8;
+        }
+      }
+
+    }
   }
 
   &__score--game {
@@ -106,6 +116,7 @@
     top: 0;
     bottom: 0;
     padding: 12px 15px;
+    transition: opacity 0.3s ease;
   }
 
   &__score--right-team {
