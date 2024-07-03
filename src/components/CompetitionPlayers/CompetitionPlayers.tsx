@@ -10,6 +10,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import "./CompetitionPlayers.scss";
@@ -31,6 +33,7 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
   const { mutateAsync, isPending } = useUpdateRegistration();
   const { t } = useTranslation();
   const { data, isLoading, isError } = useGetCompetitionScores(competitionId);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
     if (data) {
@@ -83,6 +86,8 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
       id: "rowNumber",
       header: "№",
       cell: (info) => info.row.index + 1,
+      enableSorting: true,
+      accessorFn: (row, index) => index,
     },
     {
       header: "Имя",
@@ -97,6 +102,8 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
             info.row.original.user.last_name}
         </Link>
       ),
+      enableSorting: true,
+      accessorFn: (row) => row.user.first_name + " " + row.user.last_name,
     },
     {
       header: "Возраст",
@@ -108,11 +115,15 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
     },
     {
       header: "Шайбы",
-      accessorFn: (row) => row.win_score,
+      accessorKey: "win_score",
+      enableSorting: true,
+      // accessorFn: (row) => row.win_score,
     },
     {
       header: "Пропущенные",
-      accessorFn: (row) => row.lose_score,
+      accessorKey: "lose_score",
+      enableSorting: true,
+      // accessorFn: (row) => row.lose_score,
     },
     {
       header: "Рейтинг",
@@ -158,6 +169,11 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
     data: playerData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: sorting,
+    },
+    onSortingChange: setSorting,
   });
 
   // const renderPlayers = () => {
@@ -192,14 +208,24 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
+              {headerGroup.headers.map((header) => {
+                const sortDirection = header.column.getIsSorted();
+                const sortIndicator =
+                  sortDirection === "asc"
+                    ? "🔼"
+                    : sortDirection === "desc"
+                    ? "🔽"
+                    : null;
+                return (
+                  <th key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {sortIndicator}
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>

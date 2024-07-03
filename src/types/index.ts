@@ -192,6 +192,7 @@ interface ICompetitionScore {
   user: IUser;
   matchScores?: {win: number | string, lose: number | string}[];
   team?: string[];
+  is_dropped: boolean;
 }
 
 
