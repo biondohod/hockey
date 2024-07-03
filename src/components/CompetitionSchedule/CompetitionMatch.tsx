@@ -26,7 +26,6 @@ const CompetitionMatch: FC<CompetitionMatchProps> = ({ competitionId, match, gam
         </div>
       );
     return team.map((player) => {
-      console.log(player)
       return (
         <Link
           to={`/profile/${player.id}`}

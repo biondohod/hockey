@@ -28,7 +28,7 @@
     }
 
     th {
-      background-color: #C44343;
+      background-color: #c44343;
       color: #ffffff;
       font-weight: bold;
     }
@@ -54,7 +54,7 @@
     color: #000;
 
     &:hover {
-      color: #C44343;
+      color: #c44343;
     }
   }
 
@@ -81,7 +81,6 @@
           opacity: 0.8;
         }
       }
-
     }
   }
 
@@ -101,15 +100,16 @@
   }
 
   &__score--match-left {
-    background-color: #EF9A9A;
+    background-color: #ef9a9a;
   }
 
   &__score--match-right {
-    background-color: #2196F3;
+    background-color: #2196f3;
   }
 
   &__score--right-team,
-  &__score--left-team{
+  &__score--left-team,
+  &__score--loading{
     position: absolute;
     left: 0;
     right: 0;
@@ -120,10 +120,54 @@
   }
 
   &__score--right-team {
-    background-color: #2196F3;
+    background-color: #2196f3;
   }
 
   &__score--left-team {
-    background-color: #EF9A9A;
+    background-color: #ef9a9a;
+  }
+
+  // Skeleton animation for the loading state
+  // &__score--loading {
+  //   content: "- : -"; // Placeholder content
+  //   display: inline-block;
+  //   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  //   background-size: 200% 100%;
+  //   animation: loadingSkeleton 1.5s infinite linear;
+
+  //   // Adjust the width and height as per your design requirements
+  //   width: 3em; // Example width, adjust as needed
+  //   height: 1em; // Example height, adjust as needed
+  //   border-radius: 4px; // Optional: for rounded corners
+  // }
+
+  &__score--loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loadingSkeleton 1.5s infinite linear;
+    border-radius: 8px; 
+    &::before {
+      position: absolute;
+      content: "";
+      display: block;
+      width: 70%; // Example width, adjust as needed
+      height: 1em; // Example height for a line of text
+      background: #e0e0e0;
+      border-radius: 4px; // Rounded corners for the placeholder lines
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      // Repeat or adjust ::before for additional lines or elements
+    }
+  }
+
+  @keyframes loadingSkeleton {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 }

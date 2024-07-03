@@ -149,27 +149,38 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
         <div className="competition-players__game-name">
           <span>Игра {index + 1 + parseInt(offset)}</span>
           <div className="competition-players__score--game">
-            <span className="competition-players__score--match-left">{match.left_score !== null ? match.left_score : "-"}</span>:
-            <span className="competition-players__score--match-right">{match.right_score !== null ? match.right_score : "-"}</span>
+            <span className="competition-players__score--match-left">
+              {match.left_score !== null ? match.left_score : "-"}
+            </span>
+            :
+            <span className="competition-players__score--match-right">
+              {match.right_score !== null ? match.right_score : "-"}
+            </span>
           </div>
         </div>
       ),
-      cell: (info) => (
-        <div
-          className={`${
-            info.row.original.team![index] === "left"
-              ? "competition-players__score--left-team"
-              : info.row.original.team![index] === "right"
-              ? "competition-players__score--right-team"
-              : ""
-          }`}
-        >
-          {info.row.original.matchScores![index].win +
-            " : " +
-            info.row.original.matchScores![index].lose}
-        </div>
-      ),
+      cell: (info) => {
+        let className = "";
+        if (isFetching) {
+          className = "competition-players__score--loading";
+        } else if (info.row.original.team![index] === "left") {
+          className = "competition-players__score--left-team";
+        } else if (info.row.original.team![index] === "right") {
+          className = "competition-players__score--right-team";
+        }
+        return (
+          <div
+            className={className}
+          >
+            {info.row.original.matchScores![index].win +
+              " : " +
+              info.row.original.matchScores![index].lose}
+          </div>
+        );
+      },
     })) ?? [];
+
+    console.log(gamesColumns);
 
   const columns: ColumnDef<ICompetitionScore>[] = [
     {
