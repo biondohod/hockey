@@ -3,6 +3,9 @@ import {useUserContext} from "../context/AuthContext";
 import {toast} from "react-toastify";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Функциональный компонент, возвращающий компонент Outlet(вложенные компоненты), если пользователь авторизован, иначе перенаправляет на страницу авторизации
+ */
 const RootLayout = () => {
     const {isAuthenticated, isLoading} = useUserContext();
     const {t} = useTranslation();

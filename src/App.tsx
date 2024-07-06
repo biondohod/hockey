@@ -19,6 +19,7 @@ import AuthProvider from "./context/AuthProvider";
 import AdminUsers from "./_root/pages/Admin/AdminUsers";
 import AdminCreateUser from "./_root/pages/Admin/AdminCreateUser";
 import MyCompetitions from "./_root/pages/Competitions/MyCompetitions";
+import EditServiceProfile from "./_root/pages/Profile/EditServiceProfile";
 
 function App() {
   const { isAuthenticated } = useUserContext();
@@ -40,6 +41,7 @@ function App() {
             <Route element={<RootLayout />}>
               <Route path={`/profile/:id`} element={<Profile />} />
               <Route path={`/editProfile/:id`} element={<EditProfile />} />
+              <Route path={`/editServiceProfile/:id`} element={<EditServiceProfile />} />
               <Route
                 path={`/AllCompetitions/:type`}
                 element={<AllCompetitions />}

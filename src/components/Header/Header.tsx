@@ -10,6 +10,8 @@ const Header = () => {
   const { t } = useTranslation();
   const logOut = LogOutUser();
 
+  console.log(role)
+
   return (
     <>
       <header className="header">

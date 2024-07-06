@@ -11,8 +11,14 @@ import AdminUserItem from "../../../components/AdminUser/AdminUserItem";
 import './AdminUsers.scss'
 import { renderPaginationButtons } from "../../../lib/utils";
 
-const AdminUsers = () => {
+/**
+ * 
+ * @returns {JSX.Element} Функциональный компонент, который возвращает разметку страницы администрирования пользователей
+ */
+const AdminUsers = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
+
   const [roleId, setRoleId] = useState<string>(
     searchParams.get("roleId") || "3"
   );
@@ -20,17 +26,15 @@ const AdminUsers = () => {
   const [offset, setOffset] = useState<string>(
     searchParams.get("offset") || "0"
   );
-  // const [usersList, setUsersList] = useState<IUsersList | undefined>(undefined);
+  
   const { data: roles, isLoading: isLoadingRoles } = useGetRoles();
-  const { t } = useTranslation();
-  const { data: usersList, isLoading: isLoadingUsers, refetch, isFetching: isFetchingUsers } = useGetUsersAsAdmin(
+  const { data: usersList, isLoading: isLoadingUsers, refetch, isFetching: isFetchingUsers, isError } = useGetUsersAsAdmin(
     parseInt(roleId),
     limit,
     offset
-  );
+  );  
 
   
-
   useEffect(() => {
     {
       validateParams(limit, offset);
@@ -40,7 +44,6 @@ const AdminUsers = () => {
   useEffect(() => {
     if (usersList) {
       checkIfPageExists(offset, usersList.total);
-      // setCompetitionMatches(data);
     }
   }, [usersList]);
 
@@ -53,19 +56,11 @@ const AdminUsers = () => {
     refetch();
   }, [limit, offset, roleId]);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     checkIfPageExists(offset, data.total);
-  //     setCompetitionMatches(data);
-  //   }
-  // }, [data]);
-
   const validateParams = (limit: string, offset: string) => {
     const validateOptions = {
       limit: ["10", "20", "50", "100"],
       roles: roles.map((role: Irole) => role.id.toString()),
     };
-    // const validateOptions = ["10", "20", "50", "100"];
 
     if (!isNaN(parseInt(offset))) {
       if (parseInt(offset) < 0) {
@@ -113,16 +108,10 @@ const AdminUsers = () => {
     return renderPaginationButtons(usersList, setOffset, offset, limit);
   };
 
-  // isFetching or isLoading
   if (isLoadingRoles) return <Loader />;
 
-  // if (isError)
-  //   return <EmptyContent message={t("global.loadError")} />;
-
-  // if (!competitionMatches?.matches.length)
-  //   return (
-  //     <EmptyContent message={t("competitions.schedule.emptyContent")} />
-  //   );
+  if (isError)
+    return <EmptyContent message={t("global.loadError")} />;
 
   if (!roles?.length) return <EmptyContent message={t("global.admin.users.empty")} />;
 
@@ -180,14 +169,6 @@ const AdminUsers = () => {
       </div>
       <div className="schedule__matches">
         {renderUsersList()}
-        {/* <ul className="matches__list">
-            {competitionMatches.matches.map((match) => (
-              <CompetitionMatch key={match.id} match={match} />
-            ))}
-          </ul> */}
-        {/* <div className="schedule__wrapper">
-          {isFetching && <Loader message="Обновляем список матчей" />}
-        </div> */}
         <div className="schedule__pagination">{renderPagination()}</div>
       </div>
     </section>

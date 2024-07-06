@@ -8,18 +8,24 @@ import EmptyContent from "../../../components/EmptyElement/EmptyElement.tsx";
 import Loader from "../../../components/Loader/Loader.tsx";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { set } from "react-hook-form";
 
-const AllCompetitions = () => {
+const COMPETITION_TYPES = ["4x4", "6x6", "paid", "archive"];
+
+/**
+ * 
+ * @returns {JSX.Element} Функциональный компонент, возвращающий разметку страницы "Все соревнования", которая содержит внутри табы для переключения типов сореваниваний
+ */
+const AllCompetitions = (): JSX.Element => {
   const { t } = useTranslation();
-  const COMPETITION_TYPES = ["4x4", "6x6", "paid", "archive"];
   const { type } = useParams();
+  const navigate = useNavigate();
+
   const [offset, setOffset] = useState(0);
-  const { data, isLoading, isError, error, refetch, isFetching } =
-    useGetCompetitions(offset);
   const [competitionsList, setCompetitionsList] = useState<ICompetition[]>([]);
   const [selectedType, setSelectedType] = useState("4x4");
-  const navigate = useNavigate();
+
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useGetCompetitions(offset);
 
   useEffect(() => {
     if (type && COMPETITION_TYPES.includes(type)) {
@@ -44,11 +50,7 @@ const AllCompetitions = () => {
 
   useEffect(() => {
     if (data)
-      setCompetitionsList((prev) => {
-        // if (prev.includes(data)) return prev;
-        // return prev.concat(data.competitions);
-        return data.competitions;
-      });
+      setCompetitionsList(data.competitions);
     if (data && data.total < competitionsList.length) {
       setOffset(0);
     }

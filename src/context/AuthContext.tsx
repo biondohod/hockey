@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [role, setRole] = useState<Irole | null>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: roles, isLoading: isLoadingRoles, isError: isErrorRoles } = useGetRoles();
+  const { data: roles, isLoading: isLoadingRoles, isError: isErrorRoles, refetch } = useGetRoles();
   const {
     data,
     error,
@@ -38,8 +38,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkAuthUser = async () => {
     if (!isLoading) {
-      if (data) {
-        // localStorage.setItem("isAuthenticated", "true");
+      if (data && roles) {
         setUser(data);
         setIsAuthenticated(true);
         const userRole: Irole | undefined =
@@ -82,15 +81,44 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // return isAuthenticated;
   };
 
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   if (isMounted) {
+  //     checkAuthUser();
+  //   }
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, [data, error, isError, isAuthenticated, roles, role, isLoading]);
+
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
+    // Этот useEffect отвечает за проверку пользователя после загрузки всех необходимых данных
+    if (!isLoadingUser && !isLoadingRoles && roles && data && isAuthenticated) {
+      checkAuthUser();
+    } else if (!isLoadingUser && !isLoadingRoles && !isAuthenticated) {
       checkAuthUser();
     }
-    return () => {
-      isMounted = false;
-    };
-  }, [data, error, isError, isAuthenticated, roles, role]);
+  }, [roles, data, isAuthenticated, error, isError]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      refetch();
+    }
+  }, [isAuthenticated])
+
+  // useEffect(() => {
+  //   // Этот useEffect отвечает за проверку пользователя при изменении основных данных
+  //   if (!isLoadingUser) {
+  //     checkAuthUser();
+  //   }
+  // }, [data, error, isError, isAuthenticated]);
+  
+  // useEffect(() => {
+  //   // Этот useEffect специально для обработки изменений в ролях и состоянии их загрузки
+  //   if (!isLoadingRoles && roles) {
+  //     checkAuthUser();
+  //   }
+  // }, [roles, role, user]);
 
   //   useEffect(() => {
   // if (!isLoading) {

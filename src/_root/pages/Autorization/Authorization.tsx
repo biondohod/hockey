@@ -6,7 +6,11 @@ import SignIn from "../../../_auth/forms/SignIn";
 import SignUp from "../../../_auth/forms/SignUp";
 import { useTranslation } from "react-i18next";
 
-const Authorization = () => {
+/**
+ * 
+ * @returns {JSX.Element} Функциональный компонент, возвращающий страницу авторизации с компонентами SignIn или SignUp в зависимости от выбранной вкладки
+ */
+const Authorization = (): JSX.Element => {
     const [isSignIn, setIsSignIn] = React.useState(true);
     const authType = useParams();
     const {t} = useTranslation();
@@ -27,16 +31,12 @@ const Authorization = () => {
             <div className="auth__wrapper">
                 <div className="auth__tabs">
                     <Link to={"/auth/sign-in"}
-                        // onClick={handleTabClick}
-                        // скорее всего эти классы излишни нужно будет удалить
                           className={`auth__btn ${isSignIn ? "auth__btn--active" : ""}`}
                     >
                         {t("auth.authSignIn")}
                     </Link>
                     <Link to={"/auth/sign-up"}
-                        // onClick={handleTabClick}
                           className={`auth__btn ${isSignIn ? "" : "auth__btn--active"}`}
-                        // disabled={!isSignIn}
                     >
                         {t("auth.authSignUp")}
                     </Link>

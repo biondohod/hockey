@@ -6,7 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
-const SignIn = () => {
+/**
+ * 
+ * @returns {JSX.Element} Функциональный компонент, возвращающий форму для авторизации
+ */
+const SignIn = (): JSX.Element => {
   const { isPending, mutateAsync } = UseLoginUser();
   const { t } = useTranslation();
 
@@ -19,7 +23,6 @@ const SignIn = () => {
   });
 
   const onSubmit = (data: SignInForm) => {
-    // console.log(data);
     toast.promise(mutateAsync(data), {
       pending: t("auth.signIn.pending"),
     });
@@ -28,8 +31,8 @@ const SignIn = () => {
   return (
     <div
       className="auth__sign-in"
-      // style={{ display: isSignIn ? "flex" : "none" }}
     >
+
       <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
         <label htmlFor="phone" className="auth__label">
           {t("auth.email")}
@@ -60,10 +63,6 @@ const SignIn = () => {
             required={true}
           />
         </label>
-        {/* <div className="auth__checkbox">
-          <input type="checkbox" name="rememberme" id="rememberme" />
-          <label htmlFor="rememberme">Сохранить вход</label>
-        </div> */}
         <button type="submit" className="auth__submit" disabled={isPending}>
           {t("auth.signIn.signInButton")}
         </button>
