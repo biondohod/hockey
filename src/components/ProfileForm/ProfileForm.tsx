@@ -176,23 +176,6 @@ const ProfileForm: FC<ProfileFormProps> = ({
           )}
         </label>
 
-        {/* <label htmlFor="level" className="auth__label">
-        Уровень подготовки
-      </label>
-      <select name="level" id="level" className="auth__input">
-        <option value="no_exp">Не указан</option>
-        <option value="male">
-          Мастер спорта России международного класса
-        </option>
-        <option value="female">Мастер спорта России</option>
-        <option value="female">Кандидат в мастера спорта</option>
-        <option value="female">I спортивный разряд</option>
-        <option value="female">II спортивный разряд</option>
-        <option value="female">III спортивный разряд</option>
-        <option value="female">I юношеский спортивный разряд</option>
-        <option value="female">II юношеский спортивный разряд</option>
-        <option value="female">III юношеский спортивный разряд</option>
-      </select> */}
         {type === "edit" && (
           <label htmlFor="position" className="auth__label">
             {t("profile.editProfile.position")}*
@@ -230,21 +213,6 @@ const ProfileForm: FC<ProfileFormProps> = ({
               />
             )}
           />
-          {/* <input
-            id="phone"
-            className="auth__input"
-            required={true}
-            autoComplete="off"
-            {...register("phone")}
-            {...(errors.phone && {
-              style: { borderColor: "red", outline: "none" },
-            })}
-            // value={phone}
-            onChange={handlePhoneChange}
-            onFocus={handlePhoneFocus}
-            onBlur={handlePhoneBlur}
-            // pattern="\+9 \(\d{3}\) \d{3}-\d{2}-\d{2}"
-          /> */}
           {errors.phone && errors.phone.message && (
             <span className="auth__error-msg">{t(errors.phone.message)}</span>
           )}
@@ -295,7 +263,6 @@ const ProfileForm: FC<ProfileFormProps> = ({
             className="auth__input"
             required={true}
             {...register("telegram")}
-            // value={telegram}
             onChange={handleTelegramChange}
             onFocus={handleTelegramFocus}
             onBlur={handleTelegramBlur}
@@ -327,7 +294,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
           </>
         )}
 
-        {editPassword || type === "signUp" ? (
+        {editPassword || type === "signUp" && (
           <>
             <label htmlFor="password" className="auth__label">
               {t("auth.password")}
@@ -369,8 +336,6 @@ const ProfileForm: FC<ProfileFormProps> = ({
               )}
             </label>
           </>
-        ) : (
-          <></>
         )}
         {type === "signUp" && (
           <>

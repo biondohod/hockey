@@ -2,19 +2,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { CreateUserValidation, SignUpValidation } from "../../lib/validation";
+import {
+  CreateUserValidation,
+  EditServiceProfileValidation,
+  SignUpValidation,
+} from "../../lib/validation";
 import InputMask from "react-input-mask";
+import { z } from "zod";
 
-type ProfileFormAdminCreationProps = {
-  onSubmit: (data: CreateUserForm) => void;
+type ServiceProfileFormProps = {
+  onSubmit:
+    | ((data: CreateUserForm) => void)
+    | ((data: EditServiceProfileForm) => void);
   isPending: boolean;
+  defaultValues: CreateUserForm | EditServiceProfileForm;
+  type: "create" | "edit";
+  validation: z.ZodType<
+    | z.infer<typeof CreateUserValidation>
+    | z.infer<typeof EditServiceProfileValidation>
+  >;
 };
 
-const ProfileFormAdminCreation: FC<ProfileFormAdminCreationProps> = ({
+const ServiceProfileForm: FC<ServiceProfileFormProps> = ({
   onSubmit,
   isPending,
+  defaultValues,
+  type,
+  validation,
 }) => {
   const { t } = useTranslation();
+  const [editPassword, setEditPassword] = useState(false);
 
   const {
     register,
@@ -24,8 +41,9 @@ const ProfileFormAdminCreation: FC<ProfileFormAdminCreationProps> = ({
     control,
     watch,
     formState: { errors },
-  } = useForm<CreateUserForm>({
-    resolver: zodResolver(CreateUserValidation),
+  } = useForm<CreateUserForm | EditServiceProfileForm>({
+    resolver: zodResolver(validation),
+    defaultValues,
   });
 
   const role_id = watch("role_id");
@@ -61,7 +79,7 @@ const ProfileFormAdminCreation: FC<ProfileFormAdminCreationProps> = ({
 
   const showError = () => {
     console.log(errors);
-  }
+  };
 
   return (
     <div className="auth__sign-up">
@@ -277,7 +295,68 @@ const ProfileFormAdminCreation: FC<ProfileFormAdminCreationProps> = ({
           </>
         )}
 
-        <label htmlFor="password" className="auth__label">
+        {type === "edit" && (
+          <>
+            <div className="auth__checkbox">
+              <input
+                type="checkbox"
+                name="editPassword"
+                id="editPassword"
+                onChange={() => setEditPassword(!editPassword)}
+              />
+              <label htmlFor="editPassword">
+                {t("profile.editProfile.editPassword")}
+              </label>
+            </div>
+          </>
+        )}
+
+        {editPassword ||
+          (type === "create" && (
+            <>
+              <label htmlFor="password" className="auth__label">
+                {t("auth.password")}
+                <input
+                  type="password"
+                  id="password"
+                  className="auth__input"
+                  placeholder={t("auth.passwordPlaceholder")}
+                  required={true}
+                  {...register("password")}
+                  {...(errors.password && {
+                    style: { borderColor: "red", outline: "none" },
+                  })}
+                />
+                {errors.password && errors.password.message && (
+                  <span className="auth__error-msg">
+                    {t(errors.password.message)}
+                  </span>
+                )}
+              </label>
+
+              <label htmlFor="confirmPassword" className="auth__label">
+                {t("auth.signUp.confirmPassword")}
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  className="auth__input"
+                  placeholder={t("auth.passwordPlaceholder")}
+                  required={true}
+                  {...register("confirmPassword")}
+                  {...(errors.confirmPassword && {
+                    style: { borderColor: "red", outline: "none" },
+                  })}
+                />
+                {errors.confirmPassword && errors.confirmPassword.message && (
+                  <span className="auth__error-msg">
+                    {t(errors.confirmPassword.message)}
+                  </span>
+                )}
+              </label>
+            </>
+          ))}
+
+        {/* <label htmlFor="password" className="auth__label">
           {t("auth.password")}
           <input
             type="password"
@@ -315,19 +394,18 @@ const ProfileFormAdminCreation: FC<ProfileFormAdminCreationProps> = ({
               {t(errors.confirmPassword.message)}
             </span>
           )}
-        </label>
+        </label> */}
 
-        <div className="auth__checkbox">
-          <input type="checkbox" name="agreed" id="checkbox" required />
-          <label htmlFor="checkbox">{t("auth.signUp.policy")}</label>
-        </div>
+        {}
 
         <button type="submit" className="auth__submit" disabled={isPending}>
-          {t("auth.signUp.signUp")}
+        {type === "create"
+            ? t("auth.signUp.signUp")
+            : t("profile.editProfile.save")}
         </button>
       </form>
     </div>
   );
 };
 
-export default ProfileFormAdminCreation;
+export default ServiceProfileForm;

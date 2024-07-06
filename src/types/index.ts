@@ -8,6 +8,7 @@ interface INewUser {
   birth_date: string;
   telegram: string;
   password: string;
+  position: string;
 }
 
 interface IEditUser {
@@ -25,7 +26,7 @@ interface IEditUser {
 }
 
 interface INewUserAdmin {
-  role_id: string;
+  role_id: number;
   first_name: string;
   last_name: string;
   middle_name: string;
@@ -35,6 +36,7 @@ interface INewUserAdmin {
   birth_date?: string;
   telegram?: string;
   password: string;
+  position?: string;
 }
 
 interface IUser {
@@ -244,7 +246,7 @@ type SignUpForm = {
   phone: string;
   email: string;
   birth_date: string;
-  telegram?: string;
+  telegram: string;
   password: string;
   confirmPassword: string;
   position: string;
@@ -258,7 +260,7 @@ type EditProfileForm = {
   phone: string;
   email: string;
   birth_date: string;
-  telegram?: string;
+  telegram: string;
   changePassword: boolean;
   password?: string;
   confirmPassword?: string;
@@ -272,13 +274,31 @@ type CreateUserForm = {
   last_name: string;
   middle_name: string;
   email: string;
-  position: string;
+  position?: string;
   gender?: string;
   phone?: string;
   birth_date?: string;
   telegram?: string;
-  password: string;
-  confirmPassword: string;
+  password?: string;
+  confirmPassword?: string;
+  changePassword: boolean;
+}
+
+type EditServiceProfileForm = {
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  email: string;
+  changePassword: boolean;
+  role_id: string;
+  password?: string;
+  confirmPassword?: string;
+  gender?: string;
+  phone?: string;
+  birth_date?: string;
+  telegram?: string;
+  position?: string;
+
 }
 
 type SignInForm = {

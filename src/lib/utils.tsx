@@ -199,7 +199,7 @@ export const formatDateAndTime = (
 //   return "";
 // }
 
-export const getUserRole = (userRoleId: number, rolesList: Irole[]) => {
+export const getUserRole = (userRoleId: number, rolesList: Irole[]): Irole | {name: string} => {
   if (!rolesList || !rolesList.length) return { name: "Неизвестно" };
   const role = rolesList.find((role) => role.id === userRoleId);
   return role || { name: "Неизвестно" };

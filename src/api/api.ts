@@ -1,7 +1,7 @@
 import axios from "axios";
 const URL_BASE = "https://proj.raitonobe.ru/api/";
 
-export const createUserAccount = async (user: INewUser | IEditUser | INewUserAdmin) => {
+export const createUserAccount = async (user: INewUser) => {
   const response = await axios.post(`${URL_BASE}register`, user);
   return response.data;
 };
@@ -262,7 +262,7 @@ export const getUsersAsAdmin = async (
   return response.data;
 };
 
-export const creatUserAsAdmin = async (user: INewUser) => {
+export const creatUserAsAdmin = async (user: INewUserAdmin) => {
   const token = localStorage.getItem("token");
   if (!token) return null;
   const response = await axios.post(`${URL_BASE}users`, user, {

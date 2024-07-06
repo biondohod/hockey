@@ -3,6 +3,7 @@ import {
   cancelRegistration,
   createCompetition,
   createUserAccount,
+  creatUserAsAdmin,
   deleteCompetition,
   deleteDocument,
   deleteUser,
@@ -349,7 +350,7 @@ export const useCreateUserAsAdmin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (user: INewUserAdmin) => createUserAccount(user),
+    mutationFn: (user: INewUserAdmin) => creatUserAsAdmin(user),
     onSuccess: (data) => {
       toast.success(t("auth.signUp.success"), { autoClose: 1500 });
       queryClient.invalidateQueries({

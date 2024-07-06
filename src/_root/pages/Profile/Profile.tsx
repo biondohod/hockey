@@ -12,7 +12,11 @@ import { useTranslation } from "react-i18next";
 import ProfileUploadDocuments from "../../../components/ProfileDocuments/ProfileUploadDocuments";
 import ProfileDocuments from "../../../components/ProfileDocuments/ProfileDocuments";
 import ProfileCompetitions from "../../../components/ProfileCompetitoins/ProfileCompetitions";
-import { calculateAge, formatDate, transliterateText } from "../../../lib/utils";
+import {
+  calculateAge,
+  formatDate,
+  transliterateText,
+} from "../../../lib/utils";
 
 const Profile = () => {
   const [isUserProfile, setIsUserProfile] = useState(false);
@@ -40,6 +44,7 @@ const Profile = () => {
     } else {
       setIsUserProfile(false);
       setUserData(data);
+      console.log(data);
       setUserRole(
         roles?.find((role: Irole) => role.id === data?.role_id) || null
       );
@@ -64,7 +69,7 @@ const Profile = () => {
   if (!userData || !userRole)
     return <EmptyContent marginTop={32} message={t("profile.emptyContent")} />;
 
-  if (userRole?.is_admin || (isAdmin && isUserProfile)) {
+  if (!userData.player) {
     // console.log(userData, userRole, isAdmin, isUserProfile)
     return (
       <section className="profile">
@@ -82,13 +87,24 @@ const Profile = () => {
                 <span className="profile-info__name">
                   {userData.first_name} {userData.last_name}
                 </span>
+                <span className="profile-info__role">({userRole.name})</span>
               </div>
+              {(isUserProfile || isAdmin) && (
+                <Link
+                  to={`/editServiceProfile/${userData.id}`}
+                  className="profile-info__about-btn"
+                >
+                  {t("profile.edit")}
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </section>
     );
   }
+
+  console.log(isUserProfile, isAdmin);
 
   return (
     <section className="profile">
@@ -188,15 +204,13 @@ const Profile = () => {
                 </span>
               </li> */}
             </ul>
-            {isUserProfile || isAdmin ? (
+            {(isUserProfile || isAdmin) && (
               <Link
                 to={`/editProfile/${userData.id}`}
                 className="profile-info__about-btn"
               >
                 {t("profile.edit")}
               </Link>
-            ) : (
-              <div></div>
             )}
           </div>
         </div>
@@ -204,7 +218,7 @@ const Profile = () => {
           <h2 className="profile__subtitle">
             {t("profile.competitions.title")}
           </h2>
-          <ProfileCompetitions id={data.id}/>
+          <ProfileCompetitions id={data.id} />
           {/* <ul className="profile-tournaments__list">
             <li className="profile-tournaments__item">
               <div className="profile-tournaments__wrapper">
