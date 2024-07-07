@@ -158,5 +158,18 @@
     "success": "Competition has been deleted successfully!",
     "error": "Error deleting competition: {{message}}",
     "unknownError": "Unknown error while deleting competition"
+  },
+  "table": {
+    "name": "Name",
+    "difference": "Difference",
+    "game": "Game {{number}}",
+    "age": "Age",
+    "position": "Position",
+    "unknownPosition": "Unknown",
+    "pucks": "Pucks",
+    "missed": "Missed",
+    "rating": "Rating",
+    "empty": "The table has not yet been formed",
+    "error": "Oops! We can't load the table. Please try again later"
   }
 }

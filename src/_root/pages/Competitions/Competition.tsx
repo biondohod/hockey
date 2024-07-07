@@ -16,17 +16,20 @@ import {
   useRegisterForCompetition,
 } from "../../../lib/react-query/mutations.ts";
 import { useUserContext } from "../../../context/AuthContext.tsx";
-import CompetitionRegistrations from "../../../components/CompetitionRegistrations/CompetitionRegistrations.tsx";
 import CompetitionSchedule from "../../../components/CompetitionSchedule/CompetitionSchedule.tsx";
 import CompetitionPlayers from "../../../components/CompetitionPlayers/CompetitionPlayers.tsx";
 import CompetitionTable from "../../../components/CompetitionTable/CompetitionTable.tsx";
 
-const Competition = () => {
+/**
+ * 
+ * @returns {JSX.Element} Функиональный компонент, возвращающий разметку страницы с полной информацией о Соревновании и табами для переключения информации
+ */
+const Competition = (): JSX.Element => {
   const { id, type } = useParams();
   const COMPETITION_TABS = ["info", "players", "games", "table"];
   const parsedId = id ? parseInt(id) : undefined;
   const [selectedType, setSelectedType] = useState("info");
-  const { user, isAdmin } = useUserContext();
+  const { user } = useUserContext();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { mutateAsync: register, isPending: isRegistering } =
@@ -236,11 +239,6 @@ const Competition = () => {
       </div>
 
       <div className={"competition__content"}>{renderTabContent()}</div>
-      {/* {checkIsAwailableForRegistration() && (
-        <div className="competition__registation">
-          {renderRegisrationButtons()}
-        </div>
-      )} */}
     </section>
   );
 };

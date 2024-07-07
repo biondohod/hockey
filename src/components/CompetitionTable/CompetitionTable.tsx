@@ -15,6 +15,7 @@ import {
 import Loader from "../Loader/Loader";
 import EmptyContent from "../EmptyElement/EmptyElement";
 import { renderPaginationButtons } from "../../lib/utils";
+import { useTranslation } from "react-i18next";
 
 type CompetitionTableProps = {
   competitionId: number;
@@ -22,6 +23,8 @@ type CompetitionTableProps = {
 
 const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
+
   const [offset, setOffset] = useState<string>(
     searchParams.get("offset") || "0"
   );
@@ -150,7 +153,11 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
       id: index.toString(),
       header: () => (
         <div className="competition-players__game-name">
-          <span>Игра {index + 1 + parseInt(offset)}</span>
+          <span>
+            {t("competitions.table.game", {
+              number: index + 1 + parseInt(offset),
+            })}
+          </span>
           <div className="competition-players__score--game">
             <span className="competition-players__score--match-left">
               {match.left_score !== null ? match.left_score : "-"}
@@ -191,7 +198,7 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
       accessorFn: (row, index) => index,
     },
     {
-      header: "Имя",
+      header: t("competitions.table.name"),
       cell: (info) => (
         <Link
           to={`/profile/${info.row.original.user.id}`}
@@ -207,7 +214,7 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
       accessorFn: (row) => row.user.first_name + " " + row.user.last_name,
     },
     {
-      header: "Разность",
+      header: t("competitions.table.difference"),
       accessorFn: (row) => row.win_score - row.lose_score,
     },
     ...gamesColumns,
@@ -226,9 +233,9 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
 
   if (isLoadingMatches || isLoadingScores) return <Loader />;
   if (isErrorMatches || isErrorScores)
-    return <EmptyContent message="Ошибка загрузки данных" />;
+    return <EmptyContent message={t("competitions.table.error")} />;
   if (!competitionScores?.length || !competitionMatches?.matches.length) {
-    return <EmptyContent message="Нет данных" />;
+    return <EmptyContent message={t("competitions.table.empty")} />;
   }
 
   return (
@@ -239,22 +246,23 @@ const CompetitionTable: FC<CompetitionTableProps> = ({ competitionId }) => {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 const sortDirection = header.column.getIsSorted();
-                const sortIndicator =
+                const sortClass =
                   sortDirection === "asc"
-                    ? "🔼"
+                    ? "asc"
                     : sortDirection === "desc"
-                    ? "🔽"
-                    : null;
+                    ? "desc"
+                    : "";
                 return (
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
+                    className={sortClass}
                   >
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {sortIndicator}
+                    {/* {sortIndicator} */}
                   </th>
                 );
               })}

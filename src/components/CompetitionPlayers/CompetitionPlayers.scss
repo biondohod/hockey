@@ -28,6 +28,7 @@
     }
 
     th {
+      position: relative;
       background-color: #c44343;
       color: #ffffff;
       font-weight: bold;
@@ -170,5 +171,32 @@
     100% {
       background-position: -200% 0;
     }
+  }
+}
+
+.asc,
+.desc {
+  &::after {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    font-size: 20px;
+    // width: 15px;
+    // height: 15px;
+    transform: translateY(-50%);
+  }
+}
+
+.asc {
+  &::after {
+    content: "▲";
+    // content: "🔼";
+  }
+}
+
+.desc {
+  &::after {
+    content: "▼";
+    // content: "🔽";
   }
 }

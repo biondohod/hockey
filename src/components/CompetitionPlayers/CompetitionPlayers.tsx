@@ -90,7 +90,7 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
       accessorFn: (row, index) => index,
     },
     {
-      header: "Имя",
+      header: t("competitions.table.name"),
       cell: (info) => (
         <Link
           to={`/profile/${info.row.original.user.id}`}
@@ -106,31 +106,32 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
       accessorFn: (row) => row.user.first_name + " " + row.user.last_name,
     },
     {
-      header: "Возраст",
+      header: t("competitions.table.age"),
       accessorFn: (row) => calculateAge(row.user.player.birth_date),
     },
     {
-      header: "Амплуа",
-      accessorFn: (row) => row.user.player.position || "Неизвестно",
+      header: t("competitions.table.position"),
+      accessorFn: (row) =>
+        row.user.player.position || t("competitions.table.unknownPosition"),
     },
     {
-      header: "Шайбы",
+      header: t("competitions.table.pucks"),
       accessorKey: "win_score",
       enableSorting: true,
       // accessorFn: (row) => row.win_score,
     },
     {
-      header: "Пропущенные",
+      header: t("competitions.table.missed"),
       accessorKey: "lose_score",
       enableSorting: true,
       // accessorFn: (row) => row.lose_score,
     },
     {
-      header: "Рейтинг",
+      header: t("competitions.table.rating"),
       accessorFn: (row) => "-",
     },
     {
-      header: "Разность",
+      header: t("competitions.table.difference"),
       accessorFn: (row) => row.win_score - row.lose_score,
     },
     // {
@@ -198,8 +199,9 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
   // };
 
   if (isLoading) return <Loader />;
-  if (isError) return <EmptyContent message="Error loading players" />;
-  if (!players.length) return <EmptyContent message="No players found" />;
+  if (isError) return <EmptyContent message={t("competitions.table.error")} />;
+  if (!players.length)
+    return <EmptyContent message={t("competitions.table.empty")} />;
 
   return (
     <section className="competition-players">
@@ -210,19 +212,23 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 const sortDirection = header.column.getIsSorted();
-                const sortIndicator =
+                const sortClass =
                   sortDirection === "asc"
-                    ? "🔼"
+                    ? "asc"
                     : sortDirection === "desc"
-                    ? "🔽"
-                    : null;
+                    ? "desc"
+                    : "";
                 return (
-                  <th key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={sortClass}
+                  >
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {sortIndicator}
+                    {/* {sortIndicator} */}
                   </th>
                 );
               })}
