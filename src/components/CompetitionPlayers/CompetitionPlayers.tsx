@@ -26,8 +26,6 @@ type CompetitionPlayersProps = {
 };
 
 const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
-  // const { data, isLoading, isError } =
-  //   useGetCompeitionRegistrations(competitionId);
   const [players, setPlayers] = useState<ICompetitionScore[]>([]);
   const { role } = useUserContext();
   const { mutateAsync, isPending } = useUpdateRegistration();
@@ -40,34 +38,6 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
       setPlayers(data);
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   if (role && role.can_create) {
-  //     columns.push({
-  //       id: "exclude",
-  //       header: () => <span>Исключить</span>,
-  //       cell: ({ row }) => {
-  //         const registration = row.original;
-  //         return (
-  //           <button
-  //             className="competition-registrations__button competition-registrations__button--exclude"
-  //             onClick={() =>
-  //               onSubmit(Number(registration.user.id), competitionId, {
-  //                 is_dropped: !registration.is_dropped,
-  //               })
-  //             }
-  //             // Assuming `isPending` is defined and reflects the loading state of the operation
-  //             disabled={isPending}
-  //           >
-  //             {registration.is_dropped
-  //               ? t("competitions.registration.return")
-  //               : t("competitions.registration.drop")}
-  //           </button>
-  //         );
-  //       },
-  //     });
-  //   }
-  // }, [role]);
 
   const onSubmit = (
     playerId: number,
@@ -118,13 +88,11 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
       header: t("competitions.table.pucks"),
       accessorKey: "win_score",
       enableSorting: true,
-      // accessorFn: (row) => row.win_score,
     },
     {
       header: t("competitions.table.missed"),
       accessorKey: "lose_score",
       enableSorting: true,
-      // accessorFn: (row) => row.lose_score,
     },
     {
       header: t("competitions.table.rating"),
@@ -134,37 +102,27 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
       header: t("competitions.table.difference"),
       accessorFn: (row) => row.win_score - row.lose_score,
     },
-    // {
-    //   header: "Исключить",
-    //   accessorFn: () => <button>Исключить</button>,
-    // },
+    {
+      id: "exclude",
+      header: t("competitions.table.exclude"),
+      cell: ({ row }) => {
+        const registration = row.original;
+        console.log(registration);
+        return (
+          <input
+            type="checkbox"
+            checked={registration.is_dropped}
+            onChange={() =>
+              onSubmit(Number(registration.user.id), competitionId, {
+                is_dropped: !registration.is_dropped,
+              })
+            }
+            disabled={isPending}
+          />
+        );
+      },
+    },
   ];
-
-  // if (role && role.can_create) {
-  //   columns.push({
-  //     id: "exclude",
-  //     header: () => <span>Исключить</span>,
-  //     cell: ({ row }) => {
-  //       const registration = row.original;
-  //       return (
-  //         <button
-  //           className="competition-registrations__button competition-registrations__button--exclude"
-  //           onClick={() =>
-  //             onSubmit(Number(registration.user.id), competitionId, {
-  //               is_dropped: !registration.is_dropped,
-  //             })
-  //           }
-  //           // Assuming `isPending` is defined and reflects the loading state of the operation
-  //           disabled={isPending}
-  //         >
-  //           {registration.is_dropped
-  //             ? t("competitions.registration.return")
-  //             : t("competitions.registration.drop")}
-  //         </button>
-  //       );
-  //     },
-  //   });
-  // }
 
   const table = useReactTable({
     data: playerData,
@@ -177,27 +135,6 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
     onSortingChange: setSorting,
   });
 
-  // const renderPlayers = () => {
-  //   if (isLoading) return <Loader />;
-  //   if (isError) return <EmptyContent message="Error loading players" />;
-  //   if (!players.length) return <EmptyContent message="No players found" />;
-  //   return players.map((player: ICompetitionScore) => {
-  //     const playerAge = calculateAge(player.user.player.birth_date);
-
-  //     return (
-  //       <li className="competition-players__item" key={player.user.id}>
-  //         <Link
-  //           to={`/profile/${player.user.id}`}
-  //           className="competition-players__name"
-  //         >
-  //           {`${player.user.first_name} ${player.user.last_name}`}
-  //         </Link>
-  //         <span className="competition-players__age">{playerAge}</span>
-  //       </li>
-  //     );
-  //   });
-  // };
-
   if (isLoading) return <Loader />;
   if (isError) return <EmptyContent message={t("competitions.table.error")} />;
   if (!players.length)
@@ -205,7 +142,6 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
 
   return (
     <section className="competition-players">
-      {/* <ul className="competition-players__list">{renderPlayers()}</ul> */}
       <table className="competition-players__table">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -228,7 +164,6 @@ const CompetitionPlayers: FC<CompetitionPlayersProps> = ({ competitionId }) => {
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {/* {sortIndicator} */}
                   </th>
                 );
               })}

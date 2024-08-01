@@ -9,6 +9,7 @@ interface INewUser {
   telegram: string;
   password: string;
   position: string;
+  preparation: string;
 }
 
 interface IEditUser {
@@ -23,6 +24,7 @@ interface IEditUser {
   password?: string;
   role_id?:  number;
   position?: string;
+  preparation?: string;
 }
 
 interface INewUserAdmin {
@@ -250,6 +252,7 @@ type SignUpForm = {
   password: string;
   confirmPassword: string;
   position: string;
+  preparation: string;
 };
 
 type EditProfileForm = {
@@ -266,6 +269,7 @@ type EditProfileForm = {
   confirmPassword?: string;
   role_id?: string;
   position: string;
+  preparation: string;
 }
 
 type CreateUserForm = {

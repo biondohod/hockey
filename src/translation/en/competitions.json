@@ -32,6 +32,7 @@
     "error": "Oops! We couldn't load the competition information. Please check the link for accuracy or try again later.",
     "registrate": "Participate",
     "cancelRegistrate": "Cancel participation",
+    "warning": "Attention! Your application to participate in the tournament has been confirmed by the administrator. If you cancel your participation, you will have to go through the confirmation procedure again.",
     "infoTab": {
       "creator": "Competition creator",
       "description": "Brief competition description",
@@ -170,6 +171,7 @@
     "missed": "Missed",
     "rating": "Rating",
     "empty": "The table has not yet been formed",
-    "error": "Oops! We can't load the table. Please try again later"
+    "error": "Oops! We can't load the table. Please try again later",
+    "exclude": "Exclude"
   }
 }

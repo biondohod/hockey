@@ -7,6 +7,8 @@
   "uploadDocs": "Upload documents",
   "birthDate": "Birth date",
   "age": "Age",
+  "position": "Position",
+  "preparation": "Training level",
   "trainer": "Trainer",
   "healthStatus": {
     "title": "Health status",
@@ -37,7 +39,8 @@
     "editPassword": "Change password",
     "save": "Save changes",
     "role": "Choose user's role",
-    "position": "Choose position"
+    "position": "Choose position",
+    "preparation": "Choose training level"
   },
   "documents": {
     "pending": "Uploading documents...",

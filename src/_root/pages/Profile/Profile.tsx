@@ -134,7 +134,9 @@ const Profile = () => {
                   <div className="profile-info__unverified">
                     {t("profile.unverified")}{" "}
                     <span className="profile-info__unverified-tooltip">?</span>
-                    <span className="profile-info__unverified-popup">{t("profile.unverifiedPopup")}</span>
+                    <span className="profile-info__unverified-popup">
+                      {t("profile.unverifiedPopup")}
+                    </span>
                   </div>
                 ) : (
                   t("profile.verified")
@@ -173,6 +175,22 @@ const Profile = () => {
                 </span>
                 <span className="profile-info__about-value">
                   {calculateAge(userData.player.birth_date) || ""}
+                </span>
+              </li>
+              <li className="profile-info__about">
+                <span className="profile-info__about-title">
+                  {t("profile.position")}
+                </span>
+                <span className="profile-info__about-value">
+                  {userData.player.position || ""}
+                </span>
+              </li>
+              <li className="profile-info__about">
+                <span className="profile-info__about-title">
+                  {t("profile.preparation")}
+                </span>
+                <span className="profile-info__about-value">
+                  {userData.player.preparation || ""}
                 </span>
               </li>
               {/* <li className="profile-info__about">

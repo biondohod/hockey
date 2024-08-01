@@ -43,6 +43,7 @@ export const SignUpValidation = z
     confirmPassword: z.string(),
     role_id: z.string().optional(),
     position: z.string().nonempty(),
+    preparation: z.string().nonempty(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "auth.validation.confirmPassword",
@@ -65,6 +66,7 @@ export const EditProfileValidation = z
       .regex(/^[A-Za-zА-Яа-я- ]+$/, "auth.validation.middle_name.regex"),
     gender: z.string().nonempty("auth.validation.gender"),
     position: z.string().nonempty(),
+    preparation: z.string().nonempty(),
     phone: z
       .string()
       .refine(
@@ -175,7 +177,8 @@ export const CreateUserValidation = z
       ),
     confirmPassword: z.string(),
     role_id: z.string(),
-    position: z.string().optional(),
+    position: z.string().nonempty(),
+    preparation: z.string().nonempty(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "auth.validation.confirmPassword",

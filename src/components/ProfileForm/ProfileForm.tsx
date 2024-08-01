@@ -91,113 +91,134 @@ const ProfileForm: FC<ProfileFormProps> = ({
           </label>
         )}
 
-        {(type === "signUp" || isAdmin && type === "edit") && (
-            <>
-              <label htmlFor="last_name" className="auth__label">
-                {t("auth.signUp.lastName")}*
-                <input
-                  type="text"
-                  id="last_name"
-                  className="auth__input"
-                  required={true}
-                  autoComplete="off"
-                  maxLength={16}
-                  {...register("last_name")}
-                  {...(errors.last_name && {
-                    style: { borderColor: "red", outline: "none" },
-                  })}
-                />
-                {errors.last_name && errors.last_name.message && (
-                  <span className="auth__error-msg">
-                    {t(errors.last_name.message)}
-                  </span>
-                )}
-              </label>
+        {(type === "signUp" || (isAdmin && type === "edit")) && (
+          <>
+            <label htmlFor="last_name" className="auth__label">
+              {t("auth.signUp.lastName")}*
+              <input
+                type="text"
+                id="last_name"
+                className="auth__input"
+                required={true}
+                autoComplete="off"
+                maxLength={16}
+                {...register("last_name")}
+                {...(errors.last_name && {
+                  style: { borderColor: "red", outline: "none" },
+                })}
+              />
+              {errors.last_name && errors.last_name.message && (
+                <span className="auth__error-msg">
+                  {t(errors.last_name.message)}
+                </span>
+              )}
+            </label>
 
-              <label htmlFor="first_name" className="auth__label">
-                {t("auth.signUp.firstName")}*
-                <input
-                  type="text"
-                  id="first_name"
-                  className="auth__input"
-                  required={true}
-                  autoComplete="off"
-                  maxLength={16}
-                  {...register("first_name")}
-                  {...(errors.first_name && {
-                    style: { borderColor: "red", outline: "none" },
-                  })}
-                />
-                {errors.first_name && errors.first_name.message && (
-                  <span className="auth__error-msg">
-                    {t(errors.first_name.message)}
-                  </span>
-                )}
-              </label>
+            <label htmlFor="first_name" className="auth__label">
+              {t("auth.signUp.firstName")}*
+              <input
+                type="text"
+                id="first_name"
+                className="auth__input"
+                required={true}
+                autoComplete="off"
+                maxLength={16}
+                {...register("first_name")}
+                {...(errors.first_name && {
+                  style: { borderColor: "red", outline: "none" },
+                })}
+              />
+              {errors.first_name && errors.first_name.message && (
+                <span className="auth__error-msg">
+                  {t(errors.first_name.message)}
+                </span>
+              )}
+            </label>
 
-              <label htmlFor="middle_name" className="auth__label">
-                {t("auth.signUp.middleName")}*
-                <input
-                  type="text"
-                  id="middle_name"
-                  className="auth__input"
-                  required={true}
-                  autoComplete="off"
-                  maxLength={16}
-                  {...register("middle_name")}
-                  {...(errors.middle_name && {
-                    style: { borderColor: "red", outline: "none" },
-                  })}
-                />
-                {errors.middle_name && errors.middle_name.message && (
-                  <span className="auth__error-msg">
-                    {t(errors.middle_name.message)}
-                  </span>
-                )}
-              </label>
+            <label htmlFor="middle_name" className="auth__label">
+              {t("auth.signUp.middleName")}*
+              <input
+                type="text"
+                id="middle_name"
+                className="auth__input"
+                required={true}
+                autoComplete="off"
+                maxLength={16}
+                {...register("middle_name")}
+                {...(errors.middle_name && {
+                  style: { borderColor: "red", outline: "none" },
+                })}
+              />
+              {errors.middle_name && errors.middle_name.message && (
+                <span className="auth__error-msg">
+                  {t(errors.middle_name.message)}
+                </span>
+              )}
+            </label>
 
-              <label htmlFor="gender" className="auth__label">
-                {t("auth.signUp.sex.sex")}*
-                <select
-                  id="gender"
-                  className="auth__input"
-                  required={true}
-                  defaultValue={""}
-                  {...register("gender")}
-                  {...(errors.gender && {
-                    style: { borderColor: "red", outline: "none" },
-                  })}
-                >
-                  <option hidden disabled value="">
-                    {t("auth.signUp.sex.unspecified")}
-                  </option>
-                  <option value="male">{t("auth.signUp.sex.male")}</option>
-                  <option value="female">{t("auth.signUp.sex.female")}</option>
-                </select>
-                {errors.gender && errors.gender.message && (
-                  <span className="auth__error-msg">
-                    {t(errors.gender.message)}
-                  </span>
-                )}
-              </label>
-            </>
-          )}
-
-        {type === "edit" && (
-          <label htmlFor="position" className="auth__label">
-            {t("profile.editProfile.position")}*
-            <select
-              id="position"
-              className="auth__input"
-              required={true}
-              autoComplete="off"
-              {...register("position")}
-            >
-              <option value={"player"}>Игрок</option>
-              <option value={"goalkeeper"}>Вратарь</option>
-            </select>
-          </label>
+            <label htmlFor="gender" className="auth__label">
+              {t("auth.signUp.sex.sex")}*
+              <select
+                id="gender"
+                className="auth__input"
+                required={true}
+                defaultValue={""}
+                {...register("gender")}
+                {...(errors.gender && {
+                  style: { borderColor: "red", outline: "none" },
+                })}
+              >
+                <option hidden disabled value="">
+                  {t("auth.signUp.sex.unspecified")}
+                </option>
+                <option value="male">{t("auth.signUp.sex.male")}</option>
+                <option value="female">{t("auth.signUp.sex.female")}</option>
+              </select>
+              {errors.gender && errors.gender.message && (
+                <span className="auth__error-msg">
+                  {t(errors.gender.message)}
+                </span>
+              )}
+            </label>
+          </>
         )}
+
+        <label htmlFor="position" className="auth__label">
+          {t("profile.editProfile.position")}*
+          <select
+            id="position"
+            className="auth__input"
+            required={true}
+            autoComplete="off"
+            {...register("position")}
+          >
+            <option value={"Нападающий"}>Нападающий</option>
+            <option value={"Центральный нападающий"}>Центральный нападающий</option>
+            <option value={"Защитник"}>Защитник</option>
+            <option value={"Вратарь"}>Вратарь</option>
+          </select>
+        </label>
+
+        <label htmlFor="preparation" className="auth__label">
+          {t("profile.editProfile.preparation")}*
+          <select
+            id="preparation"
+            className="auth__input"
+            required={true}
+            autoComplete="off"
+            {...register("preparation")}
+          >
+            <option value={"III юношеский спортивный разряд"}>III юношеский спортивный разряд</option>
+            <option value={"II юношеский спортивный разряд"}>II юношеский спортивный разряд</option>
+            <option value={"I юношеский спортивный разряд"}>I юношеский спортивный разряд</option>
+            <option value={"III спортивный разряд"}>III спортивный разряд</option>
+            <option value={"II спортивный разряд"}>II спортивный разряд</option>
+            <option value={"I спортивный разряд"}>I спортивный разряд</option>
+            <option value={"Кандидат в мастера спорта"}>Кандидат в мастера спорта</option>
+            <option value={"Мастер спорта России"}>Мастер спорта России</option>
+            <option value={"Мастер спорта России международного класса"}>Мастер спорта России международного класса</option>
+          </select>
+        </label>
 
         <label htmlFor="phone" className="auth__label">
           {t("auth.signUp.phone")}*
@@ -243,26 +264,26 @@ const ProfileForm: FC<ProfileFormProps> = ({
           )}
         </label>
 
-        {(type === "signUp" || isAdmin && type === "edit") && (
-            <label htmlFor="birth_date" className="auth__label">
-              {t("auth.signUp.birthDate")}*
-              <input
-                type="date"
-                id="birth_date"
-                className="auth__input"
-                required={true}
-                {...register("birth_date")}
-                {...(errors.birth_date && {
-                  style: { borderColor: "red", outline: "none" },
-                })}
-              />
-              {errors.birth_date && errors.birth_date.message && (
-                <span className="auth__error-msg">
-                  {t(errors.birth_date.message)}
-                </span>
-              )}
-            </label>
-          )}
+        {(type === "signUp" || (isAdmin && type === "edit")) && (
+          <label htmlFor="birth_date" className="auth__label">
+            {t("auth.signUp.birthDate")}*
+            <input
+              type="date"
+              id="birth_date"
+              className="auth__input"
+              required={true}
+              {...register("birth_date")}
+              {...(errors.birth_date && {
+                style: { borderColor: "red", outline: "none" },
+              })}
+            />
+            {errors.birth_date && errors.birth_date.message && (
+              <span className="auth__error-msg">
+                {t(errors.birth_date.message)}
+              </span>
+            )}
+          </label>
+        )}
 
         <label htmlFor="telegram" className="auth__label">
           {t("auth.signUp.telegramUsername")}

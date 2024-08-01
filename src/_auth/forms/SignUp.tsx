@@ -23,7 +23,8 @@ const SignUp = (): JSX.Element => {
     birth_date: "",
     password: "",
     confirmPassword: "",
-    position: "player",
+    position: "attack",
+    preparation: "cms",
     telegram: "",
   };
 
@@ -42,6 +43,7 @@ const SignUp = (): JSX.Element => {
         telegram: data.telegram,
         password: data.password,
         position: data.position,
+        preparation: data.preparation,
       };
       toast.promise(mutateAsync(newUser), {
         pending: t("auth.signUp.pending"),

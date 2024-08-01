@@ -59,6 +59,7 @@ const EditProfile = () => {
         password: "",
         confirmPassword: "",
         position: player.position,
+        preparation: player.preparation,
         telegram: player.telegram,
         role_id: role_id.toString(),
       };
@@ -67,6 +68,7 @@ const EditProfile = () => {
   }, [data]);
 
   const onSubmit = async (data: EditProfileForm | SignUpForm) => {
+    console.log(data);
     const isMale: boolean = data.gender === "male";
     const phone = data.phone.replace(/[^+\d]/g, "");
     const formattedUser: IEditUser = {
@@ -88,6 +90,10 @@ const EditProfile = () => {
 
     if ("position" in data) {
       formattedUser.position = data.position;
+    }
+
+    if ("preparation" in data) {
+      formattedUser.preparation = data.preparation;
     }
 
     if (data.password) {

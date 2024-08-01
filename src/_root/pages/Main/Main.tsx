@@ -1,7 +1,10 @@
- import MainCompetitoins from "../../../components/MainCompetitions/MainCompetitions";
+ import { useEffect, useState } from "react";
+import MainCompetitoins from "../../../components/MainCompetitions/MainCompetitions";
+import { useGetCompetitions } from "../../../lib/react-query/queries";
 import "./Main.scss";
 
 const Main = () => {
+
     return (
         <div className="main-page">
             <section className="intro">

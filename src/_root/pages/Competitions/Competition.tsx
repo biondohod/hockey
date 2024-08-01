@@ -11,6 +11,7 @@ import Loader from "../../../components/Loader/Loader.tsx";
 import EmptyContent from "../../../components/EmptyElement/EmptyElement.tsx";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import Modal from "react-modal";
 import {
   useCancelRegistration,
   useRegisterForCompetition,
@@ -21,7 +22,7 @@ import CompetitionPlayers from "../../../components/CompetitionPlayers/Competiti
 import CompetitionTable from "../../../components/CompetitionTable/CompetitionTable.tsx";
 
 /**
- * 
+ *
  * @returns {JSX.Element} Функиональный компонент, возвращающий разметку страницы с полной информацией о Соревновании и табами для переключения информации
  */
 const Competition = (): JSX.Element => {
@@ -42,6 +43,28 @@ const Competition = (): JSX.Element => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [isDropped, setIsDropped] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  useEffect(() => {
+    Modal.setAppElement("#root");
+  }, []);
+
+  useEffect(() => {
+    const root = document.getElementById("root");
+    if (modalIsOpen && root) {
+      root.style.overflow = "hidden";
+    } else if (root) {
+      root.style.overflow = "auto";
+    }
+  }, [modalIsOpen]);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   // Call the hook at the top level
   const { data, isLoading, isError, error } = useGetCompetition(parsedId);
@@ -165,13 +188,44 @@ const Competition = (): JSX.Element => {
       } else if (isRegistered && isApproved) {
         text = <span>{t("competitions.competition.approved")}</span>;
         button = (
-          <button
-            className="competition__cancel-registrate"
-            onClick={() => onCancelRegistration(data!.id)}
-            disabled={isCancelling}
-          >
-            {t("competitions.competition.cancelRegistrate")}
-          </button>
+          <>
+            <button
+              className="competition__cancel-registrate"
+              onClick={openModal}
+            >
+              {t("competitions.competition.cancelRegistrate")}
+            </button>
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              contentLabel="Registration Applications"
+              className="competition-registrations__modal"
+              style={{
+                overlay: {
+                  backgroundColor: "rgba(0, 0, 0, 0.75)",
+                },
+              }}
+            >
+              <div className="competition-registrations__header">
+                <h2 className="competition-registrations__title">
+                  {t("competitions.competition.warning")}
+                </h2>
+                <button
+                  className="competition-registrations__button competition-registrations__button--close"
+                  onClick={closeModal}
+                >
+                  {t("competitions.registration.close")}
+                </button>
+              </div>
+              <button
+              className="competition__cancel-registrate"
+              onClick={() => onCancelRegistration(data!.id)}
+              disabled={isCancelling}
+            >
+              {t("competitions.competition.cancelRegistrate")}
+            </button>
+            </Modal>
+          </>
         );
       } else if (isRegistered && !isApproved) {
         text = <span>{t("competitions.competition.notApproved")}</span>;
