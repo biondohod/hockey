@@ -203,9 +203,9 @@ const Header = () => {
                     </div>
                   </Link>
 
-                  <div className="header-profile__personal-info">
+                  <Link to={role?.is_admin ? `/editServiceProfile/${user?.id}` : `/editProfile/${user?.id}`} className="header-profile__personal-info">
                     {t("header.personal-info")}
-                  </div>
+                  </Link>
 
                   <div className="header-profile__signout" onClick={logOut}>
                     {t("header.logout")}

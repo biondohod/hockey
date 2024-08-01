@@ -130,9 +130,15 @@ const Profile = () => {
                     userRole?.name === "Неподтвержденный" ? "red" : "green",
                 }}
               >
-                {userRole?.name === "Неподтвержденный"
-                  ? t("profile.unverified")
-                  : t("profile.verified")}
+                {userRole?.name === "Неподтвержденный" ? (
+                  <div className="profile-info__unverified">
+                    {t("profile.unverified")}{" "}
+                    <span className="profile-info__unverified-tooltip">?</span>
+                    <span className="profile-info__unverified-popup">{t("profile.unverifiedPopup")}</span>
+                  </div>
+                ) : (
+                  t("profile.verified")
+                )}
               </span>
               <div className="profile-info__btns">
                 {isUserProfile && (

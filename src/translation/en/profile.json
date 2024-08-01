@@ -3,6 +3,7 @@
   "title": "Profile",
   "verified": "Verified",
   "unverified": "Unverified",
+  "unverifiedPopup": "To verify, you need to upload documents and wait for the service admin to confirm",
   "uploadDocs": "Upload documents",
   "birthDate": "Birth date",
   "age": "Age",
@@ -71,6 +72,12 @@
       "success": "Document successfully deleted",
       "error": "An error occurred while deleting the document: {{message}}",
       "unknownError": "An unknown error occurred while deleting the document"
+    },
+    "validation" : {
+      "name": {
+        "min": "Minimum document name length - 4 characters",
+        "max": "Maximum document name length - 64 characters"
+      }
     }
   },
   "delete": {

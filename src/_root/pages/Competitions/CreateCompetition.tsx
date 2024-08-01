@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { CreateCompetitionValidation } from "../../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +17,7 @@ const CreateCompetition = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<z.infer<typeof CreateCompetitionValidation>>({
     resolver: zodResolver(CreateCompetitionValidation),
     defaultValues: {
@@ -48,9 +49,15 @@ const CreateCompetition = () => {
   };
 
   const handleMatchesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMatches(Number(event.target.value));
+    let value = Number(event.target.value);
+    if (value < 1) {
+      value = 1;
+    } else if (value > 365) {
+      value = 365;
+    }
+    setMatches(value);
+    setValue("matches", value); // Update the form value
   };
-
   return (
     <div className={"create-competition"}>
       <h1 className="create-competition__title">
@@ -170,10 +177,19 @@ const CreateCompetition = () => {
           <input
             type="number"
             id="matches"
-            {...register("matches", { setValueAs: (value) => parseInt(value) })}
+            {...register("matches", { setValueAs: (value) => {
+              if (parseInt(value) > 365) {
+                return 365;
+              }
+              if (parseInt(value) < 1) {
+                return 1;
+              }
+              return parseInt(value);
+            } })}
             className="auth__input"
             onChange={handleMatchesChange}
             min={1}
+            max={365}
             required={true}
             autoComplete="off"
           />

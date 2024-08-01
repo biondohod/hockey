@@ -30,7 +30,7 @@ export const SignUpValidation = z
         const birthDate = new Date(date);
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();
-        return age >= 14;
+        return age >=3 && age <= 100;
       }, "auth.validation.birth_date.age"),
     telegram: z.string().min(6, { message: "auth.validation.telegram" }),
     password: z
@@ -81,7 +81,7 @@ export const EditProfileValidation = z
         const birthDate = new Date(date);
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();
-        return age >= 14;
+        return age >=3 && age <= 100;
       }, "auth.validation.birth_date.age"),
     telegram: z
       .string()
@@ -155,7 +155,7 @@ export const CreateUserValidation = z
         const birthDate = new Date(date);
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();
-        return age >= 14;
+        return age >=3 && age <= 100;
       }, "auth.validation.birth_date.age"),
     telegram: z
       .string()
@@ -216,7 +216,7 @@ export const EditServiceProfileValidation = z
         const birthDate = new Date(date);
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();
-        return age >= 14;
+        return age >=3 && age <= 100;
       }, "auth.validation.birth_date.age"),
     telegram: z
       .string()
