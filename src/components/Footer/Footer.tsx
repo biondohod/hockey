@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 const Footer = () => {
   const { t } = useTranslation();
-
+//comment
   return (
     <footer className="footer">
       <div className="footer__container">

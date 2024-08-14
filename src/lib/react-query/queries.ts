@@ -152,3 +152,11 @@ export const useGetCompetitionScores = (competitionId: number | undefined) => {
     enabled: competitionId !== undefined && !isNaN(competitionId),
   });
 }
+
+export const useGetPlayerMatches = (playerId: number | undefined, offset: number | string = 0, limit: number | string = 10) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_PLAYER_MATCHES, playerId],
+    queryFn: () => getCompetitionMatches(playerId!, offset, limit),
+    enabled: playerId !== undefined && !isNaN(playerId),
+  });
+}

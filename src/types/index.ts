@@ -39,6 +39,7 @@ interface INewUserAdmin {
   telegram?: string;
   password: string;
   position?: string;
+  preparation?: string;
 }
 
 interface IUser {
@@ -279,6 +280,7 @@ type CreateUserForm = {
   middle_name: string;
   email: string;
   position?: string;
+  preparation?: string;
   gender?: string;
   phone?: string;
   birth_date?: string;

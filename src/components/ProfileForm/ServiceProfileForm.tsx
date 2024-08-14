@@ -219,8 +219,51 @@ const ServiceProfileForm: FC<ServiceProfileFormProps> = ({
                 autoComplete="off"
                 {...register("position")}
               >
-                <option value={"player"}>Игрок</option>
-                <option value={"goalkeeper"}>Вратарь</option>
+                <option value={"Нападающий"}>Нападающий</option>
+                <option value={"Центральный нападающий"}>
+                  Центральный нападающий
+                </option>
+                <option value={"Защитник"}>Защитник</option>
+                <option value={"Вратарь"}>Вратарь</option>
+              </select>
+            </label>
+
+            <label htmlFor="preparation" className="auth__label">
+              {t("profile.editProfile.preparation")}*
+              <select
+                id="preparation"
+                className="auth__input"
+                required={true}
+                autoComplete="off"
+                {...register("preparation")}
+              >
+                <option value={"III юношеский спортивный разряд"}>
+                  III юношеский спортивный разряд
+                </option>
+                <option value={"II юношеский спортивный разряд"}>
+                  II юношеский спортивный разряд
+                </option>
+                <option value={"I юношеский спортивный разряд"}>
+                  I юношеский спортивный разряд
+                </option>
+                <option value={"III спортивный разряд"}>
+                  III спортивный разряд
+                </option>
+                <option value={"II спортивный разряд"}>
+                  II спортивный разряд
+                </option>
+                <option value={"I спортивный разряд"}>
+                  I спортивный разряд
+                </option>
+                <option value={"Кандидат в мастера спорта"}>
+                  Кандидат в мастера спорта
+                </option>
+                <option value={"Мастер спорта России"}>
+                  Мастер спорта России
+                </option>
+                <option value={"Мастер спорта России международного класса"}>
+                  Мастер спорта России международного класса
+                </option>
               </select>
             </label>
 
@@ -399,7 +442,7 @@ const ServiceProfileForm: FC<ServiceProfileFormProps> = ({
         {}
 
         <button type="submit" className="auth__submit" disabled={isPending}>
-        {type === "create"
+          {type === "create"
             ? t("auth.signUp.signUp")
             : t("profile.editProfile.save")}
         </button>

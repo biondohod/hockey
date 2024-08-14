@@ -48,6 +48,14 @@ const AdminCreateUser = (): JSX.Element => {
       formattedUser.position = data.position;
     }
 
+    if ('position' in data) {
+      formattedUser.position = data.position;
+    }
+
+    if ('preparation' in data) {
+      formattedUser.preparation = data.preparation;
+    }
+
     toast.promise(mutateAsync(formattedUser), {
       pending: t("auth.signUp.pending"),
     });

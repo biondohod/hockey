@@ -360,3 +360,18 @@ export const getCompetitionScores = async (CompetitionId: number): Promise<IComp
   );
   return response.data;
 }
+
+export const getPlayerMatches = async (playerId: number, offset: number | string, limit: number | string): Promise<any | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  const response = await axios.get(
+    `${URL_BASE}users/${playerId}/matches?limit=${limit}&offset=${offset}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
+
